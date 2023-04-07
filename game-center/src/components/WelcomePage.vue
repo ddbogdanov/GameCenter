@@ -10,11 +10,12 @@
         <template #append>
           <el-button :icon="ArrowRight" 
                       type="primary"
-                      @click="logIn()"
+                      @click="connect()"
           ></el-button>
         </template>
       </el-input>
     </div>
+    <el-button type="danger" @click="disconnect" style="margin-top:10px;">Disconnect</el-button>
   </div>
 </template>
 
@@ -24,19 +25,14 @@ import { socket, state } from "@/socket";
 
 export default defineComponent({
   name: 'WelcomePage',
-  props: {
-    msg: String,
-  },
   computed: {
     connected() {
       return state.connected
     }
   },
   methods: {
-    logIn() {
-      console.info(`Logging in with username: ${this.username}`)
-    },
     connect() {
+      console.info(`Logging in with username: ${this.username}`)
       socket.auth = {
         username: this.username
       }
@@ -51,6 +47,17 @@ export default defineComponent({
       username: ''
     }
   },
+  created() {
+    const sessionID = sessionStorage.getItem("gameCenterSessionID")
+    const sessionUsername = sessionStorage.getItem("gameCenterSessionUsername")
+    if(sessionID && sessionUsername) {
+      this.username = sessionUsername
+      socket.auth = {
+        sessionID: sessionID
+      }
+      socket.connect()
+    }
+  }
 });
 </script>
 

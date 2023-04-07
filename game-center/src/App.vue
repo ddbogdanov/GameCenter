@@ -4,13 +4,18 @@
     <router-link to="/about">About</router-link>
   </nav> -->
   <router-view/>
+  <DebugFooter class="footer"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import DebugFooter from '@/components/DebugFooter.vue';
 
 export default defineComponent({
-
+  name: 'App',
+  components: {
+    DebugFooter,
+  },
 })
 </script>
 
@@ -25,5 +30,10 @@ html, body {
 
 #app {
   height: 100vh
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
 }
 </style>

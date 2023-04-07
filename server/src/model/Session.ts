@@ -3,18 +3,23 @@ import crypto from 'crypto'
 
 class Session {
     private user: User
-    private sessionID: any
+    private sessionID: string
+    private connected: boolean
 
-    constructor(user: User) {   
+    constructor(user: User, connected: boolean) {   
         this.user = user
         this.sessionID = this.randomID()
+        this.connected = connected
     }
 
     setUser(user: User) {
         return this.user
     }
-    setSessionID(sessionID: any) {
+    setSessionID(sessionID: string) {
         this.sessionID = sessionID
+    }
+    setConnected(connected: boolean) {
+        this.connected = connected
     }
 
     getSession(): this {
@@ -25,6 +30,9 @@ class Session {
     }
     getSessionID(): string {
         return this.sessionID
+    }
+    isConnected(): boolean {
+        return this.connected
     }
 
     private randomID(): string {

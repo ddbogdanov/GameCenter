@@ -3,7 +3,15 @@ import { io } from "socket.io-client";
 
 export const state = reactive({
   connected: false,
-  totalUsers: 0,
+  session: {
+    user: {
+      username: '',
+      userID: ''
+    },
+    sessionID: '',
+    connected: false
+  },
+  activeUsers: 0,
 });
 
 // "undefined" means the URL will be computed from the `window.location` object
@@ -17,13 +25,22 @@ export const socket = io(URL, {
 socket.on("connect", () => {
   state.connected = true
 })
-
 socket.on("disconnect", () => {
   state.connected = false
 })
+socket.on('newConnection', (username: string) => {
+  state.activeUsers++
+})
+socket.on('newDisconnection', (username: string) => {
+  state.activeUsers--
+})
 
-socket.on('hello', (data) => {
-  alert(data)
+socket.on("newSession", (sessionInfo) => {
+  state.session = sessionInfo.session
+  state.activeUsers = sessionInfo.activeUsers
+
+  sessionStorage.setItem("gameCenterSessionID", sessionInfo.session.sessionID)
+  sessionStorage.setItem("gameCenterSessionUsername", sessionInfo.session.user.username)
 })
 
 socket.on("connect_error", (error) => {

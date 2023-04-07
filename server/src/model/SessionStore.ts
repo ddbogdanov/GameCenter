@@ -14,6 +14,15 @@ class SessionStore {
         this.sessions.set(id, session)
     }
 
+    countConnectedUsers(): number {
+        let count = 0
+        for(const[key, value] of this.sessions.entries()) {
+            if (value.isConnected()) {
+                ++count
+            }
+        }
+        return count
+    }
     findAllSessions(): Array<Session> {
         return [...this.sessions.values()]
     }

@@ -1,6 +1,6 @@
 import express from 'express'
 import http from 'http'
-import socketio from 'socket.io'
+import socketio, { DisconnectReason } from 'socket.io'
 import events from '../src/events/events'
 import SessionStore from '../src/model/SessionStore'
 import UserSocket from './model/UserSocket'
@@ -23,12 +23,11 @@ app.get('/', (req, res) => {
 })
 
 io.use(async (socket: UserSocket, next) => {
-    console.log(`New Connection - ${JSON.stringify(socket.handshake.auth)}`)
-
     const sessionID = socket.handshake.auth.sessionID
     if(sessionID) {
         const session = sessionStore.findSession(sessionID)
         if(session) {
+            session.setConnected(true)
             socket.session = session
             return next()
         }
@@ -39,22 +38,46 @@ io.use(async (socket: UserSocket, next) => {
         console.log("Username is required but was not provided")
         return next(new Error("Username is Required"))
     }
-    socket.session = new Session(new User('username'))
-    socket.user = new User(username)
+    socket.session = new Session(new User(username), true)
 
     return next()
 })
 
 /* Socket.io */
-io.on('connection', (socket) => {
-    console.log(`Connected - ${JSON.stringify(socket.handshake.auth)}`)
+io.on('connection', (socket: UserSocket) => {
+    if(!socket.session) return // ????
+
+    console.log(`Connected - ${JSON.stringify(socket.session)}`)
+    sessionStore.saveSession(socket.session.getSessionID(), socket.session)
+    socket.emit("newSession", newSessionHandler(socket))
+    socket.broadcast.emit('newConnection', socket.session.getUser().getUsername())
+
+    // Register Event Listeners
     events(io, socket)
 
-    socket.on('disconnect', () => {
-        console.log('Socket Disconnected')
-    })
+    socket.on('disconnect', () => disconnectHandler(socket))
 })
 
 server.listen(port, () => {
     console.log(`Server up on port ${port}`)
 })
+
+// Utility Functions and what not
+
+function newSessionHandler(socket: UserSocket) {
+    if(!socket.session) return
+    const sessionInfo = {
+        session: socket.session,
+        activeUsers: sessionStore.countConnectedUsers()
+    }
+
+    return sessionInfo
+}
+function disconnectHandler(socket: UserSocket): any {
+    if(!socket.session) return 
+    console.log('Socket Disconnected')
+
+    socket.session.getSession().setConnected(false)
+    sessionStore.saveSession(socket.session.getSessionID(), socket.session.getSession());
+    socket.broadcast.emit('newDisconnection', socket.session.getUser().getUsername())
+}
