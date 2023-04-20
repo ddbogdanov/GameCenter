@@ -1,27 +1,39 @@
 <template>
   <div class="welcome">
     <h1 id="welcome-text">WELCOME</h1>
-    <div>
-      <el-input v-model="username" 
-                size="large" 
-                placeholder="Username" 
-                :prefix-icon="User"
+
+    <el-form ref="loginFormRef"
+            :model="loginForm"
+            :rules="loginFormRules"
+            @submit.prevent
+    >
+      <el-form-item prop="username"
+                    style="width: 380px;"
       >
-        <template #append>
-          <el-button :icon="ArrowRight" 
-                      type="primary"
-                      @click="connect()"
-          ></el-button>
-        </template>
-      </el-input>
-    </div>
-    <el-button type="danger" @click="disconnect" style="margin-top:10px;">Disconnect</el-button>
+        <el-input v-model="loginForm.username" 
+                  size="large" 
+                  placeholder="Username" 
+                  :prefix-icon="User"
+                  clearable
+                  @keyup.enter="connect()"
+        >
+          <template #append>
+            <el-button :icon="ArrowRight" 
+                        type="primary"
+                        @click="connect()"
+            ></el-button>
+          </template>
+        </el-input>
+      </el-form-item>
+
+    </el-form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { socket, state } from "@/socket";
+import { FormInstance, FormRules } from 'element-plus';
 
 export default defineComponent({
   name: 'WelcomePage',
@@ -32,26 +44,31 @@ export default defineComponent({
   },
   methods: {
     connect() {
-      console.info(`Logging in with username: ${this.username}`)
-      socket.auth = {
-        username: this.username
-      }
-      socket.connect()
+      (this.$refs.loginFormRef as FormInstance).validate((isValid) => {
+        if(!isValid) {
+          return false
+        }
+
+        console.info(`Logging in with username: ${this.loginForm.username}`)
+        socket.auth = {
+          username: this.loginForm.username
+        }
+        socket.connect()
+      })
     },
-    disconnect() {
-      socket.disconnect()
-    }
   },
   data() {
     return {
-      username: ''
+      loginForm: {
+        username: '',
+      },
     }
   },
   created() {
     const sessionID = sessionStorage.getItem("gameCenterSessionID")
     const sessionUsername = sessionStorage.getItem("gameCenterSessionUsername")
     if(sessionID && sessionUsername) {
-      this.username = sessionUsername
+      this.loginForm.username = sessionUsername
       socket.auth = {
         sessionID: sessionID
       }
@@ -63,6 +80,15 @@ export default defineComponent({
 
 <script lang="ts" setup>
   import { User, ArrowRight } from '@element-plus/icons-vue'
+  import { reactive } from 'vue';
+
+  const loginFormRules: FormRules = {
+    username: [{ 
+      required: true, 
+      message: 'Username is required',
+      trigger: ['blur', 'change']
+    }]
+  }
 </script>
 
 <style scoped lang="scss">

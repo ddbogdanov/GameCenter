@@ -1,5 +1,6 @@
 import { reactive } from "vue";
 import { io } from "socket.io-client";
+import router from "./router/index"
 
 export const state = reactive({
   connected: false,
@@ -24,6 +25,7 @@ export const socket = io(URL, {
 
 socket.on("connect", () => {
   state.connected = true
+  router.push('/landing')
 })
 socket.on("disconnect", () => {
   state.connected = false
