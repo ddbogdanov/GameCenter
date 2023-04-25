@@ -26,7 +26,7 @@ export default defineComponent({
     'white': #ffffff,
     'black': #000000,
     'primary': (
-      'base': #409eff,
+      'base': #1facc5,
     ),
     'success': (
       'base': #67c23a,
@@ -46,9 +46,41 @@ export default defineComponent({
   )
   )
 );
+/* @forward 'element-plus/theme-chalk/src/dark/var.scss' with (
+//   // $colors: (
+//   //   (
+//   //   'white': #ffffff,
+//   //   'black': #000000,
+//   //   'primary': (
+//   //     'base': #409eff,
+//   //   ),
+//   //   'success': (
+//   //     'base': #67c23a,
+//   //   ),
+//   //   'warning': (
+//   //     'base': #e6a23c,
+//   //   ),
+//   //   'danger': (
+//   //     'base': #89ffc0,
+//   //   ),
+//   //   'error': (
+//   //     'base': #89ffc0,
+//   //   ),
+//   //   'info': (
+//   //     'base': #909399,
+//   //   ),
+//   // )
+//   // ),
+//   $bg-color: (
+//     'page': #0a0a0a,
+//     //'': #626aef,
+//     'overlay': #1d1e1f,
+//   )
+  );
+*/
 @use "element-plus/theme-chalk/src/index.scss" as *;
+@use 'element-plus/theme-chalk/src/dark/css-vars.scss';
 @import url('https://fonts.googleapis.com/css2?family=Dosis&family=Roboto:wght@300;400;700&display=swap');
-// @import url('element-plus/theme-chalk/dark/css-vars.css');
 
 html, body {
   all: unset;

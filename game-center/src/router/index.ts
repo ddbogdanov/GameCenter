@@ -20,7 +20,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   if(!state.connected && to.name !== 'home') {
     return { name: 'home' }
   }

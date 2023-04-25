@@ -31,9 +31,11 @@ socket.on("disconnect", () => {
   state.connected = false
 })
 socket.on('newConnection', (username: string) => {
+  console.log(`User: ${username} joined`)
   state.activeUsers++
 })
 socket.on('newDisconnection', (username: string) => {
+  console.log(`User: ${username} left`)
   state.activeUsers--
 })
 

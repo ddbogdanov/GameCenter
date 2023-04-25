@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <GamesGrid/>
-        <el-button type="danger" @click="disconnect">Disconnect</el-button>
-    </div>
+  <div class="landing">
+    <GamesGrid/>
+    <el-button type="danger" @click="disconnect">Disconnect</el-button>
+  </div>   
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { socket, state } from "@/socket";
+import { socket } from "@/socket";
 import GamesGrid from '@/components/GamesGrid.vue'
 
 export default defineComponent({
@@ -30,5 +30,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+  .landing {
+    height: 100%;
 
+    background-color: #f77f71;
+  }
 </style>

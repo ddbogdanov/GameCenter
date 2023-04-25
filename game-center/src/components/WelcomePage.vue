@@ -80,7 +80,6 @@ export default defineComponent({
 
 <script lang="ts" setup>
   import { User, ArrowRight } from '@element-plus/icons-vue'
-  import { reactive } from 'vue';
 
   const loginFormRules: FormRules = {
     username: [{ 
