@@ -32,7 +32,7 @@ export default defineComponent({
     },
     methods: {
         onPlay() {
-            console.info('Playing')
+            this.$router.push('/lobby')
         }
     }
 })
@@ -47,6 +47,7 @@ export default defineComponent({
         width: 100%;
         height: 100%;
         color: white;
+        border: 0;
     }
     .image-container {
         height: 80%;

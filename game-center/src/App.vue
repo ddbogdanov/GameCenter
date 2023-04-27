@@ -35,7 +35,7 @@ export default defineComponent({
       'base': #e6a23c,
     ),
     'danger': (
-      'base': #89ffc0,
+      'base': #6fcf9c,
     ),
     'error': (
       'base': #89ffc0,

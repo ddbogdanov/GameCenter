@@ -1,27 +1,25 @@
 <template>
+  <NavBar/>
   <div class="landing">
-    <GamesGrid/>
-    <el-button type="danger" @click="disconnect">Disconnect</el-button>
+    <el-scrollbar class="main-scroll">
+      <GamesGrid/>
+    </el-scrollbar>
   </div>   
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { socket } from "@/socket";
 import GamesGrid from '@/components/GamesGrid.vue'
+import NavBar from '@/components/NavBar.vue';
 
 export default defineComponent({
   name: 'LandingView',
   components: {
-    GamesGrid
+    GamesGrid,
+    NavBar
   },
   methods: {
-    disconnect() {
-      sessionStorage.removeItem("gameCenterSessionID")
-      sessionStorage.removeItem("gameCenterSessionUsername")
-      socket.disconnect()
-      this.$router.push('/')
-    }
+
   }
 });
 </script>
@@ -31,8 +29,18 @@ export default defineComponent({
 
 <style scoped lang="scss">
   .landing {
-    height: 100%;
+    height: calc(100% - 60px);
+
+    display: flex;
+    justify-content: center;
 
     background-color: #f77f71;
+  }
+  .main-scroll {
+    width: 60%;
+
+    padding: 0px 10px 0px 10px;
+
+    background-color: #ff7060;
   }
 </style>

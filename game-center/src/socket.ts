@@ -25,7 +25,7 @@ export const socket = io(URL, {
 
 socket.on("connect", () => {
   state.connected = true
-  router.push('/landing')
+  router.push('/lobby')
 })
 socket.on("disconnect", () => {
   state.connected = false
@@ -51,3 +51,14 @@ socket.on("connect_error", (error) => {
   console.error(error)
 });
 
+export function disconnect() {
+  const disconnectSocket = () => {
+    sessionStorage.removeItem("gameCenterSessionID")
+    sessionStorage.removeItem("gameCenterSessionUsername")
+    socket.disconnect()
+    router.push('/')
+  }
+  return {
+    disconnectSocket
+  }
+}

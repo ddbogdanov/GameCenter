@@ -15,9 +15,6 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import GameCard from '@/components/GameCard.vue'
-
 export default defineComponent({
   name: 'LandingView',
   components: {
@@ -26,23 +23,27 @@ export default defineComponent({
 });
 </script>
 <script setup lang="ts">
-
+import { defineComponent } from 'vue';
+import GameCard from '@/components/GameCard.vue'
 </script>
 
 <style scoped lang="scss">
     .games-grid {
+        width: 100%;
+        padding: 10px 10px 0px 10px;
+
         display: grid;
-        width: 50%;
 
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 300px;
+        grid-auto-rows: 300px;
         grid-gap: 20px;
     }
     .games-grid-container {
-        height: 100%;
         width: 100%;
 
         display: flex;
         justify-content: center;
+
+        overflow: auto;
     }
 </style>
