@@ -15,16 +15,17 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+import GameCard from '@/components/GameCard.vue'
 export default defineComponent({
-  name: 'LandingView',
+  name: 'GamesGrid',
   components: {
     GameCard
   }
 });
 </script>
 <script setup lang="ts">
-import { defineComponent } from 'vue';
-import GameCard from '@/components/GameCard.vue'
+
 </script>
 
 <style scoped lang="scss">

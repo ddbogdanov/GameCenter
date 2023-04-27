@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 export default defineComponent({
     name: 'NavBar',
     methods: {
@@ -18,9 +19,7 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-import { defineComponent } from 'vue';
 import { disconnect } from "@/socket";
-
 const { disconnectSocket } = disconnect()
 </script>
 

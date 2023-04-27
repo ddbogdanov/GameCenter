@@ -27,6 +27,8 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+import { socket } from '@/socket'
 export default defineComponent({
     name: 'LobbyTable',
     created() {
@@ -57,8 +59,7 @@ export default defineComponent({
 });
 </script>
 <script setup lang="ts">
-import { defineComponent } from 'vue';
-import { socket } from '@/socket'
+
 </script>
 
 <style scoped lang="scss">

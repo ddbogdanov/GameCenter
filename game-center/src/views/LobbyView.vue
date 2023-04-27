@@ -8,6 +8,9 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+import NavBar from '@/components/NavBar.vue'
+import LobbyTable from '@/components/LobbyTable.vue'
 export default defineComponent({
   name: 'LobbyView',
   components: {
@@ -17,9 +20,7 @@ export default defineComponent({
 });
 </script>
 <script setup lang="ts">
-import { defineComponent } from 'vue';
-import NavBar from '@/components/NavBar.vue'
-import LobbyTable from '@/components/LobbyTable.vue'
+
 </script>
 
 <style scoped lang="scss">
