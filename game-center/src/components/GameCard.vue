@@ -19,7 +19,23 @@
                 ></el-button>
             </el-tooltip>
         </el-row>
-    </el-card>
+    </el-card> 
+
+    <p-card class="game-card">
+        <template #header>
+            <div class="image-container">
+                <img :src="imageUrl"
+                 class="image"
+                />
+            </div>
+        </template>
+        <template #content>
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; background-color: #363636; width: 100%; padding-right: 10px; padding-left: 10px; height: 100%;">
+                <h2>{{ gameName }}</h2>
+                <p-button icon="pi pi-play" rounded></p-button>
+            </div>
+        </template>
+    </p-card>
 </template>
 
 <script lang="ts">
@@ -63,7 +79,9 @@ export default defineComponent({
         padding-right: 10px;
 
         background-color: #363636;
-    }
+    }   
+
+
 </style>
 <style lang="scss">
     // .el-card__header {

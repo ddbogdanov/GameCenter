@@ -4,6 +4,7 @@
     <router-link to="/about">About</router-link>
   </nav> -->
   <router-view/>
+  <p-toast/>
   <DebugFooter class="footer"/>
 </template>
 
@@ -17,6 +18,10 @@ export default defineComponent({
     DebugFooter,
   },
 })
+</script>
+<script setup lang="ts">
+import { useToast } from 'primevue/usetoast';
+const toast = useToast();
 </script>
 
 <style lang="scss">
@@ -80,12 +85,20 @@ export default defineComponent({
 */
 @use "element-plus/theme-chalk/src/index.scss" as *;
 @use 'element-plus/theme-chalk/src/dark/css-vars.scss';
+@import "@/style/theme.css";
+@import "primevue/resources/primevue.min.css";
+@import 'primeicons/primeicons.css';
 @import url('https://fonts.googleapis.com/css2?family=Dosis&family=Roboto:wght@300;400;700&display=swap');
 
 html, body {
   all: unset;
 }
-
+html {
+  font-size: 14px;
+}
+body {
+  font-family: var(--font-family);
+} 
 #app {
   height: 100vh
 }

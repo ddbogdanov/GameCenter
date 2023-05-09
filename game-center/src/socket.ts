@@ -7,7 +7,9 @@ export const state = reactive({
   session: {
     user: {
       username: '',
-      userID: ''
+      userID: '',
+      coins: 0,
+      avatarID: ''
     },
     sessionID: '',
     connected: false

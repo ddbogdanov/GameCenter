@@ -26,11 +26,22 @@ export default defineComponent({
 <style scoped lang="scss">
     .lobby {
         height: calc(100% - 60px);
+        width: 100%;
 
         display: flex;
         justify-content: center;
+        
     }   
     .table {
+        padding-top: 10px;
+
         width: 60%;
+
+        @media only screen and (max-width: 1100px) {
+            width: 80%
+        }
+        @media only screen and (max-width: 800px) {
+            width: 100%
+        }
     }
 </style>

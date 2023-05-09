@@ -1,39 +1,58 @@
 <template>
-    <el-table :data="rooms" style="width: 100%;">
-        <el-table-column type="expand">
-            <template #default="props">
-                <div v-for="player of props.row.players" :key="player.username">
-                    <span>Player: {{ player.username }}</span>
-                </div>
+    <p-table :value="rooms"
+             v-model:expandedRows="expandedRows"
+             class="p-datatable-sm"
+             show-gridlines
+    >   
+        <p-column-group type="header">
+            <p-row>
+                <p-column header="Lobbies" :colspan="6"></p-column>
+            </p-row>
+            <p-row>
+                <p-column header=""></p-column>
+                <p-column header="Game"></p-column>
+                <p-column header="Creator"></p-column>
+                <p-column header="Players"></p-column>
+                <p-column header="Players Needed"></p-column>
+                <p-column header="Actions"></p-column>
+            </p-row>
+        </p-column-group>
+
+        <p-column expander style="width: 50px;"></p-column>
+        <p-column field="game"></p-column>
+        <p-column field="creator"></p-column>
+
+        <p-column header="Players">
+            <template #body="slotProps">
+                <span>{{ slotProps.data.players.length }} / {{ slotProps.data.maxPlayers }}</span>
             </template>
-        </el-table-column>
-        <el-table-column prop="game" label="Game"/>
-        <el-table-column prop="creator" label="Creator"/>
-        <el-table-column label="Players">
-            <template #default="scope">
-                <span>{{ scope.row.players.length }} / {{ scope.row.maxPlayers }}</span>
+        </p-column>
+
+        <p-column field="playersNeeded"></p-column>
+
+        <p-column style="width: 85px;">
+            <template #body="slotProps">
+                <p-button severity="primary"
+                          size="small"  
+                          label="Join"
+                          @click="joinGame(slotProps.data)"
+                ></p-button>
             </template>
-        </el-table-column>
-        <el-table-column prop="playersNeeded" label="Players Needed"/>
-        <el-table-column label="Actions">
-            <template #default="scope">
-                <el-button
-                    type="primary"
-                    @click="joinGame(scope)"
-                >Join</el-button>
-            </template>
-        </el-table-column>
-    </el-table>
+        </p-column>
+
+        <template #expansion="slotProps">
+            <div v-for="player of slotProps.data.players" :key="player.username">
+                <span>Player: {{ player.username }}</span>
+            </div>
+        </template>
+    
+    </p-table>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { socket } from '@/socket'
 export default defineComponent({
     name: 'LobbyTable',
-    created() {
-        console.info('created')
-    },  
     data() {
         return {
             rooms: [
@@ -47,8 +66,20 @@ export default defineComponent({
                             username: 'YoureMom'
                         },
                     ]
+                },
+                {
+                    game: 'Chess',
+                    creator: 'YoDaddy',
+                    playersNeeded: '2',
+                    maxPlayers: '2',
+                    players: [
+                        {
+                            username: 'YoDaddy'
+                        },
+                    ]
                 }
-            ]
+            ],
+            expandedRows: []
         }
     },
     methods: {

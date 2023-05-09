@@ -2,73 +2,53 @@
   <div class="welcome">
     <h1 id="welcome-text">WELCOME</h1>
 
-    <el-form ref="loginFormRef"
-            :model="loginForm"
-            :rules="loginFormRules"
-            @submit.prevent
-    >
-      <el-form-item prop="username"
-                    style="width: 380px;"
-      >
-        <el-input v-model="loginForm.username" 
-                  size="large" 
-                  placeholder="Username" 
-                  :prefix-icon="User"
-                  clearable
-                  @keyup.enter="connect()"
-        >
-          <template #append>
-            <el-button :icon="ArrowRight" 
-                        type="primary"
-                        @click="connect()"
-            ></el-button>
-          </template>
-        </el-input>
-      </el-form-item>
+    <form @submit.prevent="connect()" class="login-form">
 
-    </el-form>
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon">
+          <i class="pi pi-user"/>
+        </span>
+        <p-input-text id="username"
+                      type="text"
+                      placeholder="Username"
+                      v-model="username"
+        ></p-input-text>
+        <p-button icon="pi pi-arrow-right" 
+                  severity="primary"
+                  type="submit"
+        ></p-button>
+      </div>
+
+    </form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { socket, state } from "@/socket";
-import { FormInstance, FormRules } from 'element-plus';
 
 export default defineComponent({
   name: 'WelcomePage',
   computed: {
-    connected() {
-      return state.connected
-    }
+
   },
   methods: {
     connect() {
-      (this.$refs.loginFormRef as FormInstance).validate((isValid) => {
-        if(!isValid) {
-          return false
-        }
-
-        console.info(`Logging in with username: ${this.loginForm.username}`)
-        socket.auth = {
-          username: this.loginForm.username
-        }
-        socket.connect()
-      })
+      if(!this.username) {
+        this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Username is Required' })
+      } 
     },
   },
   data() {
     return {
-      loginForm: {
-        username: '',
-      },
+      username: ''
     }
   },
   created() {
     const sessionID = sessionStorage.getItem("gameCenterSessionID")
     const sessionUsername = sessionStorage.getItem("gameCenterSessionUsername")
     if(sessionID && sessionUsername) {
-      this.loginForm.username = sessionUsername
+      this.username = sessionUsername
       socket.auth = {
         sessionID: sessionID
       }
@@ -79,15 +59,7 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-  import { User, ArrowRight } from '@element-plus/icons-vue'
 
-  const loginFormRules: FormRules = {
-    username: [{ 
-      required: true, 
-      message: 'Username is required',
-      trigger: ['blur', 'change']
-    }]
-  }
 </script>
 
 <style scoped lang="scss">
@@ -103,12 +75,18 @@ export default defineComponent({
 
   font-family: dosis;
 
-  background-color: #f77f71;
+  // background-color: #f77f71;
+  background-color: #f57566;
+  // background-color: var(--cyan-500);
 }
-
+.login-form {
+  width: 350px;
+}
 #welcome-text {
   font-size: 6rem;
-  color: #89ffc0
+  //color: #6dfdb1
+  color: #84ffbd;
+  // color: var(--primary-300)
 }
 
 </style>

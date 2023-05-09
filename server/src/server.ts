@@ -6,9 +6,11 @@ import SessionStore from '../src/model/SessionStore'
 import UserSocket from './model/UserSocket'
 import Session from './model/Session'
 import User from './model/User'
+import GameCenterDataStore from './data/database'
 
 const port = (process.env.PORT || 3000)
 const sessionStore = new SessionStore()
+const db = new GameCenterDataStore()
 
 const app = express()
 const server = http.createServer(app)
@@ -38,9 +40,17 @@ io.use(async (socket: UserSocket, next) => {
         console.log("Username is required but was not provided")
         return next(new Error("Username is Required"))
     }
-    socket.session = new Session(new User(username), true)
 
-    return next()
+    db.findUser(username, (data: User) => {
+        if(!data) {
+            socket.session = new Session(new User(username), true)
+            db.saveUser(socket.session.getUser())
+            return next()
+        }
+
+        socket.session = new Session(data, true)
+        return next()
+    })
 })
 
 /* Socket.io */

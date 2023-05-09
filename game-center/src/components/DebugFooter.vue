@@ -9,6 +9,8 @@
             <p>UserID: <mark>{{ session.user.userID }}</mark></p>
             <el-divider direction="vertical"/>
             <p>SessionID: <mark>{{ session.sessionID }}</mark></p>
+            <el-divider direction="vertical"/>
+            <p>Coins: <mark>{{ session.user.coins }}</mark></p>
         </div>
     </div>
     <div class="active-users">
