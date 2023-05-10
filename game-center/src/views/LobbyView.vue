@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import NavBar from '@/components/NavBar.vue'
+import NavBar from '@/components/navbar/NavBar.vue'
 import LobbyTable from '@/components/LobbyTable.vue'
 export default defineComponent({
   name: 'LobbyView',

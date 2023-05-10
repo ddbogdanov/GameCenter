@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { socket, state } from "@/socket";
+import { socket } from "@/socket";
 
 export default defineComponent({
   name: 'WelcomePage',
@@ -35,8 +35,14 @@ export default defineComponent({
   methods: {
     connect() {
       if(!this.username) {
-        this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Username is Required' })
-      } 
+        this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Username is required' })
+        return
+      }
+
+      socket.auth = {
+        username: this.username
+      }
+      socket.connect()
     },
   },
   data() {

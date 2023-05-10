@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import GamesGrid from '@/components/GamesGrid.vue'
-import NavBar from '@/components/NavBar.vue';
+import NavBar from '@/components/navbar/NavBar.vue';
 
 export default defineComponent({
   name: 'LandingView',

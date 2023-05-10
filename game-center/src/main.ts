@@ -11,8 +11,12 @@ import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup'; 
 import Row from 'primevue/row';
 import Divider from 'primevue/divider';
+import OverlayPanel from 'primevue/overlaypanel';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
+import Avatar from 'primevue/avatar';
+import AvatarGroup from 'primevue/avatargroup';
+import Tooltip from 'primevue/tooltip';
 
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -33,6 +37,11 @@ app.component('p-row', Row)
 app.component('p-card', Card)
 app.component('p-divider', Divider)
 app.component('p-toast', Toast)
+app.component('p-overlay-panel', OverlayPanel) 
+app.component('p-avatar', Avatar)
+app.component('p-avatar-group', AvatarGroup)
+
+app.directive('tooltip', Tooltip);
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
