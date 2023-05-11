@@ -50,6 +50,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { state, socket, disconnect } from "@/socket"
 
 export default defineComponent({
     name: 'ProfileSettings',
@@ -69,7 +70,6 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-import { state, socket, disconnect } from "@/socket"
 const { disconnectSocket } = disconnect()
 </script>
 

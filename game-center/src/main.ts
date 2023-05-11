@@ -18,6 +18,7 @@ import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
 import Tooltip from 'primevue/tooltip';
 import Sidebar from 'primevue/sidebar';
+import ScrollPanel from 'primevue/scrollpanel';
 
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -44,6 +45,7 @@ app.component('p-overlay-panel', OverlayPanel)
 app.component('p-avatar', Avatar)
 app.component('p-avatar-group', AvatarGroup)
 app.component('p-sidebar', Sidebar)
+app.component('p-scroll-panel', ScrollPanel)
 
 app.directive('tooltip', Tooltip);
 

@@ -1,10 +1,10 @@
 <template>
   <NavBar/>
   <div class="landing">
-    <el-scrollbar class="main-scroll">
+    <p-scroll-panel class="main-scroll">
       <GamesGrid/>
-    </el-scrollbar>
-  </div>   
+    </p-scroll-panel>
+  </div>  
 </template>
 
 <script lang="ts">
@@ -39,8 +39,16 @@ export default defineComponent({
   .main-scroll {
     width: 60%;
 
-    padding: 0px 10px 0px 10px;
-
     background-color: #ff7060;
+  }
+
+  ::v-deep(.p-scrollpanel.main-scroll .p-scrollpanel-bar) {
+    background-color: #96b8bd;
+    opacity: 0.8;
+    transition: background-color 0.3s, opacity 0.3s;
+  }
+  ::v-deep(.p-scrollpanel.main-scroll .p-scrollpanel-bar:hover) {
+    background-color: #7babb2;
+    opacity: 1;
   }
 </style>

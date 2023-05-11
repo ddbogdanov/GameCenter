@@ -27,7 +27,7 @@ export const socket = io(URL, {
 
 socket.on("connect", () => {
   state.connected = true
-  router.push('/lobby')
+  router.push('/landing')
 })
 socket.on("disconnect", () => {
   state.connected = false

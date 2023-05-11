@@ -1,41 +1,26 @@
 <template>
-    <el-card class="game-card"
-             shadow="hover"
-             :body-style="{ padding: '0px', height: '100%' }"
-    >
-        <div class="image-container">
-            <img :src="imageUrl"
-                 class="image"
-            />
-        </div>
-        <el-row class="game-info-row" justify="space-between" align="middle">
-            <h2 style="margin: 0">{{ gameName }}</h2>
-            <el-tooltip content="Play" placement="left">
-                <el-button type="primary"
-                       :icon="CaretRight"
-                       size="large"
-                       circle
-                       @click="onPlay()"
-                ></el-button>
-            </el-tooltip>
-        </el-row>
-    </el-card> 
+    <div class="game-card">
+        <div class="card-header">
 
-    <p-card class="game-card">
-        <template #header>
             <div class="image-container">
                 <img :src="imageUrl"
-                 class="image"
+                     class="image"
                 />
             </div>
-        </template>
-        <template #content>
-            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; background-color: #363636; width: 100%; padding-right: 10px; padding-left: 10px; height: 100%;">
-                <h2>{{ gameName }}</h2>
-                <p-button icon="pi pi-play" rounded></p-button>
-            </div>
-        </template>
-    </p-card>
+
+        </div>
+        <div class="card-content">
+
+            <h2 style="margin: 0;">{{ gameName }}</h2>
+            <p-button icon="pi pi-chevron-right"
+                      severity="primary"
+                      size="small"
+                      rounded
+                      v-tooltip.left="'Play'"
+            />
+
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -54,38 +39,44 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-  import { CaretRight } from '@element-plus/icons-vue'
+
 </script>
 
 <style scoped lang="scss">
     .game-card {
-        font-family: dosis;
         width: 100%;
         height: 100%;
+
+        border-radius: 10px;
+        overflow: hidden;
+
+        box-shadow: 2px 2px 10px 1px #3f3f3f;
+    }
+    .card-header {
+        height: 80%;
+    }
+    .card-content {
+        width: 100%;
+        height: 20%;
+
+        padding: 0 10px 0 10px;
+
+        background-color: #363636;
         color: white;
-        border: 0;
+
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
     }
     .image-container {
-        height: 80%;
+        height: 100%;
     }
     .image {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
-    .game-info-row {
-        height: 20%;
-        padding-left: 10px;
-        padding-right: 10px;
-
-        background-color: #363636;
-    }   
-
-
 </style>
 <style lang="scss">
-    // .el-card__header {
-    //     padding: 0;
-    //     background: red !important;
-    // }
+
 </style>
