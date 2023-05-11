@@ -31,7 +31,7 @@ export default defineComponent({
 <style scoped lang="scss">
     .games-grid {
         width: 100%;
-        padding: 10px 15px 10px 15px;
+        padding: 15px 15px 15px 15px;
 
         display: grid;
 

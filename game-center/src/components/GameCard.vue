@@ -1,30 +1,26 @@
 <template>
-    <div class="game-card">
+    <div class="game-card" @click="onPlay">
         <div class="card-header">
-
-            <div class="image-container">
-                <img :src="imageUrl"
-                     class="image"
-                />
-            </div>
-
+            <img :src="imageUrl"
+                    class="image"
+            />
         </div>
         <div class="card-content">
-
-            <h2 style="margin: 0;">{{ gameName }}</h2>
+            <h1 style="margin: 0;">{{ gameName }}</h1>
             <p-button icon="pi pi-chevron-right"
                       severity="primary"
                       size="small"
                       rounded
-                      v-tooltip.left="'Play'"
             />
-
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineAsyncComponent, defineComponent } from 'vue';
+
+const PlayOptions = defineAsyncComponent(() => import('@/components/PlayOptions.vue'))
+
 export default defineComponent({
     name: 'GameCard',
     props: {
@@ -33,7 +29,21 @@ export default defineComponent({
     },
     methods: {
         onPlay() {
-            this.$router.push('/lobby')
+           this.$dialog.open(PlayOptions, {
+                props: {
+                    style: {
+                       width: '300px',
+                    },
+                    modal: true,
+                    dismissableMask: true,
+                    closable: false,
+                    draggable: false
+                },
+                data: {
+                    gameName: this.gameName,
+                    activePlayers: 0
+                }
+           })
         }
     }
 })
@@ -47,13 +57,23 @@ export default defineComponent({
         width: 100%;
         height: 100%;
 
+        font-family: dosis;
         border-radius: 10px;
         overflow: hidden;
-
         box-shadow: 2px 2px 10px 1px #3f3f3f;
+
+        cursor: pointer;
+
+        transition: all .2s ease-in-out;
+      
+        &:hover {
+            transform: scale(1.05, 1.05);
+            box-shadow: .5px .5px 5px 0px var(--primary-color);
+        }
     }
     .card-header {
         height: 80%;
+        box-shadow: 0px -5px 8px 0px #363636 inset;
     }
     .card-content {
         width: 100%;
@@ -68,13 +88,13 @@ export default defineComponent({
         justify-content: space-between;
         align-items: center;
     }
-    .image-container {
-        height: 100%;
-    }
     .image {
         width: 100%;
         height: 100%;
         object-fit: cover;
+
+        position: relative;
+        z-index: -1;
     }
 </style>
 <style lang="scss">

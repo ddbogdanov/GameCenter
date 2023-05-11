@@ -12,11 +12,11 @@
                       type="text"
                       placeholder="Username"
                       v-model="username"
-        ></p-input-text>
-        <p-button icon="pi pi-arrow-right" 
+        />
+        <p-button icon="pi pi-chevron-right" 
                   severity="primary"
                   type="submit"
-        ></p-button>
+        />
       </div>
 
     </form>

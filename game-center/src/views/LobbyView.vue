@@ -31,6 +31,7 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         
+        background-color: #f77f71;
     }   
     .table {
         padding-top: 10px;

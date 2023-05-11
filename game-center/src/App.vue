@@ -1,6 +1,7 @@
 <template>
   <router-view/>
   <p-toast/>
+  <p-dynamic-dialog/>
   <DebugFooter class="footer"/>
 </template>
 
@@ -16,8 +17,7 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-import { useToast } from 'primevue/usetoast';
-const toast = useToast();
+
 </script>
 
 <style lang="scss">

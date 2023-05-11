@@ -19,6 +19,8 @@ import AvatarGroup from 'primevue/avatargroup';
 import Tooltip from 'primevue/tooltip';
 import Sidebar from 'primevue/sidebar';
 import ScrollPanel from 'primevue/scrollpanel';
+import DynamicDialog from 'primevue/dynamicdialog';
+import DialogService from 'primevue/dialogservice';
 
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -30,6 +32,7 @@ app.config.globalProperties.$avatarUrl = 'https://api.dicebear.com/6.x/adventure
 app.use(router)
 app.use(PrimeVue)
 app.use(ToastService)
+app.use(DialogService)
 app.use(ElementPlus)
 
 app.component('p-input-text', InputText)
@@ -46,6 +49,7 @@ app.component('p-avatar', Avatar)
 app.component('p-avatar-group', AvatarGroup)
 app.component('p-sidebar', Sidebar)
 app.component('p-scroll-panel', ScrollPanel)
+app.component('p-dynamic-dialog', DynamicDialog)
 
 app.directive('tooltip', Tooltip);
 
