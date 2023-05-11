@@ -65,6 +65,10 @@ io.on('connection', (socket: UserSocket) => {
     // Register Event Listeners
     events(io, socket)
 
+    socket.on('updateAvatarID', (data: any) => { 
+        db.updateUserAvatar(data.userID, data.avatarID)
+        sessionStore.updateUserAvatarInSession(data.sessionID, data.avatarID)
+    })
     socket.on('disconnect', () => disconnectHandler(socket))
 })
 

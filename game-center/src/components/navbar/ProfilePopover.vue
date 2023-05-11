@@ -1,14 +1,16 @@
 <template>
     <div>
-        <p-avatar :image="'https://api.multiavatar.com/' + state.session.user.avatarID + '.svg'"
-                    size="large"
-                    style="cursor: pointer;"
-                    @click="toggleOverlayPanel"
+        <p-avatar :image="this.$avatarUrl + state.session.user.avatarID + '.svg'"
+                  shape="circle"
+                  size="large"
+                  style="cursor: pointer;"
+                  @click="toggleOverlayPanel"
         />
         <p-overlay-panel ref="overlayPanel">
             <div class="profile-popover">
                 <div class="user-info">
-                    <p-avatar :image="'https://api.multiavatar.com/' + state.session.user.avatarID + '.svg'"
+                    <p-avatar :image="this.$avatarUrl  + state.session.user.avatarID + '.svg'"
+                              shape="circle"
                               size="xlarge"
                     />
                     <h1>{{ state.session.user.username }}</h1>
@@ -30,44 +32,65 @@
                               severity="info"
                               outlined
                               size="small"
-                              v-tooltip.left="'Settings'"
-                              @click="onOpenSettings"
+                              @click="this.profileSettingsVisible = !profileSettingsVisible"
+                              style="width: 100%"
                     />
                     <p-button label="Logout"
                               severity="danger"
                               size="small"
-                              v-tooltip.left="'Logout'"
                               @click="disconnectSocket"
+                              style="width: 100%"
                     />
                 </div>
-                
             </div>
         </p-overlay-panel>
     </div>
+
+    <p-sidebar v-model:visible="profileSettingsVisible" 
+               position="right"
+               :dismissable="false"
+               style="width: 25rem;"
+               :pt="{
+                   header: { style: 'justify-content: space-between'}
+               }"
+    >
+        <template #header>
+            <b>Profile</b>
+        </template>
+
+        <ProfileSettings @cancel="this.profileSettingsVisible = false"
+                         @submit="this.profileSettingsVisible = false"
+        />
+    </p-sidebar>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
+import ProfileSettings from "./ProfileSettings.vue"
 
 export default defineComponent({
     name: 'ProfilePopover',
+    components: {
+        ProfileSettings
+    },
+    data() {
+        return {
+            profileSettingsVisible: false
+        }
+    },
     methods: {
         toggleOverlayPanel(event: Event) {
             (this.$refs.overlayPanel as any).toggle(event)
         },
-        onOpenSettings() {
-            console.log('lol')
-        }
     }
 })
 </script>
 <script setup lang="ts">
-import { disconnect } from "@/socket";
-import { state } from "@/socket";
+import { disconnect, state } from "@/socket"
 const { disconnectSocket } = disconnect()
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     .profile-popover {
         display: flex;
         flex-direction: column;
@@ -95,12 +118,15 @@ const { disconnectSocket } = disconnect()
         gap: 10px;
 
         .coins {
+            width: 100%;
+            
             display: inline-flex;
+            justify-content: space-evenly;
             align-items: center;
             gap: 5px;
 
             #coin-icon {
-                font-size: 1.8rem;
+                font-size: 3rem;
                 color: gold;
             }
         }

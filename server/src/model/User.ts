@@ -6,6 +6,7 @@ class User {
     private coins: number
     private avatarID: string
 
+    // payload: Partial<User> - if parsing JSON becomes a common occurance 
     constructor(username: string, userID?: string, coins?: number, avatarID?: string) {
         this.username = username
         this.userID = userID ?? this.generateRandomID()

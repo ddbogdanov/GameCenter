@@ -2,7 +2,7 @@
   <div class="welcome">
     <h1 id="welcome-text">WELCOME</h1>
 
-    <form @submit.prevent="connect()" class="login-form">
+    <form @submit.prevent="onConnect()" class="login-form">
 
       <div class="p-inputgroup">
         <span class="p-inputgroup-addon">
@@ -33,7 +33,7 @@ export default defineComponent({
 
   },
   methods: {
-    connect() {
+    onConnect() {
       if(!this.username) {
         this.$toast.add({ severity: 'error', summary: 'Error', detail: 'Username is required' })
         return

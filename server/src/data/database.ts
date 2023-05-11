@@ -29,8 +29,21 @@ class GameCenterDataStore {
     }
     saveUser(user: User) {
         this.db.exec(
-            `INSERT OR IGNORE INTO users (userID, username, coins, avatarID)
-             VALUES ('${user.getUserID()}', '${user.getUsername()}', ${user.getCoins()}, '${user.getAvatarID()}')`
+            `
+            INSERT OR IGNORE INTO users (userID, username, coins, avatarID)
+            VALUES ('${user.getUserID()}', '${user.getUsername()}', ${user.getCoins()}, '${user.getAvatarID()}')
+            `,
+            (error) => { if(error) console.log(error) }
+        )
+    }
+    updateUserAvatar(userID: string, avatarID: string) {
+        this.db.exec(
+            `
+            UPDATE users
+            SET avatarID = '${avatarID}'
+            WHERE userID = '${userID}'
+            `,
+            (error) => { if(error) console.log(error) }
         )
     }
 }

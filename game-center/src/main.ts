@@ -17,11 +17,14 @@ import ToastService from 'primevue/toastservice';
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
 import Tooltip from 'primevue/tooltip';
+import Sidebar from 'primevue/sidebar';
 
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
+
+app.config.globalProperties.$avatarUrl = 'https://api.dicebear.com/6.x/adventurer/svg?backgroundColor=62c5d6&seed='
 
 app.use(router)
 app.use(PrimeVue)
@@ -40,6 +43,7 @@ app.component('p-toast', Toast)
 app.component('p-overlay-panel', OverlayPanel) 
 app.component('p-avatar', Avatar)
 app.component('p-avatar-group', AvatarGroup)
+app.component('p-sidebar', Sidebar)
 
 app.directive('tooltip', Tooltip);
 

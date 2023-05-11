@@ -13,7 +13,14 @@ class SessionStore {
     saveSession(id: string, session: Session): void {
         this.sessions.set(id, session)
     }
+    updateUserAvatarInSession(sessionID: string, avatarID: string) {
+        let session = this.findSession(sessionID)
+        if(!session) {
+            return
+        }
 
+        session.getUser().setAvatarID(avatarID)
+    }
     countConnectedUsers(): number {
         let count = 0
         for(const[key, value] of this.sessions.entries()) {
