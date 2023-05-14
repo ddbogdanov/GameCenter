@@ -48,9 +48,6 @@ export default defineComponent({
     }
 })
 </script>
-<script setup lang="ts">
-
-</script>
 
 <style scoped lang="scss">
     .game-card {
@@ -73,7 +70,6 @@ export default defineComponent({
     }
     .card-header {
         height: 80%;
-        box-shadow: 0px -5px 8px 0px #363636 inset;
     }
     .card-content {
         width: 100%;
@@ -87,6 +83,8 @@ export default defineComponent({
         display: inline-flex;
         justify-content: space-between;
         align-items: center;
+
+        box-shadow: 0px -5px 8px 0px #363636;
     }
     .image {
         width: 100%;

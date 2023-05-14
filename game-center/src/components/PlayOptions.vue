@@ -23,8 +23,7 @@
                   icon-pos="right"
                   outlined
                   class="option-button"
-
-                  disabled
+                  @click="onNewGame"
         />
         <p-button label="View All Games"
                   severity="info"
@@ -61,6 +60,8 @@
 <script lang="ts">
 import { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 import { defineComponent } from 'vue';
+import { socket, state } from '@/socket'
+import Room from '@/model/Room';
 
 export default defineComponent({
     name: 'PlayOptions',
@@ -77,6 +78,9 @@ export default defineComponent({
         this.activePlayers = (this.dialogRef as DynamicDialogInstance).data.activePlayers
     },
     methods: {
+        onNewGame() {
+            socket.emit(`new${this.gameName}Game`, state.session.user ,(res: Room) => { console.log(res.room.roomID)})
+        },
         onViewAll() {
             (this.dialogRef as DynamicDialogInstance).close()
             this.$router.push('/lobby')

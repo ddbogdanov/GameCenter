@@ -16,9 +16,6 @@ export default defineComponent({
   },
 })
 </script>
-<script setup lang="ts">
-
-</script>
 
 <style lang="scss">
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (

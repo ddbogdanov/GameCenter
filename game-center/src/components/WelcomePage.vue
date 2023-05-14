@@ -64,12 +64,7 @@ export default defineComponent({
 });
 </script>
 
-<script lang="ts" setup>
-
-</script>
-
 <style scoped lang="scss">
-
 .welcome {
   height: 100%;
   width: 100%;
