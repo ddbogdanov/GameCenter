@@ -14,32 +14,32 @@ class User {
         this.avatarID = avatarID ?? this.generateRandomAvatarID()
     }
 
-    setUsername(username: string) {
+    public setUsername(username: string) {
         this.username = username
     }
-    setUserID(userID: string) {
+    public setUserID(userID: string) {
         this.userID = userID
     }
-    setCoins(coins: number) {
+    public setCoins(coins: number) {
         this.coins = coins
     }
-    setAvatarID(avatarID: string) {
+    public setAvatarID(avatarID: string) {
         this.avatarID = avatarID
     }
 
-    getUser(): this {
+    public getUser(): this {
         return this
     }
-    getUsername(): string {
+    public getUsername(): string {
         return this.username
     }
-    getUserID(): string {
+    public getUserID(): string {
         return this.userID
     }
-    getCoins(): number {
+    public getCoins(): number {
         return this.coins
     }
-    getAvatarID(): string {
+    public getAvatarID(): string {
         return this.avatarID
     }
 

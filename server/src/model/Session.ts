@@ -3,7 +3,7 @@ import crypto from 'crypto'
 
 class Session {
     private user: User
-    private sessionID: string
+    private sessionID: string 
     private connected: boolean
 
     constructor(user: User, connected: boolean) {   
@@ -12,30 +12,30 @@ class Session {
         this.connected = connected
     }
 
-    setUser(user: User) {
-        return this.user
+    public setUser(user: User) {
+        this.user = user
     }
-    setSessionID(sessionID: string) {
+    public setSessionID(sessionID: string) {
         this.sessionID = sessionID
     }
-    setConnected(connected: boolean) {
+    public setConnected(connected: boolean) {
         this.connected = connected
     }
 
-    getSession(): this {
+    public getSession(): this {
         return this
     }
-    getUser(): User {
+    public getUser(): User {
         return this.user
     }
-    getSessionID(): string {
+    public getSessionID(): string {
         return this.sessionID
     }
-    isConnected(): boolean {
+    public isConnected(): boolean {
         return this.connected
     }
 
-    private randomID(): string {
+    private randomID(): string { //TODO: Move this to SessionStore class so that sessionIDs can be checked for duplicates
         return crypto.randomBytes(8).toString("hex")
     }
 }

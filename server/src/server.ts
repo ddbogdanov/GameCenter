@@ -1,8 +1,10 @@
 import express from 'express'
 import http from 'http'
-import socketio, { DisconnectReason } from 'socket.io'
-import events from '../src/events/events'
+import socketio from 'socket.io'
+import events from './events/Events'
+import chessEvents from './events/ChessEvents'
 import SessionStore from '../src/model/SessionStore'
+import RoomStore from './model/RoomStore'
 import UserSocket from './model/UserSocket'
 import Session from './model/Session'
 import User from './model/User'
@@ -10,6 +12,7 @@ import GameCenterDataStore from './data/database'
 
 const port = (process.env.PORT || 3000)
 const sessionStore = new SessionStore()
+const roomStore = new RoomStore()
 const db = new GameCenterDataStore()
 
 const app = express()
@@ -58,17 +61,14 @@ io.on('connection', (socket: UserSocket) => {
     if(!socket.session) return // ????
 
     console.log(`Connected - ${JSON.stringify(socket.session)}`)
-    sessionStore.saveSession(socket.session.getSessionID(), socket.session)
+    sessionStore.saveSession(socket.session)
     socket.emit("newSession", newSessionHandler(socket))
     socket.broadcast.emit('newConnection', socket.session.getUser().getUsername())
 
     // Register Event Listeners
-    events(io, socket)
+    events(io, socket, db, sessionStore, roomStore)
+    chessEvents(io, socket, db, roomStore)
 
-    socket.on('updateAvatarID', (data: any) => { 
-        db.updateUserAvatar(data.userID, data.avatarID)
-        sessionStore.updateUserAvatarInSession(data.sessionID, data.avatarID)
-    })
     socket.on('disconnect', () => disconnectHandler(socket))
 })
 
@@ -77,7 +77,6 @@ server.listen(port, () => {
 })
 
 // Utility Functions and what not
-
 function newSessionHandler(socket: UserSocket) {
     if(!socket.session) return
     const sessionInfo = {
@@ -92,6 +91,6 @@ function disconnectHandler(socket: UserSocket): any {
     console.log('Socket Disconnected')
 
     socket.session.getSession().setConnected(false)
-    sessionStore.saveSession(socket.session.getSessionID(), socket.session.getSession());
+    sessionStore.saveSession(socket.session.getSession());
     socket.broadcast.emit('newDisconnection', socket.session.getUser().getUsername())
 }

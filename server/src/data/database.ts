@@ -3,7 +3,7 @@ import fs from 'fs'
 import User from '../model/User';
 
 class GameCenterDataStore {
-    db: Database
+    private db: Database
 
     constructor() {
         this.db = new Database('gcdb.sqlite')
@@ -11,7 +11,7 @@ class GameCenterDataStore {
         this.db.exec(fs.readFileSync(__dirname + '/sql/create.sql').toString());
     }
 
-    findUser(username: string, callback: Function) {
+    public findUser(username: string, callback: Function) {
         this.db.get(
             `SELECT * FROM users WHERE username = ?`, 
             username, 
@@ -27,7 +27,7 @@ class GameCenterDataStore {
             }
         )
     }
-    saveUser(user: User) {
+    public saveUser(user: User) {
         this.db.exec(
             `
             INSERT OR IGNORE INTO users (userID, username, coins, avatarID)
@@ -36,7 +36,7 @@ class GameCenterDataStore {
             (error) => { if(error) console.log(error) }
         )
     }
-    updateUserAvatar(userID: string, avatarID: string) {
+    public updateUserAvatar(userID: string, avatarID: string) {
         this.db.exec(
             `
             UPDATE users
