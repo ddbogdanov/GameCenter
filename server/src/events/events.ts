@@ -14,6 +14,28 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
     socket.on('getAllRooms', (callback) => {
         return callback(roomStore.findAllRooms())
     })
+    socket.on('joinRoom', (data, callback) => {
+        let room = roomStore.findRoom(data.roomID)
+        let session = sessionStore.findSession(data.session.sessionID)
+
+        if(!room) {
+            return callback('Could not find room')
+        }
+        if(!session) {
+            return callback('Could not find session')
+        }
+        if(io.of('/').adapter.rooms.get(data.roomID)?.size === room.getGame().getMaximumUsers()) {
+            return callback(`Room ${room.getRoomID()} is full`)
+        }
+        else if(room.isUserInRoom(data.session.user.userID)) {
+            return callback(`User ${data.session.user.userID} is already in room`)
+        }
+
+        socket.join(data.roomID)
+        room.addUser(session.getUser())
+
+        return callback(room)
+    })
 
     // User profile events
     socket.on('updateAvatarID', (data: any) => { 

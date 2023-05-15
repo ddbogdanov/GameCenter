@@ -79,11 +79,21 @@ export default defineComponent({
     },
     methods: {
         onNewGame() {
-            socket.emit(`new${this.gameName}Game`, state.session.user ,(res: Room) => { console.log(res.roomID)})
+            socket.emit(`new${this.gameName.replace(/\s+/g, '')}Game`, 
+                        state.session.user, 
+                        (res: Room) => {
+                            console.log(res.roomID)
+                        })
+            
+            this.closeSelf()
+            this.$router.push({ path: `${this.gameName.replace(/\s+/g, '').toLowerCase()}`})
         },
         onViewAll() {
-            (this.dialogRef as DynamicDialogInstance).close()
+            this.closeSelf()
             this.$router.push({ path: '/lobby', query: {game: this.gameName}})
+        },
+        closeSelf() {
+            (this.dialogRef as DynamicDialogInstance).close()
         }
     }
 })

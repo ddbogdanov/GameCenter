@@ -40,6 +40,12 @@ class Room {
     public addUser(user: User) {
         this.users.push(user)
     }
+    public isUserInRoom(userID: string): boolean {
+        if(this.users.find(user => user.getUserID() === userID)) {
+            return true
+        }
+        return false
+    }
     public switchTurn(): string {
         let currentTurnIndex = this.users.findIndex((user) => {
             user.getUserID() == this.currentTurn

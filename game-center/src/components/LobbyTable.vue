@@ -56,7 +56,7 @@
                           label="Join"
                           style="width: 100%;"
                           outlined
-                          @click="joinGame(slotProps.data)"
+                          @click="joinRoom(slotProps.data)"
                 ></p-button>
             </template>
         </p-column>
@@ -73,6 +73,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { socket, state } from '@/socket'
 import Room from '@/model/Room';
 
 export default defineComponent({
@@ -99,8 +100,11 @@ export default defineComponent({
         (this.filters['global'] as any).value = this.$route.query.game
     },
     methods: {
-        joinGame(scope: unknown) {
-            console.log(`Joining Game ${scope}`)
+        joinRoom(scope: any) {
+            console.log(JSON.stringify(scope))
+            socket.emit('joinRoom', { roomID: scope.roomID, session: state.session }, (res: string) => {
+                console.log(res)
+            })
         }
     } 
 });

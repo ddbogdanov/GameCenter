@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar">
         <div class="start">
-            <img src="@/assets/boardgamesicon_white.png" class="logo" @click="this.$router.push('landing')"/>
+            <img src="@/assets/boardgamesicon_white.png" class="logo" @click="this.$router.push('home')"/>
         </div>
         <div class="end">
             <ProfilePopover/>
