@@ -21,9 +21,8 @@ import Sidebar from 'primevue/sidebar';
 import ScrollPanel from 'primevue/scrollpanel';
 import DynamicDialog from 'primevue/dynamicdialog';
 import DialogService from 'primevue/dialogservice';
-
-import ElementPlus from 'element-plus'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import ProgressSpinner from 'primevue/progressspinner';
+import Skeleton from 'primevue/skeleton';
 
 const app = createApp(App)
 
@@ -33,7 +32,6 @@ app.use(router)
 app.use(PrimeVue)
 app.use(ToastService)
 app.use(DialogService)
-app.use(ElementPlus)
 
 app.component('p-input-text', InputText)
 app.component('p-button', Button)
@@ -50,11 +48,9 @@ app.component('p-avatar-group', AvatarGroup)
 app.component('p-sidebar', Sidebar)
 app.component('p-scroll-panel', ScrollPanel)
 app.component('p-dynamic-dialog', DynamicDialog)
+app.component('p-progress-spinner', ProgressSpinner)
+app.component('p-skeleton', Skeleton)
 
 app.directive('tooltip', Tooltip);
-
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
-}
 
 app.mount('#app')

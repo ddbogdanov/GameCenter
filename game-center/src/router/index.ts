@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { state } from "@/socket";
-import HomeView from '../views/HomeView.vue'
+import LandingView from '../views/LandingView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'landing',
+    component: LandingView
   },
   {
-    path: '/landing',
-    name: 'landing',
-    component: () => import('../views/LandingView.vue')
+    path: '/home',
+    name: 'home',
+    component: () => import('../views/HomeView.vue')
   },
   {
     path: '/lobby',
@@ -26,8 +26,8 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  if(!state.connected && to.name !== 'home') {
-    return { name: 'home' }
+  if(!state.connected && to.name !== 'landing') {
+    return { name: 'landing' }
   }
 })
 

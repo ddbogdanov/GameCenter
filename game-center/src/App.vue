@@ -18,34 +18,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@forward 'element-plus/theme-chalk/src/common/var.scss' with (
-  $colors: (
-    (
-    'white': #ffffff,
-    'black': #000000,
-    'primary': (
-      'base': #1facc5,
-    ),
-    'success': (
-      'base': #67c23a,
-    ),
-    'warning': (
-      'base': #e6a23c,
-    ),
-    'danger': (
-      'base': #6fcf9c,
-    ),
-    'error': (
-      'base': #89ffc0,
-    ),
-    'info': (
-      'base': #909399,
-    ),
-  )
-  )
-);
-@use "element-plus/theme-chalk/src/index.scss" as *;
-@use 'element-plus/theme-chalk/src/dark/css-vars.scss';
 @import "@/style/theme.css";
 @import "primevue/resources/primevue.min.css";
 @import 'primeicons/primeicons.css';

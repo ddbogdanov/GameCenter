@@ -1,9 +1,11 @@
 <template>
     <NavBar/>
     <div class="lobby">
-        <LobbyHeader/>
-        <div class="table">
-            <LobbyTable :rooms="this.rooms"/>
+        <div class="lobby-content">
+            <LobbyHeader/>
+            <div class="table">
+                <LobbyTable :rooms="this.rooms" :loading="loading"/>
+            </div>
         </div>
     </div>
 </template>
@@ -26,12 +28,14 @@ export default defineComponent({
     },
     data() {
         return {
-            rooms: [] as Room[]
+            rooms: [] as Room[],
+            loading: true
         }
     },
     created() {
         socket.emit('getAllRooms', (res: Room[]) => {
             this.rooms = res
+            this.loading = false
         })
     }
 });
@@ -50,10 +54,9 @@ export default defineComponent({
         
         background-color: #f77f71;
     }   
-    .table {
-        padding-top: 75px;
-
-        width: 100%;
+    .lobby-content {
+        width: 60%;
+        height: 100%;
 
         @media only screen and (max-width: 1100px) {
             width: 80%
@@ -61,5 +64,9 @@ export default defineComponent({
         @media only screen and (max-width: 800px) {
             width: 100%
         }
+    }
+    .table {
+        height: 100%;
+        padding: 75px 0px 25px 0px;
     }
 </style>

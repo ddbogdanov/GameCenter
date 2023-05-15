@@ -2,7 +2,6 @@ import express from 'express'
 import http from 'http'
 import socketio from 'socket.io'
 import events from './events/Events'
-import chessEvents from './events/ChessEvents'
 import SessionStore from '../src/model/SessionStore'
 import RoomStore from './model/RoomStore'
 import UserSocket from './model/UserSocket'
@@ -67,7 +66,6 @@ io.on('connection', (socket: UserSocket) => {
 
     // Register Event Listeners
     events(io, socket, db, sessionStore, roomStore)
-    chessEvents(io, socket, db, roomStore)
 
     socket.on('disconnect', () => disconnectHandler(socket))
 })

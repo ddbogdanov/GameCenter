@@ -6,7 +6,7 @@
             />
         </div>
         <div class="card-content">
-            <h1 style="margin: 0;">{{ gameName }}</h1>
+            <h1 style="margin: 0; padding: 5px 5px 5px 5px">{{ gameName }}</h1>
             <p-button icon="pi pi-chevron-right"
                       severity="primary"
                       size="small"
@@ -56,13 +56,22 @@ export default defineComponent({
 
         font-family: dosis;
         border-radius: 10px;
-        overflow: hidden;
         box-shadow: 2px 2px 10px 1px #3f3f3f;
+        overflow: hidden;
 
         cursor: pointer;
 
         transition: all .2s ease-in-out;
-      
+        
+        h1 {
+            font-size: 2rem;
+            width: 100%;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         &:hover {
             transform: scale(1.05, 1.05);
             box-shadow: .5px .5px 5px 0px var(--primary-color);

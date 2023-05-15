@@ -3,18 +3,14 @@
     <div class="client-info">
         <p>Connected: <mark>{{ connected }}</mark></p>
         <div v-if="connected">
-            <el-divider direction="vertical"/>
             <p>Username: <mark>{{ session.user.username }}</mark></p>
-            <el-divider direction="vertical"/>
             <p>UserID: <mark>{{ session.user.userID }}</mark></p>
-            <el-divider direction="vertical"/>
             <p>SessionID: <mark>{{ session.sessionID }}</mark></p>
-            <el-divider direction="vertical"/>
             <p>Coins: <mark>{{ session.user.coins }}</mark></p>
         </div>
     </div>
     <div class="active-users">
-        <el-icon :size="15"><User/></el-icon>
+        <i class="pi pi-user"></i>
         <p><mark>{{ activeUsers }}</mark></p>
     </div>
  </div>
@@ -40,7 +36,7 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-  import { User } from '@element-plus/icons-vue'
+
 </script>
 
 <style scoped lang="scss">
@@ -54,6 +50,7 @@ export default defineComponent({
         color: rgb(86, 86, 86)
     }
     .debug-footer {
+        height: 20px;
         width: 100%;
         display: inline-flex;
         justify-content: space-between;

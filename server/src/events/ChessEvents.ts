@@ -11,8 +11,7 @@ const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCente
         let room = roomStore.saveRoom(new Room(Game.CHESS, [new User(data.username, data.userID, data.coins, data.avatarID)]))
         socket.join(room.getRoomID())
 
-        console.log(`New room ${room.getRoomID()} was created`)
-        return callback({ room })
+        return callback(room)
     })
 }
 

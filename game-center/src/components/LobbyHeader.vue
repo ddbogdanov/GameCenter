@@ -1,13 +1,13 @@
 <template>
     <div class="lobby-header">
-        <p-button label="Home"
+        <h1>Lobby</h1>
+        <p-button label="All Games"
                   severity="primary"
                   outlined
                   icon="pi pi-chevron-left" 
                   iconPos="left"
                   @click="onHome"
         />
-        <h1>Lobby</h1>
     </div>
 </template>
 
@@ -18,7 +18,7 @@ export default defineComponent({
   name: 'LobbyHeader',
   methods: {
     onHome() {
-        this.$router.push('/landing')
+        this.$router.push('/home')
     }
   }
 });

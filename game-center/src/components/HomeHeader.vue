@@ -1,7 +1,7 @@
 <template>
-    <div class="landing-header">
+    <div class="home-header">
         <h1>Games</h1>
-        <p-button label="View All"
+        <p-button label="All Rooms"
                   severity="primary"
                   outlined
                   icon="pi pi-chevron-right" 
@@ -15,7 +15,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'LandingHeader',
+  name: 'HomeHeader',
   methods: {
     onViewAllRooms() {
         this.$router.push('/lobby')
@@ -28,7 +28,7 @@ export default defineComponent({
     h1 {
         margin: 0;
     }
-    .landing-header {
+    .home-header {
         width: inherit;
         height: 60px;
 

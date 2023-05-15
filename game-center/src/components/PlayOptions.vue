@@ -79,11 +79,11 @@ export default defineComponent({
     },
     methods: {
         onNewGame() {
-            socket.emit(`new${this.gameName}Game`, state.session.user ,(res: Room) => { console.log(res.room.roomID)})
+            socket.emit(`new${this.gameName}Game`, state.session.user ,(res: Room) => { console.log(res.roomID)})
         },
         onViewAll() {
             (this.dialogRef as DynamicDialogInstance).close()
-            this.$router.push('/lobby')
+            this.$router.push({ path: '/lobby', query: {game: this.gameName}})
         }
     }
 })
@@ -100,6 +100,13 @@ export default defineComponent({
 
         font-family: dosis;
         font-size: 1.5rem;
+
+        h1 {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
     .play-options {
         display: flex;
