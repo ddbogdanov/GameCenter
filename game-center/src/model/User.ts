@@ -1,10 +1,8 @@
-interface User {
-
-    username: string,
-    userID: string,
-    coins: number,
-    avatarID: string
-
+class User {
+    username = ''
+    userID = ''
+    coins = 0
+    avatarID = ''
 }
 
 export default User

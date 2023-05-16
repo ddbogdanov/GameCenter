@@ -101,9 +101,9 @@ export default defineComponent({
     },
     methods: {
         joinRoom(scope: any) {
-            console.log(JSON.stringify(scope))
-            socket.emit('joinRoom', { roomID: scope.roomID, session: state.session }, (res: string) => {
-                console.log(res)
+            socket.emit('joinRoom', { roomID: scope.roomID, session: state.session }, (res: Room) => {
+                state.room = res
+                this.$router.push(`/${scope.game.name}`)
             })
         }
     } 

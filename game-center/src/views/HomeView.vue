@@ -1,11 +1,13 @@
 <template>
-  <NavBar/>
-  <div class="home">
-    <div class="home-content">
-      <HomeHeader/>
-      <GamesGrid/>
+  <div style="height: 100%;">
+    <NavBar/>
+    <div class="home">
+      <div class="home-content">
+        <HomeHeader/>
+        <GamesGrid/>
+      </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script lang="ts">

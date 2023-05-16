@@ -1,7 +1,9 @@
 import User from './User'
 
-interface Session {
-    user: User
-    sessionID: string,
-    connected: boolean
+class Session {
+    user = new User()
+    sessionID = ''
+    connected = false
 }
+
+export default Session

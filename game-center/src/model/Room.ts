@@ -1,13 +1,11 @@
 import Game from "./Game"
 import User from "./User"
 
-interface Room {
-    
-    roomID: string,
-    game: Game,
-    users: Array<User>
-    currentTurn: string
-    
+class Room {
+    roomID = ''
+    game = new Game()
+    users = [new User()]
+    currentTurn = ''
 }
 
 export default Room

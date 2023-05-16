@@ -82,6 +82,7 @@ export default defineComponent({
             socket.emit(`new${this.gameName.replace(/\s+/g, '')}Game`, 
                         state.session.user, 
                         (res: Room) => {
+                            state.room = res
                             console.log(res.roomID)
                         })
             

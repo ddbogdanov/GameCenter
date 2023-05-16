@@ -1,21 +1,9 @@
 import { reactive } from "vue";
 import { io } from "socket.io-client";
 import router from "./router/index"
+import State from '@/model/State'
 
-export const state = reactive({
-  connected: false,
-  session: {
-    user: {
-      username: '',
-      userID: '',
-      coins: 0,
-      avatarID: ''
-    },
-    sessionID: '',
-    connected: false
-  },
-  activeUsers: 0,
-});
+export const state = reactive(new State());
 
 // "undefined" means the URL will be computed from the `window.location` object
 // const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:3000";

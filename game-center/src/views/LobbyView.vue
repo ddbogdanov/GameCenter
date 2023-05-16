@@ -1,10 +1,12 @@
 <template>
-    <NavBar/>
-    <div class="lobby">
-        <div class="lobby-content">
-            <LobbyHeader/>
-            <div class="table">
-                <LobbyTable :rooms="this.rooms" :loading="loading"/>
+    <div style="height: 100%;">
+        <NavBar/>
+        <div class="lobby">
+            <div class="lobby-content">
+                <LobbyHeader/>
+                <div class="table">
+                    <LobbyTable :rooms="this.rooms" :loading="loading"/>
+                </div>
             </div>
         </div>
     </div>
@@ -39,9 +41,6 @@ export default defineComponent({
         })
     }
 });
-</script>
-<script setup lang="ts">
-
 </script>
 
 <style scoped lang="scss">

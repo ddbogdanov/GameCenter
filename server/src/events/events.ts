@@ -1,7 +1,5 @@
 import socketio from 'socket.io'
 import GameCenterDataStore from '../data/database'
-import Game from '../model/Game'
-import Room from '../model/Room'
 import RoomStore from '../model/RoomStore'
 import SessionStore from '../model/SessionStore'
 import blackjackEvents from './BlackjackEvents'
