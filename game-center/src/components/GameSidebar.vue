@@ -5,7 +5,7 @@
                 <div class="game-status">
                     <div class="game-name">
                         <h1>{{ state.room.game.name }}</h1> 
-                        <p-tag severity="warning" :value="state.room.status"/>
+                        <p-tag :severity="this.statusSeverity" :value="state.room.status"/>
                     </div>
                     <h2><mark>{{ state.room.currentTurn }}</mark>'s turn</h2>
                 </div>
@@ -26,12 +26,12 @@
                 <h2>Players</h2>
                 <div class="player-information">
                     <div class="player" 
-                        v-for="user in state.room.users" 
-                        :key="user.userID"
+                         v-for="user in state.room.users" 
+                         :key="user.userID"
                     >
                         <p-avatar :image="this.$avatarUrl  + user.avatarID + '.svg'"
-                                shape="circle"
-                                size="large"
+                                  shape="circle"
+                                  size="large"
                         />
                         <p>{{ user.username }}</p>
                     </div>
@@ -43,6 +43,25 @@
             <p-tab-view class="sidebar-tab-view">
                 <p-tab-panel header="Game">
                     <div class="game-information">
+                        
+                        <div v-if="this.state.room.status == Status.WAITING">
+                            <div class="game-start" 
+                                v-if="this.state.room.currentTurn == this.state.session.user.username"
+                            >
+                                <h1 v-if="this.readyToStart">Ready to Start</h1>
+                                <h1 v-else>Waiting for Players</h1>
+
+                                <p-button label="Start"
+                                        severity="primary"
+                                        outlined
+                                        :disabled="!this.readyToStart"
+                                        @click="this.state.room.status = Status.PLAYING"
+                                />
+                            </div>
+                            <div class="game-start" v-else>
+                                <h1>Waiting for first player or host.</h1>
+                            </div>
+                        </div>
 
                     </div>
                 </p-tab-panel>
@@ -61,6 +80,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
+import Status from '@/model/Status'
 
 export default defineComponent({
     name: 'ChessView',
@@ -70,6 +90,7 @@ export default defineComponent({
     data() {
         return {
             state: state,
+            Status: Status
         }
     },
     computed: {
@@ -83,6 +104,9 @@ export default defineComponent({
                 default: return 'info'
             }
         },
+        readyToStart() {
+            return this.state.room.game.minimumUsers <= this.state.room.users.length
+        }
     },
     methods: {
         onCopyToClipboard(text: string) {
@@ -216,6 +240,18 @@ export default defineComponent({
         }
         .chat {
             height: 100%;
+        }
+    }
+
+    .game-information {
+
+        .game-start {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            font-family: dosis;
         }
     }
 
