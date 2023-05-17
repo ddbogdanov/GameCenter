@@ -5,7 +5,7 @@
             <div class="lobby-content">
                 <LobbyHeader/>
                 <div class="table">
-                    <LobbyTable :rooms="this.rooms" :loading="loading"/>
+                    <LobbyTable :rooms="this.rooms" :loading="loading" @refresh="getAllRooms"/>
                 </div>
             </div>
         </div>
@@ -35,10 +35,16 @@ export default defineComponent({
         }
     },
     created() {
-        socket.emit('getAllRooms', (res: Room[]) => {
-            this.rooms = res
-            this.loading = false
-        })
+        this.getAllRooms()
+    },
+    methods: {
+        getAllRooms() {
+            this.loading = true
+            socket.emit('getAllRooms', (res: Room[]) => {
+                this.rooms = res
+                this.loading = false
+            })
+        }
     }
 });
 </script>

@@ -26,14 +26,24 @@
         <template #header>
             <div class="table-header">
                 <h1>Rooms</h1>
-                <span class="p-input-icon-left">
+                <div class="header-end">
+                    <span class="p-input-icon-left">
                     <i class="pi pi-search" />
                     <p-input-text v-model="this.filters['global'].value" 
                                   placeholder="Search by Room ID or Game"
                                   style="width: 250px;"
                                   type="text"
                     />
+                    <p-button icon="pi pi-refresh"
+                              severity="info"
+                              outlined
+                              rounded
+                              style="margin-left: 10px;"
+                              v-tooltip.left="'Refresh'"
+                              @click="onRequestRefresh"
+                    />
                 </span>
+                </div>
             </div>
         </template>
 
@@ -105,6 +115,9 @@ export default defineComponent({
                 state.room = res
                 this.$router.push(`/${scope.game.name}`)
             })
+        },
+        onRequestRefresh() {
+            this.$emit('refresh')
         }
     } 
 });

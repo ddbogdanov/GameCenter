@@ -43,6 +43,7 @@ export default defineComponent({
         width: 75vw;
     }
     .sidebar-container {
+        height: 100%;
         width: 25vw;
     }
 </style>

@@ -23,6 +23,9 @@ import DynamicDialog from 'primevue/dynamicdialog';
 import DialogService from 'primevue/dialogservice';
 import ProgressSpinner from 'primevue/progressspinner';
 import Skeleton from 'primevue/skeleton';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
+import Tag from 'primevue/tag';
 
 const app = createApp(App)
 
@@ -50,6 +53,9 @@ app.component('p-scroll-panel', ScrollPanel)
 app.component('p-dynamic-dialog', DynamicDialog)
 app.component('p-progress-spinner', ProgressSpinner)
 app.component('p-skeleton', Skeleton)
+app.component('p-tab-panel', TabPanel)
+app.component('p-tab-view', TabView)
+app.component('p-tag', Tag)
 
 app.directive('tooltip', Tooltip);
 
