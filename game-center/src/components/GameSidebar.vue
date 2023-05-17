@@ -55,11 +55,12 @@
                                         severity="primary"
                                         outlined
                                         :disabled="!this.readyToStart"
-                                        @click="this.state.room.status = Status.PLAYING"
+                                        style="width: 100%;"
+                                        @click="onStart"
                                 />
                             </div>
                             <div class="game-start" v-else>
-                                <h1>Waiting for first player or host.</h1>
+                                <h1>Waiting for first player or host to start the game.</h1>
                             </div>
                         </div>
 
@@ -125,6 +126,10 @@ export default defineComponent({
                     life: 2000 
                 })
             })
+        },
+        onStart() {
+            this.state.room.status = Status.PLAYING
+            socket.emit('startGame')
         }
     }
 });

@@ -6,6 +6,7 @@ class Game {
     private name: string
     private minimumUsers: number
     private maximumUsers: number
+    // TODO meta information i.e player colors for chess
 
     private constructor(name: string, minimumUsers: number, maximumUsers: number) {
         this.name = name

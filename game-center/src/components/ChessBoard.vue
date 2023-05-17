@@ -1,22 +1,29 @@
 <template>
     <div class="chess-board">
         <TheChessboard :board-config="boardConfig"
-                   @board-created="(api) => (boardAPI = api)"
-                   @move="handleMove"
+                       @board-created="(api) => (boardAPI = api)"
+                       @move="handleMove"
         />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { TheChessboard } from 'vue3-chessboard';
+import { ref, computed } from 'vue'
+import { TheChessboard } from 'vue3-chessboard'
+import { socket, state } from '@/socket'
 import 'vue3-chessboard/style.css';
-import type { BoardApi, BoardConfig, MoveEvent } from 'vue3-chessboard';
+import type { BoardApi, BoardConfig, MoveEvent } from 'vue3-chessboard'
 
+const isViewOnly = computed({
+    get() {
+        return state.room.currentTurn !== state.session.user.username
+    }
+})
 const boardAPI = ref<BoardApi>();
 const boardConfig: BoardConfig = {
-    coordinates: false,
-    autoCastle: false,
+    coordinates: true,
+    autoCastle: true,
+    viewOnly: isViewOnly.value,
     movable: {
         free: false
     },
