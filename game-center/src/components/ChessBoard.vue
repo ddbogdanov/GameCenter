@@ -1,12 +1,10 @@
 <template>
-    <TheChessboard :board-config="boardConfig"
+    <div class="chess-board">
+        <TheChessboard :board-config="boardConfig"
                    @board-created="(api) => (boardAPI = api)"
                    @move="handleMove"
-    />
-    <p-button label="Threats"
-              severity="primary"
-              @click="boardAPI.toggleMoves()"
-    />
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +28,6 @@ function handleMove(move: MoveEvent) {
 
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 </style>

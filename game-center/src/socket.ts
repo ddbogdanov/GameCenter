@@ -2,6 +2,7 @@ import { reactive } from "vue";
 import { io } from "socket.io-client";
 import router from "./router/index"
 import State from '@/model/State'
+import User from "./model/User";
 
 export const state = reactive(new State());
 
@@ -29,12 +30,16 @@ socket.on('newDisconnection', (username: string) => {
   state.activeUsers--
 })
 
-socket.on("newSession", (sessionInfo) => {
+socket.on('newSession', (sessionInfo) => {
   state.session = sessionInfo.session
   state.activeUsers = sessionInfo.activeUsers
 
   sessionStorage.setItem("gameCenterSessionID", sessionInfo.session.sessionID)
   sessionStorage.setItem("gameCenterSessionUsername", sessionInfo.session.user.username)
+})
+socket.on('userJoinedRoom', (user: User) => {
+  alert(JSON.stringify(user))
+  state.room.users.push(user)
 })
 
 socket.on("connect_error", (error) => {

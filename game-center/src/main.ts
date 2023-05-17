@@ -26,13 +26,14 @@ import Skeleton from 'primevue/skeleton';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Tag from 'primevue/tag';
+import Ripple from 'primevue/ripple';
 
 const app = createApp(App)
 
 app.config.globalProperties.$avatarUrl = 'https://api.dicebear.com/6.x/adventurer/svg?backgroundColor=62c5d6&seed='
 
 app.use(router)
-app.use(PrimeVue)
+app.use(PrimeVue, { ripple: true })
 app.use(ToastService)
 app.use(DialogService)
 
@@ -57,6 +58,7 @@ app.component('p-tab-panel', TabPanel)
 app.component('p-tab-view', TabView)
 app.component('p-tag', Tag)
 
-app.directive('tooltip', Tooltip);
+app.directive('tooltip', Tooltip)
+app.directive('ripple', Ripple)
 
 app.mount('#app')

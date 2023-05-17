@@ -30,6 +30,7 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
         }
 
         socket.join(data.roomID)
+        socket.to(data.roomID).emit('userJoinedRoom', session.getUser())
         room.addUser(session.getUser())
 
         return callback(room)

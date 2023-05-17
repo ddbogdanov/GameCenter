@@ -38,8 +38,10 @@ export default defineComponent({
         display: flex;
         flex-direction: row;
 
+        background-color: #f57566;
     }
     .board-container {
+        align-self: center;
         width: 75vw;
     }
     .sidebar-container {

@@ -10,7 +10,8 @@
                     <h2><mark>{{ state.room.currentTurn }}</mark>'s turn</h2>
                 </div>
                 
-                <div class="room-id"
+                <div class="room-id p-ripple"
+                     v-ripple
                      v-tooltip="'Click to copy'"
                      @click="onCopyToClipboard(state.room.roomID)"
                 >
@@ -117,6 +118,8 @@ export default defineComponent({
 
         color: white;
         background-color: #363636;
+
+        box-shadow: -3px 0px 8px #303030cb;
     }
 
     .sidebar-start {
