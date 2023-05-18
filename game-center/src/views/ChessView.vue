@@ -37,12 +37,15 @@ export default defineComponent({
 
         display: flex;
         flex-direction: row;
+        justify-content: center;
+        align-items: center;
 
         background-color: #f57566;
     }
     .board-container {
-        align-self: center;
         width: 75vw;
+
+        align-self: center;
     }
     .sidebar-container {
         height: 100%;
