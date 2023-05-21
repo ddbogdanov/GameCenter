@@ -37,10 +37,8 @@ socket.on('newSession', (sessionInfo) => {
   sessionStorage.setItem("gameCenterSessionID", sessionInfo.session.sessionID)
   sessionStorage.setItem("gameCenterSessionUsername", sessionInfo.session.user.username)
 })
-socket.on('userJoinedRoom', (user: User) => { //TODO mayve rxjs observable or something?
+socket.on('userJoinedRoom', (user: User) => { 
   state.room.users.push(user)
-
-  //if game.minimumUsers == room.users.length provide start option for first turn player.
 })
 
 socket.on("connect_error", (error) => {

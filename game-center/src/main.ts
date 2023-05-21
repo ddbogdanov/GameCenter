@@ -28,6 +28,9 @@ import TabPanel from 'primevue/tabpanel';
 import Tag from 'primevue/tag';
 import Ripple from 'primevue/ripple';
 
+import SplitButton from 'primevue/splitbutton';
+
+
 const app = createApp(App)
 
 app.config.globalProperties.$avatarUrl = 'https://api.dicebear.com/6.x/adventurer/svg?backgroundColor=62c5d6&seed='
@@ -57,6 +60,7 @@ app.component('p-skeleton', Skeleton)
 app.component('p-tab-panel', TabPanel)
 app.component('p-tab-view', TabView)
 app.component('p-tag', Tag)
+app.component('p-split-button', SplitButton)
 
 app.directive('tooltip', Tooltip)
 app.directive('ripple', Ripple)

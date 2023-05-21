@@ -27,7 +27,7 @@ export default defineComponent({
 @import "@/style/theme.css";
 @import "primevue/resources/primevue.min.css";
 @import 'primeicons/primeicons.css';
-@import url('https://fonts.googleapis.com/css2?family=Dosis&family=Roboto:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;700&display=swap');
 
 html, body {
   all: unset;

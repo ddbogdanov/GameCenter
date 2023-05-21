@@ -44,26 +44,6 @@
                 <p-tab-panel header="Game">
                     <div class="game-information">
                         
-                        <div v-if="this.state.room.status == Status.WAITING">
-                            <div class="game-start" 
-                                v-if="this.state.room.currentTurn == this.state.session.user.username"
-                            >
-                                <h1 v-if="this.readyToStart">Ready to Start</h1>
-                                <h1 v-else>Waiting for Players</h1>
-
-                                <p-button label="Start"
-                                        severity="primary"
-                                        outlined
-                                        :disabled="!this.readyToStart"
-                                        style="width: 100%;"
-                                        @click="onStart"
-                                />
-                            </div>
-                            <div class="game-start" v-else>
-                                <h1>Waiting for first player or host to start the game.</h1>
-                            </div>
-                        </div>
-
                     </div>
                 </p-tab-panel>
 
@@ -85,8 +65,11 @@ import Status from '@/model/Status'
 
 export default defineComponent({
     name: 'ChessView',
-    components: {
-
+    props: {
+        readyToStart: {
+            type: Boolean,
+            required: true
+        }
     },
     data() {
         return {
@@ -105,9 +88,6 @@ export default defineComponent({
                 default: return 'info'
             }
         },
-        readyToStart() {
-            return this.state.room.game.minimumUsers <= this.state.room.users.length
-        }
     },
     methods: {
         onCopyToClipboard(text: string) {

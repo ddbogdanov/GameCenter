@@ -33,27 +33,7 @@
                   class="option-button"
                   @click="onViewAll"
         />
-
-        <p-divider/>
-
-        <span class="p-inputgroup">
-            <span class="p-float-label">
-                <p-input-text id="gameID" 
-                              v-model="gameID"
-
-                              disabled
-                />
-                <label for="gameID">Join With Game Code</label>
-            </span>
-
-            <p-button icon="pi pi-chevron-right"
-                      severity="primary"
-                      primary
-
-                      disabled
-            />
-        </span>
-
+        
     </div>
 </template>
 
@@ -70,7 +50,7 @@ export default defineComponent({
         return {
             gameName: '',
             activePlayers: 0,
-            gameID: ''
+            roomID: ''
         }
     },
     mounted() {
