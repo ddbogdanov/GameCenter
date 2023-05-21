@@ -12,6 +12,7 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
     socket.on('getAllRooms', (callback) => {
         return callback(roomStore.findAllRooms())
     })
+    // TODO create a response error class with status and message.
     socket.on('joinRoom', (data, callback) => {
         let room = roomStore.findRoom(data.roomID)
         let session = sessionStore.findSession(data.session.sessionID)
