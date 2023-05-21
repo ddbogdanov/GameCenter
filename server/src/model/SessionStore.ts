@@ -13,13 +13,13 @@ class SessionStore {
     public saveSession(session: Session): void {
         this.sessions.set(session.getSessionID(), session)
     }
-    public updateUserAvatarInSession(sessionID: string, avatarID: string) {
+    public updateUserInSession(sessionID: string, avatarID: string, avatarBackgroundColor: string) {
         let session = this.findSession(sessionID)
         if(!session) {
             return
         }
 
-        session.getUser().setAvatarID(avatarID)
+        session.getUser().setAvatarID(avatarID).setAvatarBackgroundColor(avatarBackgroundColor)
     }
     public countConnectedUsers(): number {
         let count = 0

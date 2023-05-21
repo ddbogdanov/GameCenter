@@ -49,7 +49,7 @@ body {
 
 // .fade-enter-active,
 // .fade-leave-active {
-//   transition: opacity 100ms ease;
+//   transition: all 1000ms ease;
 // }
 // .fade-enter-from,
 // .fade-leave-to {

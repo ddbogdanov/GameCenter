@@ -7,6 +7,7 @@
 
                 <div class="waiting-overlay">
                     <div class="overlay-content">
+                        
                         <div class="waiting-text">
                             <span v-for="(letter, index) in waitingText" 
                                 :key="index"
@@ -16,12 +17,16 @@
                                 {{ letter }}
                             </span>
                         </div>
-                        <p-button severity="success"
-                                label="Start"
-                                @click="onStart"
-                                style="width: 100%;"
-                                v-if="readyToStartAndIsFirstTurn"
-                        />
+                        <Transition name="waiting">
+                            <p-button severity="success"
+                                    icon="pi pi-play"
+                                    iconPos="right"
+                                    label="Start"
+                                    @click="onStart"
+                                    style="width: 100%;"
+                                    v-if="readyToStartAndIsFirstTurn"
+                            />
+                        </Transition>
                     </div>
                 </div>
             </div>
@@ -146,10 +151,29 @@ export default defineComponent({
             animation: flip 4s infinite;
             animation-delay: calc(100ms * var(--i))
         }
+        ul {
+            padding: 0;
+        }
     }
     @keyframes flip {
         0%,70% {
             transform: rotateY(360deg) 
         }
+    }
+
+    .waiting-move, 
+    .waiting-enter-active,
+    .waiting-leave-active {
+        transition: all 0.5s ease;
+    }
+
+    .waiting-enter-from,
+    .waiting-leave-to {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+
+    .waiting-leave-active {
+        position: absolute;
     }
 </style>

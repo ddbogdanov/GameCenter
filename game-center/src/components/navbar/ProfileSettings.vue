@@ -1,7 +1,7 @@
 <template>
     <div class="profile-settings">
         <div class="settings-header">
-            <p-avatar :image="this.$avatarUrl + state.session.user.avatarID + '.svg'"
+            <p-avatar :image="`${this.$avatarUrl}backgroundColor=${state.session.user.avatarBackgroundColor}&seed=${state.session.user.avatarID}.svg`"
                       shape="circle"
                       size="xlarge"
             />
@@ -18,15 +18,25 @@
         <p-divider/>
 
         <div class="settings-content">
-            <form @submit.prevent="onSubmit()" class="profile-form" id="profile-form">
-                <span class="p-float-label">
-                    <p-input-text id="avatarID"
-                                  v-model="state.session.user.avatarID"
-                                  style="width: 100%;"
-                    />
-                    <label for="avatarID">Avatar ID</label>
-                </span>
-            </form>
+            <p-fieldset legend="Avatar" :toggleable="true">
+                <form @submit.prevent="onSubmit()" class="profile-form" id="profile-form">
+                    <div class="form-item top-label">
+                        <label for="avatarID">Avatar ID</label>
+                        <p-input-text id="avatarID"
+                                    v-model="state.session.user.avatarID"
+                                    style="width: 100%;"
+                        />
+                    </div>
+
+                    <div class="form-item inline-label">
+                        <label for="avatarBackgroundColor">Background Color</label>
+                        <p-color-picker id="avatarBackgroundColor"
+                                        v-model="state.session.user.avatarBackgroundColor"
+                                        format="hex"
+                        />
+                    </div>
+                </form>
+            </p-fieldset>
         </div>
 
         <p-divider/>
@@ -56,10 +66,11 @@ export default defineComponent({
     name: 'ProfileSettings',
     methods: {
         onSubmit() {
-            socket.emit('updateAvatarID', {
+            socket.emit('updateUser', {
                 sessionID: state.session.sessionID,
                 userID: state.session.user.userID,
-                avatarID: state.session.user.avatarID
+                avatarID: state.session.user.avatarID,
+                avatarBackgroundColor: state.session.user.avatarBackgroundColor
             })
             this.$emit('submit')
         },
@@ -85,16 +96,23 @@ const { disconnectSocket } = disconnect()
     }
     .settings-header {
         width: 100%;
+
         display: inline-flex;
         justify-content: flex-start;
         align-items: center;
         gap: 10px;
+
+        font-family: dosis;
     }
     .settings-content {
         width: 100%;
         height: 100%;
 
-        padding: 10px 0 10px 0;
+        padding: 0 0 0 0;
+
+        h1 {
+            margin: 0;
+        }
     }
     .settings-footer {
         width: 100%;
@@ -106,5 +124,22 @@ const { disconnectSocket } = disconnect()
     .profile-form {
         width: 100%;
         height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+
+        .form-item {
+            &.top-label {
+                display: flex;
+                flex-direction: column;
+            }
+            &.inline-label {
+                display: inline-flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
     }
 </style>

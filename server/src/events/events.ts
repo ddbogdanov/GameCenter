@@ -38,9 +38,9 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
     })
 
     // User profile events
-    socket.on('updateAvatarID', (data: any) => { 
-        db.updateUserAvatar(data.userID, data.avatarID)
-        sessionStore.updateUserAvatarInSession(data.sessionID, data.avatarID)
+    socket.on('updateUser', (data: any) => { 
+        db.updateUser(data.userID, data.avatarID, data.avatarBackgroundColor)
+        sessionStore.updateUserInSession(data.sessionID, data.avatarID, data.avatarBackgroundColor)
     })
 
     // Game events

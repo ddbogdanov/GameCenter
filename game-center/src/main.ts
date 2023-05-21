@@ -27,13 +27,13 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Tag from 'primevue/tag';
 import Ripple from 'primevue/ripple';
-
-import SplitButton from 'primevue/splitbutton';
-
+import InputMask from 'primevue/inputmask';
+import ColorPicker from 'primevue/colorpicker';
+import Fieldset from 'primevue/fieldset';
 
 const app = createApp(App)
 
-app.config.globalProperties.$avatarUrl = 'https://api.dicebear.com/6.x/adventurer/svg?backgroundColor=62c5d6&seed='
+app.config.globalProperties.$avatarUrl = 'https://api.dicebear.com/6.x/adventurer/svg?'
 
 app.use(router)
 app.use(PrimeVue, { ripple: true })
@@ -60,7 +60,10 @@ app.component('p-skeleton', Skeleton)
 app.component('p-tab-panel', TabPanel)
 app.component('p-tab-view', TabView)
 app.component('p-tag', Tag)
-app.component('p-split-button', SplitButton)
+app.component('p-input-mask', InputMask)
+app.component('p-color-picker', ColorPicker)
+app.component('p-fieldset', Fieldset)
+
 
 app.directive('tooltip', Tooltip)
 app.directive('ripple', Ripple)

@@ -23,24 +23,25 @@ class GameCenterDataStore {
                 if(!data) {
                     return callback(null)
                 }
-                callback(new User(data.username, data.userID, data.coins, data.avatarID))
+                callback(new User(data.username, data.userID, data.coins, data.avatarID, data.avatarBackgroundColor))
             }
         )
     }
     public saveUser(user: User) {
         this.db.exec(
             `
-            INSERT OR IGNORE INTO users (userID, username, coins, avatarID)
-            VALUES ('${user.getUserID()}', '${user.getUsername()}', ${user.getCoins()}, '${user.getAvatarID()}')
+            INSERT OR IGNORE INTO users (userID, username, coins, avatarID, avatarBackgroundColor)
+            VALUES ('${user.getUserID()}', '${user.getUsername()}', ${user.getCoins()}, '${user.getAvatarID()}', '${user.getAvatarBackgroundColor()}')
             `,
             (error) => { if(error) console.log(error) }
         )
     }
-    public updateUserAvatar(userID: string, avatarID: string) {
+    public updateUser(userID: string, avatarID: string, avatarBackgroundColor: string) {
         this.db.exec(
             `
-            UPDATE users
-            SET avatarID = '${avatarID}'
+            UPDATE users SET 
+                avatarID = '${avatarID}',
+                avatarBackgroundColor = '${avatarBackgroundColor}'
             WHERE userID = '${userID}'
             `,
             (error) => { if(error) console.log(error) }

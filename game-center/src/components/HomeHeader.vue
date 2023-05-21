@@ -2,15 +2,16 @@
     <div class="home-header">
         <h1>Games</h1>
 
-        <span class="p-inputgroup" style="width: 350px;">
-            <p-button label="All Rooms"
+        <span class="p-inputgroup" style="width: 250px;">
+            <p-button v-tooltip.left="'View All Rooms'"
                     severity="primary"
                     outlined
                     icon="pi pi-list" 
                     iconPos="left"
                     @click="onViewAllRooms"
             />
-            <p-input-text placeholder="Or Join With Room ID"
+            <p-input-mask placeholder="Or Join With Room ID"
+                          mask="******"
                           v-model="roomID"
             />
             <p-button icon="pi pi-chevron-right"

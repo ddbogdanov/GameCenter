@@ -85,6 +85,7 @@ export default defineComponent({
 }
 #welcome-text {
   font-size: 6rem;
+  font-weight: 500;
   //color: #6dfdb1
   color: #84ffbd;
   // color: var(--primary-300)

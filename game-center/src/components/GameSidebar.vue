@@ -29,7 +29,7 @@
                          v-for="user in state.room.users" 
                          :key="user.userID"
                     >
-                        <p-avatar :image="this.$avatarUrl  + user.avatarID + '.svg'"
+                        <p-avatar :image="`${this.$avatarUrl}backgroundColor=${user.avatarBackgroundColor}&seed=${user.avatarID}.svg`"
                                   shape="circle"
                                   size="large"
                         />

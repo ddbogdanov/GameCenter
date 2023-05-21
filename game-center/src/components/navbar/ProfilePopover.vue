@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p-avatar :image="this.$avatarUrl + state.session.user.avatarID + '.svg'"
+        <p-avatar :image="`${this.$avatarUrl}backgroundColor=${state.session.user.avatarBackgroundColor}&seed=${state.session.user.avatarID}.svg`"
                   shape="circle"
                   size="large"
                   style="cursor: pointer;"
@@ -9,7 +9,7 @@
         <p-overlay-panel ref="overlayPanel">
             <div class="profile-popover">
                 <div class="user-info">
-                    <p-avatar :image="this.$avatarUrl  + state.session.user.avatarID + '.svg'"
+                    <p-avatar :image="`${this.$avatarUrl}backgroundColor=${state.session.user.avatarBackgroundColor}&seed=${state.session.user.avatarID}.svg`"
                               shape="circle"
                               size="xlarge"
                     />
@@ -55,7 +55,7 @@
                }"
     >
         <template #header>
-            <b>Profile</b>
+            <strong>Profile Settings</strong>
         </template>
 
         <ProfileSettings @cancel="this.profileSettingsVisible = false"

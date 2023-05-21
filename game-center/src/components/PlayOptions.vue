@@ -7,6 +7,8 @@
         </span>
     </div>
 
+    <p-divider/>
+
     <div class="play-options">
 
         <p-button label="Join a Game"
