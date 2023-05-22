@@ -1,6 +1,7 @@
 <template>
     <div class="chess-board">
         <TheChessboard :board-config="boardConfig"
+                       :player-color="'white'"
                        @board-created="(api) => (boardAPI = api)"
                        @move="handleMove"
         />

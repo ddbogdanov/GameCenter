@@ -1,4 +1,4 @@
-import Game from "./Game"
+import Game from "./games/Game"
 import User from "./User"
 import Status from "./Status"
 
