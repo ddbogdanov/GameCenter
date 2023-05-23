@@ -1,38 +1,48 @@
 import crypto from 'crypto'
-import Room from "./Room";
+import Room from "./rooms/Room";
+import ChessRoom from './rooms/ChessRoom';
 
 class RoomStore {
-    private rooms: Map<string, Room>
+    private chessRooms: Map<string, ChessRoom>
 
     constructor() {
-        this.rooms = new Map()
+        this.chessRooms = new Map()
     }
 
     public findRoom(roomID: string): Room | undefined {
-        return this.rooms.get(roomID)
+        let chessRoom = this.chessRooms.get(roomID)
+
+        return chessRoom ? chessRoom : undefined
+    }
+    public findChessRoom(roomID: string): ChessRoom | undefined {
+        return this.chessRooms.get(roomID)
     }
     public findAllRooms(): Array<Room> {
-        return [...this.rooms.values()]
+        return [...this.chessRooms.values()]
     }
-    public saveRoom(room: Room): Room {
-        let roomID = this.generateRandomRoomID()
-        let isRoomIDSet = false
+    public saveChessRoom(room: ChessRoom): ChessRoom {
+        room.setRoomID(this.findRandomRoomID())
+        this.chessRooms.set(room.getRoomID(), room)
 
-        while(!isRoomIDSet) {
-            if(this.findRoom(roomID)) {
-                roomID = this.generateRandomRoomID()
-                break
-            }
-            room.setRoomID(roomID)
-            isRoomIDSet = true
-        }
-
-        this.rooms.set(room.getRoomID(), room)
         return room
     }
 
+    /* Utility Functions */
     private generateRandomRoomID() { // TODO Export as modules along with generateUser and generateSession ID functions
         return crypto.randomBytes(3).toString("hex").toUpperCase()
+    }
+    private findRandomRoomID(): string {
+        let roomID = this.generateRandomRoomID()
+        let found = false
+
+        while(!found) {
+            if(this.findAllRooms().find(room => roomID == room.getRoomID())) {
+                roomID = this.generateRandomRoomID()
+                break
+            }
+            found = true
+        }
+        return roomID
     }
 }
 
