@@ -14,6 +14,23 @@ const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCente
 
         return callback(room)
     })
+    socket.on('startChessGame', (data, callback) => {
+        let room = roomStore.findRoom(data)
+        
+        if(!(room?.getGame() instanceof ChessGame)) {
+            return
+        }
+    
+        console.log((room?.getGame() as ChessGame).getWhite())
+
+        // assignRandomColors(room.getGame())
+        
+        return callback(room)
+    })
+}
+
+function assignRandomColors(game: ChessGame) {
+    
 }
 
 export default chessEvents

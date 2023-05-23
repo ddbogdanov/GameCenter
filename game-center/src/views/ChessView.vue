@@ -5,7 +5,7 @@
             <div class="board-container">
                 <ChessBoard/>
 
-                <div class="waiting-overlay">
+                <div class="waiting-overlay" v-if="!hasStarted">
                     <div class="overlay-content">
                         
                         <div class="waiting-text">
@@ -22,9 +22,9 @@
                                     icon="pi pi-play"
                                     iconPos="right"
                                     label="Start"
-                                    @click="onStart"
                                     style="width: 100%;"
                                     v-if="readyToStartAndIsFirstTurn"
+                                    @click="onStart"
                             />
                         </Transition>
                     </div>
@@ -43,6 +43,7 @@ import { socket, state } from '@/socket'
 import NavBar from '@/components/navbar/NavBar.vue'
 import ChessBoard from '@/components/ChessBoard.vue'
 import GameSidebar from '@/components/GameSidebar.vue'
+import Room from '@/model/Room'
 
 
 export default defineComponent({
@@ -71,12 +72,15 @@ export default defineComponent({
     },
     data() {
         return {
-
+            hasStarted: false
         }
     },
     methods: {
         onStart() {
-            console.log('starting')
+            socket.emit('startChessGame', state.room.roomID, (res: Room) => {
+                state.room = res
+                this.hasStarted = true
+            })
         }
     }
 });
