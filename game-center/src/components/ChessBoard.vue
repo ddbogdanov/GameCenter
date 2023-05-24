@@ -1,19 +1,40 @@
 <template>
     <div class="chess-board">
-        <TheChessboard :board-config="boardConfig"
-                       :player-color="'white'"
+        <div v-if="!hasStarted">
+            <TheChessboard/>
+        </div>
+        <div v-else>
+            <TheChessboard :board-config="boardConfig"
+                       :player-color="playerColor"
                        @board-created="(api) => (boardAPI = api)"
                        @move="handleMove"
-        />
+            />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ComputedRef, ref } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import { socket, state } from '@/socket'
 import 'vue3-chessboard/style.css';
 import type { BoardApi, BoardConfig, MoveEvent } from 'vue3-chessboard'
+import { computed } from '@vue/reactivity';
+
+const props = defineProps({
+    hasStarted: {
+        type: Boolean,
+        default: false
+    }
+})
+
+const playerColor: ComputedRef<'white' | 'black'> = computed((): 'white' | 'black' => {
+    if((state.room.game as any).black.username === state.session.user.username) {
+        boardAPI.value?.toggleOrientation()
+        return 'black'
+    }
+    return 'white'
+})
 
 const boardAPI = ref<BoardApi>();
 const boardConfig: BoardConfig = {
@@ -26,17 +47,17 @@ const boardConfig: BoardConfig = {
 }
 
 function handleMove(move: MoveEvent) {
-    console.log(move)
+    socket.emit('chessMove', { move: move, roomID: state.room.roomID })
 }
+socket.on('recieveChessMove', (move: MoveEvent) => {
+    boardAPI.value?.move(move.san)
+    console.log(move)
+})
 
 </script>
 
 <style scoped lang="scss">
     .chess-board {
         position: relative;
-    }
-    .disabled {
-        pointer-events: none;
-        filter: blur(5px);
     }
 </style>

@@ -3,7 +3,7 @@
         <NavBar/>
         <div class="chess">
             <div class="board-container">
-                <ChessBoard/>
+                <ChessBoard :has-started="hasStarted"/>
 
                 <div class="waiting-overlay" v-if="!hasStarted">
                     <div class="overlay-content">
@@ -74,6 +74,12 @@ export default defineComponent({
         return {
             hasStarted: false
         }
+    },
+    mounted() {
+        socket.on('startedChessGame', (res: Room) => {
+            state.room = res
+            this.hasStarted = true
+        })
     },
     methods: {
         onStart() {

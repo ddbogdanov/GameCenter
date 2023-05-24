@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import router from "./router/index"
 import State from '@/model/State'
 import User from "./model/User";
+import Room from "./model/Room";
 
 export const state = reactive(new State());
 
