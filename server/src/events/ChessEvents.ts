@@ -6,6 +6,7 @@ import RoomStore from '../model/RoomStore'
 import User from '../model/User'
 import ChessGame from '../model/games/chess/ChessGame'
 import ChessRules from '../model/games/chess/ChessRules'
+import Status from '../model/Status'
 
 
 const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCenterDataStore, roomStore: RoomStore) => {
@@ -18,7 +19,6 @@ const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCente
 
         return callback(room)
     })
-
 
     socket.on('startChessGame', (data, callback) => {
         let room = roomStore.findChessRoom(data)
@@ -33,8 +33,15 @@ const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCente
         room.setCurrentTurn(users[0].getUsername())
         room.getGame().setWhite(new ChessRules(users[0].getUsername(), '11-11-11'))
         room.getGame().setBlack(new ChessRules(users[1].getUsername(), '22-22-22'))
+
+        room.setStatus(Status.PLAYING)
         
+        socket.broadcast.to(room.getRoomID()).emit('startedChessGame', room)
         return callback(room)
+    })
+
+    socket.on('chessMove', (data) => {
+        socket.broadcast.to(data.roomID).emit('recieveChessMove', data.move)
     })
 }
 

@@ -1,13 +1,14 @@
 <template>
     <div class="chess-board">
+        <h1>{{ playerColor }}</h1>
         <div v-if="!hasStarted">
             <TheChessboard/>
         </div>
         <div v-else>
             <TheChessboard :board-config="boardConfig"
-                       :player-color="playerColor"
-                       @board-created="(api) => (boardAPI = api)"
-                       @move="handleMove"
+                           :player-color="playerColor"
+                           @board-created="(api) => (boardAPI = api)"
+                           @move="onMove"
             />
         </div>
     </div>
@@ -40,18 +41,24 @@ const boardAPI = ref<BoardApi>();
 const boardConfig: BoardConfig = {
     coordinates: true,
     autoCastle: true,
-    viewOnly: false,
     movable: {
         free: false
     },
 }
 
-function handleMove(move: MoveEvent) {
+let isRecievingMove = false
+function onMove(move: MoveEvent) {
+    if(isRecievingMove) { 
+        return 
+    }
+    alert(JSON.stringify(move))
     socket.emit('chessMove', { move: move, roomID: state.room.roomID })
 }
 socket.on('recieveChessMove', (move: MoveEvent) => {
+    isRecievingMove = true
+    alert(JSON.stringify(move))
     boardAPI.value?.move(move.san)
-    console.log(move)
+    isRecievingMove = false
 })
 
 </script>
