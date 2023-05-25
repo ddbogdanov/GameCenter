@@ -43,7 +43,18 @@
             <p-tab-view class="sidebar-tab-view">
                 <p-tab-panel header="Game">
                     <div class="game-information">
-                        
+                        <p-table :value="moveHistory"
+                                 class="p-datatable-sm"
+                                 scrollable
+                                 scrollHeight="flex"
+                        >
+                            <template #header>
+                                <span>Move History</span>
+                            </template>
+
+                            <p-column field="user" header="Player"/>
+                            <p-column field="move" header="Move"/>
+                        </p-table>
                     </div>
                 </p-tab-panel>
 
@@ -68,6 +79,10 @@ export default defineComponent({
     props: {
         readyToStart: {
             type: Boolean,
+            required: true
+        },
+        moveHistory: {
+            type: Array,
             required: true
         }
     },
@@ -222,21 +237,19 @@ export default defineComponent({
 
         .game-information {
             height: 100%;
+
+            
+            .game-start {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                font-family: dosis;
+            }
         }
         .chat {
             height: 100%;
-        }
-    }
-
-    .game-information {
-
-        .game-start {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            font-family: dosis;
         }
     }
 
@@ -246,6 +259,7 @@ export default defineComponent({
     ::v-deep(.p-tabview-panels) {
         width: 100%;
         flex: 1;
+        padding: 5px;
     }
     ::v-deep(.p-tabview-header) {
         width: 100%;

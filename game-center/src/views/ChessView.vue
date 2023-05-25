@@ -3,7 +3,10 @@
         <NavBar/>
         <div class="chess">
             <div class="board-container">
-                <ChessBoard :has-started="hasStarted"/>
+                <ChessBoard :has-started="hasStarted"
+                            @move-made="onMoveMade"
+                            @move-recieved="onMoveRecieved"
+                />
 
                 <div class="waiting-overlay" v-if="!hasStarted">
                     <div class="overlay-content">
@@ -31,7 +34,9 @@
                 </div>
             </div>
             <div class="sidebar-container">
-                <GameSidebar :ready-to-start="readyToStart"/>
+                <GameSidebar :ready-to-start="readyToStart"
+                             :moveHistory="moveHistory"
+                />
             </div>
         </div>
     </div>
@@ -44,6 +49,7 @@ import NavBar from '@/components/navbar/NavBar.vue'
 import ChessBoard from '@/components/ChessBoard.vue'
 import GameSidebar from '@/components/GameSidebar.vue'
 import Room from '@/model/Room'
+import { MoveEvent } from 'vue3-chessboard'
 
 
 export default defineComponent({
@@ -72,7 +78,8 @@ export default defineComponent({
     },
     data() {
         return {
-            hasStarted: false
+            hasStarted: false,
+            moveHistory: []
         }
     },
     mounted() {
@@ -87,6 +94,12 @@ export default defineComponent({
                 state.room = res
                 this.hasStarted = true
             })
+        },
+        onMoveMade(move: MoveEvent) {
+            this.moveHistory.push({ user: 'Somebody', move: move.lan })
+        },
+        onMoveRecieved(move: MoveEvent) {
+            this.moveHistory.push({ user: 'Somebody', move: move.lan })
         }
     }
 });
@@ -128,7 +141,7 @@ export default defineComponent({
         width: 100%;
         height: 100%;;
 
-        // backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
 
         display: flex;
         justify-content: center;

@@ -1,12 +1,11 @@
 <template>
     <div class="chess-board">
-        <h1>{{ playerColor }}</h1>
         <div v-if="!hasStarted">
             <TheChessboard/>
         </div>
         <div v-else>
             <TheChessboard :board-config="boardConfig"
-                           :player-color="playerColor"
+                           :player-color="playerColor" 
                            @board-created="(api) => (boardAPI = api)"
                            @move="onMove"
             />
@@ -28,6 +27,10 @@ const props = defineProps({
         default: false
     }
 })
+const emit = defineEmits<{
+    (e: 'moveMade', move: MoveEvent): void,
+    (e: 'moveRecieved', move: MoveEvent): void
+}>()
 
 const playerColor: ComputedRef<'white' | 'black'> = computed((): 'white' | 'black' => {
     if((state.room.game as any).black.username === state.session.user.username) {
@@ -36,7 +39,6 @@ const playerColor: ComputedRef<'white' | 'black'> = computed((): 'white' | 'blac
     }
     return 'white'
 })
-
 const boardAPI = ref<BoardApi>();
 const boardConfig: BoardConfig = {
     coordinates: true,
@@ -51,12 +53,12 @@ function onMove(move: MoveEvent) {
     if(isRecievingMove) { 
         return 
     }
-    alert(JSON.stringify(move))
+    emit('moveMade', move)
     socket.emit('chessMove', { move: move, roomID: state.room.roomID })
 }
 socket.on('recieveChessMove', (move: MoveEvent) => {
     isRecievingMove = true
-    alert(JSON.stringify(move))
+    emit('moveRecieved', move)
     boardAPI.value?.move(move.san)
     isRecievingMove = false
 })
