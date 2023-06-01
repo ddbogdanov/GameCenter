@@ -8,6 +8,8 @@
                            :player-color="playerColor" 
                            @board-created="(api) => (boardAPI = api)"
                            @move="onMove"
+                           @checkmate="onCheckmate"
+                           @stalemate="onStalemate"
             />
         </div>
     </div>
@@ -18,7 +20,7 @@ import { ComputedRef, ref } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'
 import { socket, state } from '@/socket'
 import 'vue3-chessboard/style.css';
-import type { BoardApi, BoardConfig, MoveEvent } from 'vue3-chessboard'
+import type { BoardApi, BoardConfig, MoveEvent, PieceColor } from 'vue3-chessboard'
 import { computed } from '@vue/reactivity';
 
 const props = defineProps({
@@ -30,6 +32,8 @@ const props = defineProps({
 const emit = defineEmits<{
     (e: 'moveMade', move: MoveEvent): void,
     (e: 'moveRecieved', move: MoveEvent): void
+    (e: 'checkmate', color: PieceColor): void
+    (e: 'stalemate'): void
 }>()
 
 const playerColor: ComputedRef<'white' | 'black'> = computed((): 'white' | 'black' => {
@@ -56,13 +60,20 @@ function onMove(move: MoveEvent) {
     emit('moveMade', move)
     socket.emit('chessMove', { move: move, roomID: state.room.roomID })
 }
+function onCheckmate(color: PieceColor) {
+    socket.emit('checkmate', { color: color, roomID: state.room.roomID })
+    emit('checkmate', color)
+}
+function onStalemate() {
+    socket.emit('stalemate', { roomID: state.room.roomID })
+    emit('stalemate')
+}
 socket.on('recieveChessMove', (move: MoveEvent) => {
     isRecievingMove = true
     emit('moveRecieved', move)
     boardAPI.value?.move(move.san)
     isRecievingMove = false
 })
-
 </script>
 
 <style scoped lang="scss">

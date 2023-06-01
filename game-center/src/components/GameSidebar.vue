@@ -59,9 +59,7 @@
                 </p-tab-panel>
 
                 <p-tab-panel header="Chat">
-                    <div class="chat">
-
-                    </div>
+                    <GameChat/>
                 </p-tab-panel>
             </p-tab-view>
 
@@ -73,9 +71,13 @@
 import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
 import Status from '@/model/Status'
+import GameChat from './GameChat.vue';
 
 export default defineComponent({
     name: 'ChessView',
+    components: {
+        GameChat
+    },
     props: {
         readyToStart: {
             type: Boolean,
@@ -260,6 +262,11 @@ export default defineComponent({
         width: 100%;
         flex: 1;
         padding: 5px;
+    }
+    ::v-deep(.p-tabview-panel) {
+        width: 100%;
+        height: 100%;
+        flex: 1;
     }
     ::v-deep(.p-tabview-header) {
         width: 100%;

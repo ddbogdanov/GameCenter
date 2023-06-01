@@ -6,6 +6,8 @@
                 <ChessBoard :has-started="hasStarted"
                             @move-made="onMoveMade"
                             @move-recieved="onMoveRecieved"
+                            @checkmate="onCheckmate"
+                            @stalemate="onStalemate"
                 />
 
                 <div class="waiting-overlay" v-if="!hasStarted">
@@ -49,7 +51,7 @@ import NavBar from '@/components/navbar/NavBar.vue'
 import ChessBoard from '@/components/ChessBoard.vue'
 import GameSidebar from '@/components/GameSidebar.vue'
 import Room from '@/model/Room'
-import { MoveEvent } from 'vue3-chessboard'
+import { MoveEvent, PieceColor } from 'vue3-chessboard'
 
 
 export default defineComponent({
@@ -79,7 +81,7 @@ export default defineComponent({
     data() {
         return {
             hasStarted: false,
-            moveHistory: []
+            moveHistory: [] as Array<{user: string | undefined, move: string}>
         }
     },
     mounted() {
@@ -96,10 +98,27 @@ export default defineComponent({
             })
         },
         onMoveMade(move: MoveEvent) {
-            this.moveHistory.push({ user: 'Somebody', move: move.lan })
+            this.moveHistory.push({ user: state.session.user.username, move: move.lan })
         },
         onMoveRecieved(move: MoveEvent) {
-            this.moveHistory.push({ user: 'Somebody', move: move.lan })
+            this.moveHistory.push({ 
+                user: state.room.users.find((user) => user.username !== state.session.user.username)?.username, 
+                move: move.lan 
+            })
+        },
+        onCheckmate(color: PieceColor) {
+            this.$toast.add({ 
+                    severity: 'success',
+                    summary: 'Checkmate', detail: `${color} is checkmated`,
+                    life: 3000 
+            })
+        },
+        onStalemate() {
+            this.$toast.add({ 
+                    severity: 'info',
+                    summary: 'Stalemate', detail: `No more legal moves`,
+                    life: 3000 
+            })
         }
     }
 });
