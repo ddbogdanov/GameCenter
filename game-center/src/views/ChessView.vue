@@ -73,7 +73,7 @@ export default defineComponent({
                 return 'Ready to Start'
             }
             else if(this.readyToStart) {
-                return 'Waiting for First Turn'
+                return 'Waiting for Host'
             }
             return 'Waiting for Players'
         }

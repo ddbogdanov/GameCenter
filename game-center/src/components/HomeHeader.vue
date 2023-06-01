@@ -41,6 +41,14 @@ export default defineComponent({
     },
     onJoinWithRoomID() {
         socket.emit('joinRoom', { roomID: this.roomID, session: state.session }, (res: Room) => {
+            if(!res.game) {
+                this.$toast.add({ 
+                    severity: 'error',
+                    summary: 'Error', detail: res,
+                    life: 2000 
+                })
+                return
+            }
             state.room = res
             this.$router.push(`/${res.game.name}`)
         })

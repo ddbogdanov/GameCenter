@@ -58,6 +58,11 @@
         </p-column>
 
         <p-column header="Players Needed" field="game.minimumUsers" sortable></p-column>
+        <p-column header="Status" field="status">
+            <template #body="slotProps">
+                <p-tag :value="slotProps.data.status" :severity="statusSeverity(slotProps.data.status)"/>
+            </template>
+        </p-column>
 
         <p-column header="Actions" style="width: 85px;">
             <template #body="slotProps">
@@ -84,7 +89,9 @@
 import { defineComponent, PropType } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { socket, state } from '@/socket'
+import { getStatusSeverity } from '@/utils';
 import Room from '@/model/Room';
+import Status from '@/model/Status';
 
 export default defineComponent({
     name: 'LobbyTable',
@@ -112,14 +119,25 @@ export default defineComponent({
     methods: {
         joinRoom(scope: any) {
             socket.emit('joinRoom', { roomID: scope.roomID, session: state.session }, (res: Room) => {
+                if(!res.game) {
+                    this.$toast.add({ 
+                        severity: 'error',
+                        summary: 'Error', detail: res,
+                        life: 2000 
+                    })
+                    return
+                }
                 state.room = res
                 this.$router.push(`/${scope.game.name}`)
             })
         },
         onRequestRefresh() {
             this.$emit('refresh')
+        },
+        statusSeverity(status: Status) {
+            return getStatusSeverity(status)
         }
-    } 
+    },
 });
 </script>
 

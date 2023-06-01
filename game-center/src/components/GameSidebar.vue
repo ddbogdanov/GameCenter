@@ -70,6 +70,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
+import { getStatusSeverity } from '@/utils';
 import Status from '@/model/Status'
 import GameChat from './GameChat.vue';
 
@@ -96,14 +97,7 @@ export default defineComponent({
     },
     computed: {
         statusSeverity() {
-            switch(this.state.room.status) {
-                case 'Playing': return 'success'
-                case 'Finished': return 'success'
-                case 'Waiting': return 'warning'
-                case 'Reconnecting': return 'danger'
-
-                default: return 'info'
-            }
+            return getStatusSeverity(this.state.room.status)
         },
     },
     methods: {
