@@ -1,6 +1,6 @@
 <template>
     <div class="games-grid-container">
-        <p-scroll-panel class="games-scroll" ref="scrollRef">
+        <p-scroll-panel class="games-scroll">
             <div class="games-grid">
                 <GameCard game-name="Chess" 
                           image-url="https://cdn.hswstatic.com/gif/chess-4.jpg"

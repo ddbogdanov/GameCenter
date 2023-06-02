@@ -59,7 +59,7 @@
                 </p-tab-panel>
 
                 <p-tab-panel header="Chat">
-                    <GameChat/>
+                    <UserChat :roomID="state.room.roomID"/>
                 </p-tab-panel>
             </p-tab-view>
 
@@ -72,12 +72,12 @@ import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
 import { getStatusSeverity } from '@/utils';
 import Status from '@/model/Status'
-import GameChat from './GameChat.vue';
+import UserChat from './UserChat.vue';
 
 export default defineComponent({
     name: 'ChessView',
     components: {
-        GameChat
+        UserChat
     },
     props: {
         readyToStart: {
@@ -260,7 +260,6 @@ export default defineComponent({
     ::v-deep(.p-tabview-panel) {
         width: 100%;
         height: 100%;
-        flex: 1;
     }
     ::v-deep(.p-tabview-header) {
         width: 100%;

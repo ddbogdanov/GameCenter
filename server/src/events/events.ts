@@ -37,6 +37,16 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
         return callback(room)
     })
 
+    // Chat events
+    socket.on('sendMessage', (data: any) => {
+        if(!data.roomID) {
+            // TODO broadcast to global chat?
+            return
+        }
+        data.message.timestamp = new Date(Date.now())
+        socket.to(data.roomID).emit('recieveGameMessage', data.message)
+    })
+
     // User profile events
     socket.on('updateUser', (data: any) => { 
         db.updateUser(data.userID, data.avatarID, data.avatarBackgroundColor)
