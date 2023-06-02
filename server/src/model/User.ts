@@ -61,6 +61,10 @@ class User {
         return this.avatarBackgroundColor
     }
 
+    public updateCoins(dCoins: number) {
+        this.coins = this.coins + dCoins
+    }
+
     private generateRandomID(): string {
         return crypto.randomBytes(8).toString("hex")
     }

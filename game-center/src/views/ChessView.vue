@@ -108,12 +108,19 @@ export default defineComponent({
             })
         },
         onCheckmate(color: PieceColor) {
-            socket.emit('checkmate', {user: state.session.user, color: color, roomID: state.room.roomID})
-            state.room.status = Status.FINISHED
-            this.$toast.add({ 
-                    severity: 'success',
-                    summary: 'Checkmate', detail: `${color} is checkmated`,
-                    life: 3000 
+            socket.emit('checkmate', { user: state.session.user, 
+                                       sessionID: state.session.sessionID, 
+                                       color: color, 
+                                       roomID: state.room.roomID 
+            }, (res: any) => {
+                this.$toast.add({
+                    severity: 'info',
+                    summary: 'Checkmate',
+                    detail: res.message,
+                    life: 3000
+                })
+                state.room.status = Status.FINISHED
+                state.session = res.session
             })
         },
         onStalemate() {

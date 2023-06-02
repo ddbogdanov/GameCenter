@@ -7,9 +7,10 @@ import User from '../model/User'
 import ChessGame from '../model/games/chess/ChessGame'
 import ChessRules from '../model/games/chess/ChessRules'
 import Status from '../model/Status'
+import SessionStore from '../model/SessionStore'
 
 
-const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCenterDataStore, roomStore: RoomStore) => {
+const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCenterDataStore, roomStore: RoomStore, sessionStore: SessionStore) => {
     socket.on('newChessGame', (data, callback) => {
         let room = roomStore.saveChessRoom(new ChessRoom(
             new ChessGame(), 
@@ -45,20 +46,40 @@ const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCente
     })
     socket.on('checkmate', (data, callback) => {
         let room = roomStore.findChessRoom(data.roomID)
+        let session = sessionStore.findSession(data.sessionID)
 
-        if(!room) {
-            return callback('Could not find room')
+        if(!room || !session) {
+            return callback('Could not find room and/or session')
         }
+        room.setStatus(Status.FINISHED)
 
-        let victoriousUser = ''
-        if(data.color == 'white') {
-            victoriousUser = room.getGame().getWhite().getUsername()
+        let isUserWhite = data.user.username == room.getGame().getWhite().getUsername()
+        let isUserBlack = data.user.username == room.getGame().getBlack().getUsername()
+
+        // TODO: ChessRules should probably also hold the UserID. Then room.getUsers().find() will not be needed
+        if(data.color == 'black' && isUserWhite) {
+            let winningUser = room.getUsers().find(user => 
+                user.getUsername() == room?.getGame().getWhite().getUsername())?.getUserID()
+            
+            if(!winningUser) return
+
+            db.updateCoins(winningUser, 25)
+            session.getUser().updateCoins(25)
+            return callback({ message: 'You won!', session: session })
+        }
+        else if(data.color == 'white' && isUserBlack) {
+            let winningUser = room.getUsers().find(user => 
+                user.getUsername() == room?.getGame().getBlack().getUsername())?.getUserID()
+
+            if(!winningUser) return
+
+            db.updateCoins(winningUser, 25)
+            session.getUser().updateCoins(25)
+            return callback({ message: 'You won!', session: session })
         }
         else {
-            victoriousUser = room.getGame().getBlack().getUsername()
+            return callback({ message: 'You lost!', session: session })
         }
-
-        // Give victoriousUser some coins or something
     })
 }
 

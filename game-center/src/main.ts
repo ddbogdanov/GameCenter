@@ -30,6 +30,7 @@ import Ripple from 'primevue/ripple';
 import InputMask from 'primevue/inputmask';
 import ColorPicker from 'primevue/colorpicker';
 import Fieldset from 'primevue/fieldset';
+import InputNumber from 'primevue/inputnumber';
 
 const app = createApp(App)
 
@@ -63,6 +64,7 @@ app.component('p-tag', Tag)
 app.component('p-input-mask', InputMask)
 app.component('p-color-picker', ColorPicker)
 app.component('p-fieldset', Fieldset)
+app.component('p-input-number', InputNumber)
 
 
 app.directive('tooltip', Tooltip)

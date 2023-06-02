@@ -8,7 +8,7 @@
 
   <p-toast/>
   <p-dynamic-dialog/>
-  <DebugFooter class="footer"/>
+  <!-- <DebugFooter class="footer"/> -->
 </template>
 
 <script lang="ts">

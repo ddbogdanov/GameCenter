@@ -52,9 +52,12 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
         db.updateUser(data.userID, data.avatarID, data.avatarBackgroundColor)
         sessionStore.updateUserInSession(data.sessionID, data.avatarID, data.avatarBackgroundColor)
     })
+    socket.on('addCoins', (data: any) => {
+        db.updateCoins(data.userID, data.coins)
+    })
 
     // Game events
-    chessEvents(io, socket, db, roomStore)
+    chessEvents(io, socket, db, roomStore, sessionStore)
     checkersEvents(io, socket,db, roomStore)
     blackjackEvents(io, socket, db, roomStore)
 }

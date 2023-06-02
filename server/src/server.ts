@@ -63,7 +63,7 @@ io.use(async (socket: UserSocket, next) => {
 io.on('connection', (socket: UserSocket) => {
     if(!socket.session) return // ????
 
-    console.log(`Connected - ${JSON.stringify(socket.session)}`)
+    //console.log(`Connected - ${JSON.stringify(socket.session)}`)
     sessionStore.saveSession(socket.session)
     socket.emit("newSession", newSessionHandler(socket))
     socket.broadcast.emit('newConnection', socket.session.getUser().getUsername())

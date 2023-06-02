@@ -47,6 +47,16 @@ class GameCenterDataStore {
             (error) => { if(error) console.log(error) }
         )
     }
+    public updateCoins(userID: string, dCoins: number) {
+        this.db.exec(
+            `
+            UPDATE users SET
+                coins = (coins + ${dCoins})
+            WHERE userID = '${userID}'
+            `,
+            (error) => { if(error) console.log(error) }
+        )
+    }
 }
 
 export default GameCenterDataStore

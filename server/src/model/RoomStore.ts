@@ -1,6 +1,7 @@
 import crypto from 'crypto'
 import Room from "./rooms/Room";
 import ChessRoom from './rooms/ChessRoom';
+import Status from './Status';
 
 class RoomStore {
     private chessRooms: Map<string, ChessRoom>

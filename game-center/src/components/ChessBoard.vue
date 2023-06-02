@@ -61,7 +61,6 @@ function onMove(move: MoveEvent) {
     socket.emit('chessMove', { move: move, roomID: state.room.roomID })
 }
 function onCheckmate(color: PieceColor) {
-    socket.emit('checkmate', { color: color, roomID: state.room.roomID })
     emit('checkmate', color)
 }
 function onStalemate() {

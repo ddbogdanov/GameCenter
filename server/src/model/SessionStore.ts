@@ -17,13 +17,23 @@ class SessionStore {
     public saveSession(session: Session): void {
         this.sessions.set(session.getSessionID(), session)
     }
-    public updateUserInSession(sessionID: string, avatarID: string, avatarBackgroundColor: string) {
+    public updateUserInSession(sessionID: string, avatarID: string, avatarBackgroundColor: string): boolean {
         let session = this.findSession(sessionID)
         if(!session) {
-            return
+            return false
         }
 
         session.getUser().setAvatarID(avatarID).setAvatarBackgroundColor(avatarBackgroundColor)
+        return true
+    }
+    public updateCoinsInSession(sessionID: string, dCoins: number) {
+        let session = this.findSession(sessionID)
+        if(!session) {
+            return false
+        }
+
+        session.getUser().updateCoins(dCoins)
+        return true
     }
     public countConnectedUsers(): number {
         let count = 0
