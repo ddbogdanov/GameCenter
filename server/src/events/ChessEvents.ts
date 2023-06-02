@@ -43,6 +43,23 @@ const chessEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCente
     socket.on('chessMove', (data) => {
         socket.broadcast.to(data.roomID).emit('recieveChessMove', data.move)
     })
+    socket.on('checkmate', (data, callback) => {
+        let room = roomStore.findChessRoom(data.roomID)
+
+        if(!room) {
+            return callback('Could not find room')
+        }
+
+        let victoriousUser = ''
+        if(data.color == 'white') {
+            victoriousUser = room.getGame().getWhite().getUsername()
+        }
+        else {
+            victoriousUser = room.getGame().getBlack().getUsername()
+        }
+
+        // Give victoriousUser some coins or something
+    })
 }
 
 export default chessEvents

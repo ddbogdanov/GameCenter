@@ -27,6 +27,16 @@ app.get('/', (req, res) => {
 })
 
 io.use(async (socket: UserSocket, next) => {
+    const username = socket.handshake.auth.username
+    if(!username) {
+        console.log("Username is required but was not provided")
+        return next(new Error("Username is Required"))
+    }
+
+    if(sessionStore.isUserConnected(username)) {
+        return next(new Error("Username is already connected"))
+    }
+
     const sessionID = socket.handshake.auth.sessionID
     if(sessionID) {
         const session = sessionStore.findSession(sessionID)
@@ -36,13 +46,7 @@ io.use(async (socket: UserSocket, next) => {
             return next()
         }
     }
-
-    const username = socket.handshake.auth.username
-    if(!username) {
-        console.log("Username is required but was not provided")
-        return next(new Error("Username is Required"))
-    }
-
+    
     db.findUser(username, (data: User) => {
         if(!data) {
             socket.session = new Session(new User(username), true)

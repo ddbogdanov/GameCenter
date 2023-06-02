@@ -56,6 +56,7 @@ export default defineComponent({
     if(sessionID && sessionUsername) {
       this.username = sessionUsername
       socket.auth = {
+        username: this.username,
         sessionID: sessionID
       }
       socket.connect()

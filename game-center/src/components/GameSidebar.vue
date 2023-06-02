@@ -7,7 +7,7 @@
                         <h1>{{ state.room.game.name }}</h1> 
                         <p-tag :severity="this.statusSeverity" :value="state.room.status"/>
                     </div>
-                    <h2><mark>{{ state.room.currentTurn }}</mark>'s turn</h2>
+                    <h2><mark class="username">{{ state.room.currentTurn }}</mark>'s turn</h2>
                 </div>
                 
                 <div class="room-id p-ripple"
@@ -179,6 +179,17 @@ export default defineComponent({
                         margin: 0;
                     }
                 }
+                h2 {
+                    display: inline-flex;
+                }
+                .username {
+                    display: inline-block;
+                    max-width: 150px;
+                    overflow: hidden;
+                    white-space: nowrap;
+
+                    text-overflow: ellipsis;
+                }
             }
             .room-id {
                 height: 100%;
@@ -227,6 +238,7 @@ export default defineComponent({
     .sidebar-tab-view {
         width: 100%;
         height: 100%;
+        min-height: 0;
         
         display: flex;
         flex-direction: column;
@@ -249,13 +261,16 @@ export default defineComponent({
         }
     }
 
-    ::v-deep(.p-tabview-nav-container){
+    ::v-deep(.p-tabview-nav-container) {
         flex: 0;
     }
     ::v-deep(.p-tabview-panels) {
         width: 100%;
-        flex: 1;
+        min-height: 0;
+
         padding: 5px;
+
+        flex: 1;
     }
     ::v-deep(.p-tabview-panel) {
         width: 100%;
@@ -268,9 +283,6 @@ export default defineComponent({
             text-align: center;
             width: 100%;
         }
-    }
-    ::v-deep(.p-tag) {
-        height: fit-content;
     }
 
     mark {

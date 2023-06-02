@@ -10,6 +10,10 @@ class SessionStore {
     public findSession(id: string): Session | undefined {
         return this.sessions.get(id)
     }
+    public isUserConnected(username: string): boolean {
+        return !![...this.sessions.values()].find(session => 
+            session.getUser().getUsername() == username)?.isConnected()
+    }
     public saveSession(session: Session): void {
         this.sessions.set(session.getSessionID(), session)
     }

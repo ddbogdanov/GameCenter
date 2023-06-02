@@ -1,7 +1,7 @@
 <template>
     <div class="chat">
-        <div class="chat-container">
-            <p-scroll-panel class="chat-scroll">
+
+            <p-scroll-panel class="chat-container">
                 <span v-for="(message, index) in messages" 
                       :key="index"
                       :class="index % 2 == 1 ? 'message odd' : 'message' "
@@ -15,11 +15,11 @@
                     </div>
                     <div class="message-timestamp">
                         <p>{{ message.timestamp.toLocaleTimeString() }}</p>
-                        <strong>{{ message.user.username }}</strong>
+                        <strong class="username">{{ message.user.username }}</strong>
                     </div>
                 </span>
             </p-scroll-panel>
-        </div>
+ 
         <div class="chat-footer">
             <span class="p-input-icon-right" style="width: 100%">
                 <p-input-text v-model="message.message"
@@ -80,7 +80,6 @@ export default defineComponent({
 <style lang="scss">
     .chat {
         width: 100%;   
-        height: 100%;
 
         display: flex;
         flex-direction: column;
@@ -89,11 +88,8 @@ export default defineComponent({
 
         .chat-container {
             width: 100%;
-            max-height: 100%;
-
-            .chat-scroll {
-                height: 100%;
-            }
+            flex: 1;
+            min-height: 0;
         }
         .chat-footer {
             width: 100%;
@@ -121,8 +117,8 @@ export default defineComponent({
         }
         .message-content {
             flex: 1;
-            max-width: calc(100% - 75px - 30px);
-            padding-left: 2px;
+            max-width: calc(100% - 80px - 30px); // 80px for timestamp, 30px for avatar.
+            padding-left: 4px;
             
             display: inline-flex;
             gap: 10px;
@@ -135,11 +131,20 @@ export default defineComponent({
             }
         }
         .message-timestamp {
-            min-width: 72px;
+            min-width: 80px;
+            max-width: 80px;
 
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-end;
+
+            .username {
+                max-width: 80px;
+                overflow: hidden;
+                white-space: nowrap;
+
+                text-overflow: ellipsis;
+            }
         }
 
         p {
