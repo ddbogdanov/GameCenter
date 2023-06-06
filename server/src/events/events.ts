@@ -36,6 +36,12 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
 
         return callback(room)
     })
+    socket.on('disconnecting', () => {
+        socket.rooms.forEach((room) => {
+            io.to(room).emit('otherPartyDisconnect')
+            roomStore.deleteRoom(room)
+        })
+    })
 
     // Chat events
     socket.on('sendMessage', (data: any) => {

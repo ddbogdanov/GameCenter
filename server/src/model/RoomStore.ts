@@ -28,6 +28,10 @@ class RoomStore {
         return room
     }
 
+    public deleteRoom(roomID: string) {
+        this.chessRooms.delete(roomID)
+    }
+
     /* Utility Functions */
     private generateRandomRoomID() { // TODO Export as modules along with generateUser and generateSession ID functions
         return crypto.randomBytes(3).toString("hex").toUpperCase()

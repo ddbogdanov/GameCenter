@@ -7,9 +7,11 @@
                 />
                 <GameCard game-name="Checkers" 
                           image-url="https://cf.geekdo-images.com/S4IBcWYhlbn51_5f0EIR4g__opengraph/img/iI_-WErPq_25QRsBN4NEfbFnwu4=/fit-in/1200x630/filters:strip_icc()/pic113720.jpg"
+                          class="disabled"
                 />
                 <GameCard game-name="Blackjack" 
                           image-url="https://crescent.edu/uploads/editor/images/Blackjack.png"
+                          class="disabled"
                 />
                 <!-- <GameCard game-name="Cards Against Humanity"
                           image-url="https://thatshelf.com/wp-content/uploads/2015/05/CAH-box.jpg"
@@ -73,5 +75,12 @@ export default defineComponent({
     ::v-deep(.p-scrollpanel.games-scroll .p-scrollpanel-bar:hover) {
         background-color: #55a5b1;
         opacity: 1;
+    }
+
+    .disabled {
+        filter: blur(2px) grayscale(100%);
+    }
+    .disabled:active {
+        pointer-events: none;
     }
 </style>
