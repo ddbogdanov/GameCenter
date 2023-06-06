@@ -8,7 +8,17 @@ class GameCenterDataStore {
     constructor() {
         this.db = new Database('gcdb.sqlite')
 
-        this.db.exec(fs.readFileSync(__dirname + '/sql/create.sql').toString());
+        this.db.exec(
+            `
+            CREATE TABLE IF NOT EXISTS users (
+                userID VARCHAR(200) PRIMARY KEY,
+                username VARCHAR(200) NOT NULL,
+                coins INTEGER NOT NULL,
+                avatarID VARCHAR(200) NOT NULL,
+                avatarBackgroundColor VARCHAR(20) NOT NULL
+            )
+            `
+        );
     }
 
     public findUser(username: string, callback: Function) {
