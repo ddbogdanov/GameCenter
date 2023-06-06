@@ -1,5 +1,6 @@
 import { Database } from 'sqlite3'
 import User from '../model/User';
+import fs from 'fs'
 
 class GameCenterDataStore {
     private db: Database
