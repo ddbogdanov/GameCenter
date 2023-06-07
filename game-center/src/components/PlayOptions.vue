@@ -65,8 +65,6 @@ export default defineComponent({
                         state.session.user, 
                         (res: Room) => {
                             state.room = res
-                            console.log(res)
-                            console.log(res.roomID)
                         })
             
             this.closeSelf()

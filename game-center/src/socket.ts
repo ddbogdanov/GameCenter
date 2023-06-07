@@ -3,13 +3,12 @@ import { io } from "socket.io-client";
 import router from "./router/index"
 import State from '@/model/State'
 import User from "./model/User";
-import Room from "./model/Room";
 
 export const state = reactive(new State());
 
 // "undefined" means the URL will be computed from the `window.location` object
-// const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:3000";
-const URL = "http://localhost:3000"
+// "https://game-center-server.onrender.com"
+const URL = "http://localhost:3000";
 
 export const socket = io(URL, {
   autoConnect: false

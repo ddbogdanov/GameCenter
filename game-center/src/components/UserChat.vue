@@ -6,9 +6,11 @@
                       :key="index"
                       :class="index % 2 == 1 ? 'message odd' : 'message' "
                 >
-                    <p-avatar :image="`${this.$avatarUrl}backgroundColor=${message.user.avatarBackgroundColor}&seed=${message.user.avatarID}.svg`"
-                                shape="circle"
-                                class="message-avatar"
+                    <PlayerAvatar size="normal"
+                                  shape="circle"
+                                  :avatar-id="message.user.avatarID"
+                                  :background-color="message.user.avatarBackgroundColor"
+                                  class="message-avatar"
                     />
                     <div class="message-content">
                         <p>{{ message.message }}</p>
@@ -21,13 +23,18 @@
             </p-scroll-panel>
  
         <div class="chat-footer">
-            <span class="p-input-icon-right" style="width: 100%">
+            <span class="p-inputgroup" style="width: 100%">
                 <p-input-text v-model="message.message"
                               placeholder="Message"
                               style="width: 100%"
                               @keyup.enter="onSend"
                 />
-                <i class="pi pi-send" @click="onSend"></i>
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-thumbs-up" @click="emote"></i>
+                </span>
+                <span class="p-inputgroup-addon">
+                    <i class="pi pi-send" @click="onSend"></i>
+                </span>
             </span>
         </div>
     </div>
@@ -37,9 +44,14 @@
 import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
 import Message from '@/model/Message'
+import PlayerAvatar from './PlayerAvatar.vue';
+import EmoteDialog from './EmoteDialog.vue'
 
 export default defineComponent({
-    name: 'UserChat',
+    name: "UserChat",
+    components: {
+        PlayerAvatar,
+    },
     props: {
         roomID: {
             type: String,
@@ -48,30 +60,35 @@ export default defineComponent({
     },
     data() {
         return {
-            message: { 
-                user: state.session.user, 
-                message: '',
+            message: {
+                user: state.session.user,
+                message: "",
                 timestamp: new Date()
             } as Message,
             messages: [] as Array<Message>
-        }
+        };
     },
     mounted() {
-        socket.on('recieveGameMessage', (message: Message) => {
-            message.timestamp = new Date(message.timestamp)
-            this.messages.push(message)
+        socket.on("recieveGameMessage", (message: Message) => {
+            message.timestamp = new Date(message.timestamp);
+            this.messages.push(message);
+        });
+        socket.on('recieveEmote', () => {
+            this.$dialog.open(EmoteDialog, {})
         })
     },
     methods: {
         onSend() {
-            this.messages.push({ 
-                user: this.message.user, 
-                message: this.message.message, 
-                timestamp: this.message.timestamp 
-            } as Message)
-            socket.emit('sendMessage', { message: this.message, roomID: this.roomID })
-
-            this.message.message = ''
+            this.messages.push({
+                user: this.message.user,
+                message: this.message.message,
+                timestamp: this.message.timestamp
+            } as Message);
+            socket.emit("sendMessage", { message: this.message, roomID: this.roomID });
+            this.message.message = "";
+        },
+        emote() {
+            socket.emit('sendEmote', { roomID: state.room.roomID }) 
         }
     },
 });

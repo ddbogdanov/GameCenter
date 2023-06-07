@@ -1,9 +1,10 @@
 <template>
     <div class="profile-settings">
         <div class="settings-header">
-            <p-avatar :image="`${this.$avatarUrl}backgroundColor=${state.session.user.avatarBackgroundColor}&seed=${state.session.user.avatarID}.svg`"
-                      shape="circle"
-                      size="xlarge"
+            <PlayerAvatar size="xlarge"
+                          shape="circle"
+                          :avatar-id="state.session.user.avatarID"
+                          :background-color="state.session.user.avatarBackgroundColor"
             />
             <h1>{{ state.session.user.username }}</h1>
             <p-button icon="pi pi-sign-out"
@@ -61,23 +62,27 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { state, socket, disconnect } from "@/socket"
+import PlayerAvatar from '../PlayerAvatar.vue';
 
 export default defineComponent({
-    name: 'ProfileSettings',
+    name: "ProfileSettings",
+    components: { 
+        PlayerAvatar 
+    },
     methods: {
         onSubmit() {
-            socket.emit('updateUser', {
+            socket.emit("updateUser", {
                 sessionID: state.session.sessionID,
                 userID: state.session.user.userID,
                 avatarID: state.session.user.avatarID,
                 avatarBackgroundColor: state.session.user.avatarBackgroundColor
-            })
-            this.$emit('submit')
+            });
+            this.$emit("submit");
         },
         onCancel() {
-            this.$emit('cancel')
+            this.$emit("cancel");
         }
-    }
+    },
 })
 </script>
 <script setup lang="ts">

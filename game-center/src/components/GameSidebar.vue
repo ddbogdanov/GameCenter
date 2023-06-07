@@ -29,9 +29,10 @@
                          v-for="user in state.room.users" 
                          :key="user.userID"
                     >
-                        <p-avatar :image="`${this.$avatarUrl}backgroundColor=${user.avatarBackgroundColor}&seed=${user.avatarID}.svg`"
-                                  shape="circle"
-                                  size="large"
+                        <PlayerAvatar size="large"
+                                      shape="circle"
+                                      :avatar-id="user.avatarID"
+                                      :background-color="user.avatarBackgroundColor"
                         />
                         <p>{{ user.username }}</p>
                     </div>
@@ -73,11 +74,13 @@ import { socket, state } from '@/socket'
 import { getStatusSeverity } from '@/utils';
 import Status from '@/model/Status'
 import UserChat from './UserChat.vue';
+import PlayerAvatar from './PlayerAvatar.vue';
 
 export default defineComponent({
     name: 'ChessView',
     components: {
-        UserChat
+        UserChat,
+        PlayerAvatar
     },
     props: {
         readyToStart: {

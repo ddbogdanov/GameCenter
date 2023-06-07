@@ -1,17 +1,19 @@
 <template>
     <div>
-        <p-avatar :image="`${this.$avatarUrl}backgroundColor=${state.session.user.avatarBackgroundColor}&seed=${state.session.user.avatarID}.svg`"
-                  shape="circle"
-                  size="large"
-                  style="cursor: pointer;"
-                  @click="toggleOverlayPanel"
+        <PlayerAvatar size="large"
+                      shape="circle"
+                      :avatar-id="state.session.user.avatarID"
+                      :background-color="state.session.user.avatarBackgroundColor"
+                      style="cursor: pointer"
+                      @click="toggleOverlayPanel"
         />
         <p-overlay-panel ref="overlayPanel">
             <div class="profile-popover">
                 <div class="user-info">
-                    <p-avatar :image="`${this.$avatarUrl}backgroundColor=${state.session.user.avatarBackgroundColor}&seed=${state.session.user.avatarID}.svg`"
-                              shape="circle"
-                              size="xlarge"
+                    <PlayerAvatar size="xlarge"
+                                  shape="circle"
+                                  :avatar-id="state.session.user.avatarID"
+                                  :background-color="state.session.user.avatarBackgroundColor"
                     />
                     <h1>{{ state.session.user.username }}</h1>
                 </div>
@@ -32,7 +34,7 @@
                               severity="info"
                               outlined
                               size="small"
-                              @click="this.profileSettingsVisible = !profileSettingsVisible"
+                              @click="toggleSettingsVisible"
                               style="width: 100%"
                     />
                     <p-button label="Logout"
@@ -58,8 +60,8 @@
             <strong>Profile Settings</strong>
         </template>
 
-        <ProfileSettings @cancel="this.profileSettingsVisible = false"
-                         @submit="this.profileSettingsVisible = false"
+        <ProfileSettings @cancel="closeSettings"
+                         @submit="closeSettings"
         />
     </p-sidebar>
 </template>
@@ -67,11 +69,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ProfileSettings from "./ProfileSettings.vue"
+import PlayerAvatar from "../PlayerAvatar.vue"
 
 export default defineComponent({
     name: 'ProfilePopover',
     components: {
-        ProfileSettings
+        ProfileSettings,
+        PlayerAvatar
     },
     data() {
         return {
@@ -82,6 +86,12 @@ export default defineComponent({
         toggleOverlayPanel(event: Event) {
             (this.$refs.overlayPanel as any).toggle(event)
         },
+        toggleSettingsVisible() {
+            this.profileSettingsVisible = !this.profileSettingsVisible
+        },
+        closeSettings() {
+            this.profileSettingsVisible = false
+        }
     }
 })
 </script>

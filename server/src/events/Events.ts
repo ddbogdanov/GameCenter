@@ -52,6 +52,9 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
         data.message.timestamp = new Date(Date.now())
         socket.to(data.roomID).emit('recieveGameMessage', data.message)
     })
+    socket.on('sendEmote', (data: any) => {
+        socket.to(data.roomID).emit('recieveEmote')
+    })
 
     // User profile events
     socket.on('updateUser', (data: any) => { 

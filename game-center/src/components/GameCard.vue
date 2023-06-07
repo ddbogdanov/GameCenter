@@ -76,6 +76,9 @@ export default defineComponent({
             transform: scale(1.05, 1.05);
             box-shadow: .5px .5px 5px 0px var(--primary-color);
         }
+        &:active {
+            transform: scale(1.03, 1.03)
+        }
     }
     .card-header {
         height: 80%;

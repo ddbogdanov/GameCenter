@@ -9,31 +9,11 @@
                             @checkmate="onCheckmate"
                             @stalemate="onStalemate"
                 />
-
-                <div class="waiting-overlay" v-if="!hasStarted">
-                    <div class="overlay-content">
-                        
-                        <div class="waiting-text">
-                            <span v-for="(letter, index) in waitingText" 
-                                :key="index"
-                                :style="`--i:${index}`" 
-                                :class="letter == ' ' ? 'space' : 'letter'"
-                            >
-                                {{ letter }}
-                            </span>
-                        </div>
-                        <Transition name="waiting">
-                            <p-button severity="success"
-                                    icon="pi pi-play"
-                                    iconPos="right"
-                                    label="Start"
-                                    style="width: 100%;"
-                                    v-if="readyToStartAndIsFirstTurn"
-                                    @click="onStart"
-                            />
-                        </Transition>
-                    </div>
-                </div>
+                <WaitingOverlay v-if="!hasStarted"
+                                :waiting-text="waitingText"
+                                :show-start-button="readyToStartAndIsFirstTurn"
+                                @start="onStart"
+                />
             </div>
             <div class="sidebar-container">
                 <GameSidebar :ready-to-start="readyToStart"
@@ -47,20 +27,21 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
+import { MoveEvent, PieceColor } from 'vue3-chessboard'
 import NavBar from '@/components/navbar/NavBar.vue'
 import ChessBoard from '@/components/ChessBoard.vue'
 import GameSidebar from '@/components/GameSidebar.vue'
 import Room from '@/model/Room'
-import { MoveEvent, PieceColor } from 'vue3-chessboard'
 import Status from '@/model/Status'
-
+import WaitingOverlay from '@/components/WaitingOverlay.vue'
 
 export default defineComponent({
     name: 'ChessView',
     components: {
         NavBar,
         ChessBoard,
-        GameSidebar
+        GameSidebar,
+        WaitingOverlay
     },
     computed: {
         readyToStart(): boolean {
@@ -134,7 +115,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     .chess {
         width: 100%;
         height: calc(100% - 60px);
@@ -147,7 +128,7 @@ export default defineComponent({
         background-color: #f57566;
     }
     .board-container {
-        width: 75vw;
+        flex: 1;
         height: 100%;
 
         position: relative;
@@ -158,74 +139,6 @@ export default defineComponent({
     }
     .sidebar-container {
         height: 100%;
-        width: 25vw;
-    }
-
-    .waiting-overlay {
-        position: absolute;
-        z-index: 1001;
-        top: 0;
-        left: 0;
-
-        width: 100%;
-        height: 100%;;
-
-        backdrop-filter: blur(10px);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .overlay-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-    }
-
-    .waiting-text {
-        position: relative;
-
-        font-family: dosis;
-        font-size: 4rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        -webkit-text-stroke: 1px black;
-
-        .space {
-            width: 15px;
-        }
-        span {
-            position: relative;
-            display: inline-block;
-            animation: flip 4s infinite;
-            animation-delay: calc(100ms * var(--i))
-        }
-        ul {
-            padding: 0;
-        }
-    }
-    @keyframes flip {
-        0%,70% {
-            transform: rotateY(360deg) 
-        }
-    }
-
-    .waiting-move, 
-    .waiting-enter-active,
-    .waiting-leave-active {
-        transition: all 0.5s ease;
-    }
-
-    .waiting-enter-from,
-    .waiting-leave-to {
-        opacity: 0;
-        transform: translateY(100px);
-    }
-
-    .waiting-leave-active {
-        position: absolute;
+        width: 30vw;
     }
 </style>
