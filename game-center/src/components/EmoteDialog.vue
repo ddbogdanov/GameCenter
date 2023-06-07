@@ -9,8 +9,14 @@ export default defineComponent({
     name: "EmoteDialog",
     inject: ['dialogRef'],
     created() {
-        let audio = new Audio('../assets/heheheha.mp3');
-        audio.play();
+        this.audio = new Audio(this.sound)
+        this.audio.play()
+    },
+    data() {
+        return {
+            sound: require('../assets/heheheha.mp3'),
+            audio: undefined as any
+        }
     }
 });
 </script>

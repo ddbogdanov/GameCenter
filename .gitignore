@@ -2,6 +2,7 @@
 node_modules/
 /dist/
 game-center/package-lock.json
+game-center/.firebase
 server/package-lock.json
 server/build
 

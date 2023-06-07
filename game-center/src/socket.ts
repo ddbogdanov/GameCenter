@@ -8,7 +8,7 @@ export const state = reactive(new State());
 
 // "undefined" means the URL will be computed from the `window.location` object
 // "https://game-center-server.onrender.com"
-const URL = "http://localhost:3000";
+const URL = "https://game-center-server.onrender.com";
 
 export const socket = io(URL, {
   autoConnect: false
