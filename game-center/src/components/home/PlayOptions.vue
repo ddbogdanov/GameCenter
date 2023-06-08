@@ -16,8 +16,9 @@
                   icon="pi pi-play"
                   icon-pos="right"
                   class="option-button"
+                  @click="onJoinGame"
 
-                  disabled
+                  v-if="canJoinExisting"
         />
         <p-button label="Start a New Game"
                   severity="success"
@@ -26,6 +27,8 @@
                   outlined
                   class="option-button"
                   @click="onNewGame"
+
+                  v-if="canStartNew"
         />
         <p-button label="View All Games"
                   severity="info"
@@ -34,6 +37,8 @@
                   outlined
                   class="option-button"
                   @click="onViewAll"
+
+                  v-if="canViewAll"
         />
         
     </div>
@@ -52,14 +57,30 @@ export default defineComponent({
         return {
             gameName: '',
             activePlayers: 0,
+            canJoinExisting: true,
+            canStartNew: true,
+            canViewAll: true,
             roomID: ''
         }
     },
     mounted() {
         this.gameName = (this.dialogRef as DynamicDialogInstance).data.gameName
         this.activePlayers = (this.dialogRef as DynamicDialogInstance).data.activePlayers
+        this.canJoinExisting = (this.dialogRef as DynamicDialogInstance).data.canJoinExisting
+        this.canStartNew = (this.dialogRef as DynamicDialogInstance).data.canStartNew
+        this.canViewAll = (this.dialogRef as DynamicDialogInstance).data.canViewAll
     },
     methods: {
+        onJoinGame() {
+            socket.emit(`join${this.gameName.replace(/\s+/g, '')}Game`,
+                        state.session.user,
+                        (res: Room) => {
+                            state.room = res
+                        }
+            )
+            this.closeSelf()
+            this.$router.push({ path: `${this.gameName.replace(/\s+/g, '').toLowerCase()}`})
+        },
         onNewGame() {
             socket.emit(`new${this.gameName.replace(/\s+/g, '')}Game`, 
                         state.session.user, 

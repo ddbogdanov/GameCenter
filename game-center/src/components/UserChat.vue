@@ -44,8 +44,8 @@
 import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
 import Message from '@/model/Message'
-import PlayerAvatar from './PlayerAvatar.vue';
-import EmoteDialog from './EmoteDialog.vue'
+import PlayerAvatar from '@/components/PlayerAvatar.vue';
+import EmoteDialog from '@/components/game/EmoteDialog.vue'
 
 export default defineComponent({
     name: "UserChat",

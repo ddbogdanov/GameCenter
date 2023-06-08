@@ -1,5 +1,5 @@
 <template>
-    <img src="../assets/heheheha.gif">
+    <img src='@/assets/heheheha.gif'>
 </template>
 
 <script lang="ts">
@@ -14,7 +14,7 @@ export default defineComponent({
     },
     data() {
         return {
-            sound: require('../assets/heheheha.mp3'),
+            sound: require('@/assets/heheheha.mp3'),
             audio: undefined as any
         }
     }

@@ -16,8 +16,8 @@
 import { defineComponent } from 'vue';
 import { socket } from '@/socket'
 import NavBar from '@/components/navbar/NavBar.vue'
-import LobbyTable from '@/components/LobbyTable.vue'
-import LobbyHeader from '@/components/LobbyHeader.vue'
+import LobbyTable from '@/components/lobby/LobbyTable.vue'
+import LobbyHeader from '@/components/lobby/LobbyHeader.vue'
 import Room from '@/model/Room';
 
 

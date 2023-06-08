@@ -12,9 +12,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import GamesGrid from '@/components/GamesGrid.vue'
+import GamesGrid from '@/components/home/GamesGrid.vue'
 import NavBar from '@/components/navbar/NavBar.vue'
-import HomeHeader from '@/components/HomeHeader.vue';
+import HomeHeader from '@/components/home/HomeHeader.vue';
 
 export default defineComponent({
   name: 'HomeView',

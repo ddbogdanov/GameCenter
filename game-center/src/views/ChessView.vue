@@ -29,11 +29,11 @@ import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
 import { MoveEvent, PieceColor } from 'vue3-chessboard'
 import NavBar from '@/components/navbar/NavBar.vue'
-import ChessBoard from '@/components/ChessBoard.vue'
-import GameSidebar from '@/components/GameSidebar.vue'
+import ChessBoard from '@/components/game/chess/ChessBoard.vue'
+import GameSidebar from '@/components/game/GameSidebar.vue'
 import Room from '@/model/Room'
 import Status from '@/model/Status'
-import WaitingOverlay from '@/components/WaitingOverlay.vue'
+import WaitingOverlay from '@/components/game/WaitingOverlay.vue'
 
 export default defineComponent({
     name: 'ChessView',

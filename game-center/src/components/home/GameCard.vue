@@ -19,13 +19,25 @@
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from 'vue';
 
-const PlayOptions = defineAsyncComponent(() => import('@/components/PlayOptions.vue'))
+const PlayOptions = defineAsyncComponent(() => import('@/components/home/PlayOptions.vue'))
 
 export default defineComponent({
     name: 'GameCard',
     props: {
         gameName: String,
         imageUrl: String,
+        canJoinExisting: {
+            type: Boolean,
+            default: true
+        },
+        canStartNew: {
+            type: Boolean,
+            default: true
+        },
+        canViewAll: {
+            type: Boolean,
+            default: true
+        }
     },
     methods: {
         onPlay() {
@@ -37,11 +49,18 @@ export default defineComponent({
                     modal: true,
                     dismissableMask: true,
                     closable: false,
-                    draggable: false
+                    draggable: false,
+                },  
+                contentProps: {
+
                 },
                 data: {
                     gameName: this.gameName,
-                    activePlayers: 0
+                    activePlayers: 0,
+
+                    canJoinExisting: this.canJoinExisting,
+                    canStartNew: this.canStartNew,
+                    canViewAll: this.canViewAll
                 }
            })
         }

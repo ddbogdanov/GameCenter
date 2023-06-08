@@ -73,8 +73,8 @@ import { defineComponent } from 'vue'
 import { socket, state } from '@/socket'
 import { getStatusSeverity } from '@/utils';
 import Status from '@/model/Status'
-import UserChat from './UserChat.vue';
-import PlayerAvatar from './PlayerAvatar.vue';
+import UserChat from '@/components/UserChat.vue';
+import PlayerAvatar from '@/components/PlayerAvatar.vue';
 
 export default defineComponent({
     name: 'ChessView',

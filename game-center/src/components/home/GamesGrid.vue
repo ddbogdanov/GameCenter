@@ -4,18 +4,36 @@
             <div class="games-grid">
                 <GameCard game-name="Chess" 
                           image-url="https://cdn.hswstatic.com/gif/chess-4.jpg"
+
+                          :can-join-existing="false"
+                          :can-start-new="true"
+                          :can-view-all="true"
                 />
                 <GameCard game-name="Checkers" 
                           image-url="https://cf.geekdo-images.com/S4IBcWYhlbn51_5f0EIR4g__opengraph/img/iI_-WErPq_25QRsBN4NEfbFnwu4=/fit-in/1200x630/filters:strip_icc()/pic113720.jpg"
+
+                          :can-join-existing="true"
+                          :can-start-new="true"
+                          :can-view-all="true"
+
                           class="disabled"
                 />
                 <GameCard game-name="Blackjack" 
                           image-url="https://crescent.edu/uploads/editor/images/Blackjack.png"
+
+                          :can-join-existing="true"
+                          :can-start-new="true"
+                          :can-view-all="true"
+
                           class="disabled"
                 />
-                <!-- <GameCard game-name="Cards Against Humanity"
-                          image-url="https://thatshelf.com/wp-content/uploads/2015/05/CAH-box.jpg"
-                /> -->
+                <GameCard game-name="CrashCoin"
+                          image-url="https://t4.ftcdn.net/jpg/05/62/27/09/360_F_562270957_OS3T9bvFuujUYyzd9JYHkVz6KgGo55No.jpg"
+
+                          :can-join-existing="true"
+                          :can-start-new="false"
+                          :can-view-all="false"
+                />
             </div>
         </p-scroll-panel>
     </div>
@@ -23,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import GameCard from '@/components/GameCard.vue'
+import GameCard from '@/components/home/GameCard.vue'
 export default defineComponent({
   name: 'GamesGrid',
   components: {
