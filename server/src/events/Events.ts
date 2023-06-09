@@ -5,6 +5,7 @@ import SessionStore from '../model/SessionStore'
 import blackjackEvents from './BlackjackEvents'
 import checkersEvents from './CheckersEvents'
 import chessEvents from './ChessEvents'
+import crashCoinEvents from './CrashCoinEvents'
 
 const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterDataStore, sessionStore: SessionStore, roomStore: RoomStore) => {
 
@@ -67,6 +68,7 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
 
     // Game events
     chessEvents(io, socket, db, roomStore, sessionStore)
+    crashCoinEvents(io, socket, db, roomStore, sessionStore)
     checkersEvents(io, socket,db, roomStore)
     blackjackEvents(io, socket, db, roomStore)
 }

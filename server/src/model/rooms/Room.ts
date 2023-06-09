@@ -44,6 +44,12 @@ abstract class Room {
     public addUser(user: User) {
         this.users.push(user)
     }
+    public isFull(): boolean {
+        if(this.users.length === this.game.getMaximumUsers()) {
+            return true
+        }
+        return false
+    }
     public isUserInRoom(userID: string): boolean {
         if(this.users.find(user => user.getUserID() === userID)) {
             return true
