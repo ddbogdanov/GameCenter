@@ -39,8 +39,9 @@ const events = (io: socketio.Server, socket: socketio.Socket, db: GameCenterData
     })
     socket.on('disconnecting', () => {
         socket.rooms.forEach((room) => {
-            io.to(room).emit('otherPartyDisconnect')
-            roomStore.deleteRoom(room)
+            if(io.of('/').adapter.rooms.get(room)?.size == 1) {
+                roomStore.deleteRoom(room)
+            }
         })
     })
 

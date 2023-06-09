@@ -25,11 +25,14 @@ class CrashCoinGame extends Game {
 
         this.targetMultiplier = this.weightedRandom(1, 100)
         let emits = 0
+        let timeElapsedMs = 0
+        let timing = this.getMultiplierEmitsTiming(emits)
 
         for(let multiplier = 1; multiplier <= this.targetMultiplier; multiplier += 0.01) {
-            io.to(roomID).emit('multiplierUpdate', multiplier.toFixed(2))
+            io.to(roomID).emit('multiplierUpdate', { multiplier: multiplier.toFixed(2), time: timeElapsedMs })
             ++emits
-            await this.sleep(this.getMultiplierEmitsTiming(emits))
+            timing = this.getMultiplierEmitsTiming(emits)
+            await this.sleep(timing)
         }
 
         io.to(roomID).emit('gameEnd', this.targetMultiplier)
@@ -66,11 +69,8 @@ class CrashCoinGame extends Game {
         else if(emits < 200) {
             return 60
         }
-        else if(emits < 250) {
-            return 40
-        }
         else {
-            return 15
+            return 50
         }
     }
 

@@ -31,6 +31,7 @@ import InputMask from 'primevue/inputmask';
 import ColorPicker from 'primevue/colorpicker';
 import Fieldset from 'primevue/fieldset';
 import InputNumber from 'primevue/inputnumber';
+import Chart from 'primevue/chart';
 
 const app = createApp(App)
 
@@ -65,6 +66,7 @@ app.component('p-input-mask', InputMask)
 app.component('p-color-picker', ColorPicker)
 app.component('p-fieldset', Fieldset)
 app.component('p-input-number', InputNumber)
+app.component('p-chart', Chart)
 
 
 app.directive('tooltip', Tooltip)

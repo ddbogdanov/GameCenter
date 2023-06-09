@@ -29,9 +29,6 @@ socket.on('newDisconnection', (username: string) => {
   console.log(`User: ${username} left`)
   state.activeUsers--
 })
-socket.on('otherPartyDisconnect', () => {
-  location.reload()
-})
 
 socket.on('newSession', (sessionInfo) => {
   state.session = sessionInfo.session
