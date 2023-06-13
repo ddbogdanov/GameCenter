@@ -9,6 +9,7 @@ class CrashCoinRoom extends Room {
     constructor(game: CrashCoinGame, users: User[], status?: Status) {
         super(users, status)
         this.game = game
+        this.status = Status.PLAYING
     }
 
     public getGame(): CrashCoinGame {
