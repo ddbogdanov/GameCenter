@@ -32,6 +32,7 @@ class CrashCoinGame extends Game {
             io.to(roomID).emit('multiplierUpdate', { multiplier: multiplier.toFixed(2), time: timeElapsedMs })
             ++emits
             timing = this.getMultiplierEmitsTiming(emits)
+            timeElapsedMs += timing
             await this.sleep(timing)
         }
 
@@ -70,7 +71,7 @@ class CrashCoinGame extends Game {
             return 60
         }
         else {
-            return 50
+            return 40
         }
     }
 

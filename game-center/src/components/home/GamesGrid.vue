@@ -97,6 +97,9 @@ export default defineComponent({
 
     .disabled {
         filter: blur(2px) grayscale(100%);
+
+        pointer-events: none;
+        touch-action: none;
     }
     .disabled:active {
         pointer-events: none;

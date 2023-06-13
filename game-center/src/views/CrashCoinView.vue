@@ -3,14 +3,21 @@
         <NavBar/>
 
         <div class="crash-coin">
-            <h1>Next Game In: {{ nextGameIn }}</h1>
-            <h1>Multiplier: {{ multiplier }}x</h1>
+            <div class="multiplier">
+                <CoinMultiplier :multiplier="multiplier"/>
+            </div>
 
-            <p-chart type="line"
-                    :data="multiplierHistory"
-                    :options="chartOptions"
-                    ref="chart"
-            />
+            <div class="play">
+
+            </div>
+
+            <div class="wagers">
+
+            </div>
+
+            <div class="chatgrid">
+                <UserChat :roomID="state.room.roomID"/>
+            </div>
         </div>
     </div>
 </template>
@@ -19,98 +26,32 @@
 import { defineComponent, ref } from 'vue';
 import { socket, state } from '@/socket'
 import NavBar from '@/components/navbar/NavBar.vue';
+import CoinMultiplier from '@/components/game/crashcoin/CoinMultiplier.vue';
+import UserChat from '@/components/UserChat.vue';
 
 export default defineComponent({
     name: 'CrashCoinView',
     components: {
-        NavBar
-    },
-    setup() {
-        const chart = ref()
-
-        const updateChart = (data: any) => {
-            const c = chart.value.chart
-            c.data.labels.push(data.time)
-            c.data.datasets[0].data.push(data.multiplier)
-            
-            c.update()
-        }
-        const resetChart = () => {
-            const c = chart.value.chart
-
-            c.data.labels = []
-            c.data.datasets[0].data = []
-        }
-
-        return {
-            chart,
-            updateChart,
-            resetChart,
-            chartOptions: {
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#495057'
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: '#495057'
-                        },
-                        grid: {
-                            display: false
-                        },
-                        min: 0,
-                    },
-                    y: {
-                        ticks: {
-                            color: '#495057'
-                        },
-                        grid: {
-                            display: false
-                        },
-                        min: 1
-                    }
-                },
-                animations: {
-                    x: {
-                        
-                    },
-                    y: {
-
-                    }
-                }
-            },
-            multiplierHistory: {
-                labels: [] as string[],
-                datasets: [
-                    {
-                        label: '',
-                        data: [] as number[],
-                        fill: false,
-                        pointRadius: 0,
-                    }
-                ]
-            },
-        }
+        NavBar,
+        CoinMultiplier,
+        UserChat
     },
     data() {
         return {
-            multiplier: 1.00,
+            multiplier: "1.00",
             crashHistory: [] as Array<any>,
             nextGameIn: 0,
+            state: state,
         }
     },
     created() {
         socket.on('multiplierUpdate', (data) => {
             this.multiplier = data.multiplier
-            this.updateChart(data)
+            
         })
         socket.on('gameEnd', (data) => {
             this.crashHistory.push(data)
-            this.resetChart()
+            
         })
         socket.on('nextGameIn', (data) => {
             this.nextGameIn = data
@@ -122,9 +63,46 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
-.crash-coin {
-    width: 100%;
-    height: calc(100% - 60px);
-}
+<style scoped lang="scss">
+    .crash-coin {
+        width: 100%;
+        height: calc(100% - 60px);
+
+        padding: 10px 10px 10px 10px;
+
+        background-color: #363636;
+
+        display: grid;
+        grid:
+        "multiplier play wagers" 1fr
+        "chatgrid chatgrid wagers" 1fr
+        / 1fr 1fr 1fr;
+        grid-gap: 10px;
+    }
+
+    .multiplier { 
+        grid-area: multiplier; 
+        
+        background-color: #454545;
+        border-radius: 5px;
+    }
+    .play { 
+        grid-area: play;
+
+        background-color: #454545;
+        border-radius: 5px;
+    }
+    .wagers { 
+        grid-area: wagers;
+
+        background-color: #454545;
+        border-radius: 5px;
+    }
+    .chatgrid { 
+        grid-area: chatgrid;
+        min-height: 0;
+
+        background-color: #454545;
+        border-radius: 5px;
+    }
 </style>

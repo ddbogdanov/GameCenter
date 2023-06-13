@@ -1,26 +1,26 @@
 <template>
     <div class="chat">
 
-            <p-scroll-panel class="chat-container">
-                <span v-for="(message, index) in messages" 
-                      :key="index"
-                      :class="index % 2 == 1 ? 'message odd' : 'message' "
-                >
-                    <PlayerAvatar size="normal"
-                                  shape="circle"
-                                  :avatar-id="message.user.avatarID"
-                                  :background-color="message.user.avatarBackgroundColor"
-                                  class="message-avatar"
-                    />
-                    <div class="message-content">
-                        <p>{{ message.message }}</p>
-                    </div>
-                    <div class="message-timestamp">
-                        <p>{{ message.timestamp.toLocaleTimeString() }}</p>
-                        <strong class="username">{{ message.user.username }}</strong>
-                    </div>
-                </span>
-            </p-scroll-panel>
+        <p-scroll-panel class="chat-container">
+            <span v-for="(message, index) in messages" 
+                    :key="index"
+                    :class="index % 2 == 1 ? 'message odd' : 'message' "
+            >
+                <PlayerAvatar size="normal"
+                                shape="circle"
+                                :avatar-id="message.user.avatarID"
+                                :background-color="message.user.avatarBackgroundColor"
+                                class="message-avatar"
+                />
+                <div class="message-content">
+                    <p>{{ message.message }}</p>
+                </div>
+                <div class="message-timestamp">
+                    <p>{{ message.timestamp.toLocaleTimeString() }}</p>
+                    <strong class="username">{{ message.user.username }}</strong>
+                </div>
+            </span>
+        </p-scroll-panel>
  
         <div class="chat-footer">
             <span class="p-inputgroup" style="width: 100%">
@@ -94,9 +94,10 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     .chat {
-        width: 100%;   
+        width: 100%;
+        height: 100%;
 
         display: flex;
         flex-direction: column;
@@ -104,8 +105,9 @@ export default defineComponent({
         align-items: center;
 
         .chat-container {
-            width: 100%;
             flex: 1;
+            width: 100%;
+           
             min-height: 0;
         }
         .chat-footer {
