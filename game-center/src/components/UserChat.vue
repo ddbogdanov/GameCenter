@@ -46,7 +46,8 @@ import { socket, state } from '@/socket'
 import Message from '@/model/Message'
 import PlayerAvatar from '@/components/PlayerAvatar.vue';
 import EmoteDialog from '@/components/game/EmoteDialog.vue'
-
+// TODO: timestamps display right time only on recieved message, but even that isnt right.
+// timestamp should display time the message was sent. 
 export default defineComponent({
     name: "UserChat",
     components: {
@@ -131,6 +132,7 @@ export default defineComponent({
         display: inline-flex;
         justify-content: space-between;
 
+        color: white;
         .message-avatar {
                 min-width: fit-content;
         }
@@ -171,6 +173,6 @@ export default defineComponent({
         }
     }
     .odd {
-        background-color: var(--primary-100)
+        background-color: #3d3d3d
     }
 </style>

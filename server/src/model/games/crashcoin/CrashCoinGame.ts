@@ -36,7 +36,7 @@ class CrashCoinGame extends Game {
             await this.sleep(timing)
         }
 
-        io.to(roomID).emit('gameEnd', this.targetMultiplier)
+        io.to(roomID).emit('gameEnd', { multiplier: this.targetMultiplier.toFixed(2), time: timeElapsedMs })
 
         this.nextGameInMs = 8000
         io.to(roomID).emit('nextGameIn', this.nextGameInMs)

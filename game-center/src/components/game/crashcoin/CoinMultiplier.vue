@@ -6,7 +6,6 @@
             </div>
             <div class="end">
                 <i class="pi pi-info-circle info"
-                    style="color: #cacaca"
                     v-tooltip.left="'Coin Multiplier. Bets will be multiplied against this value.'"
                 />
             </div>
@@ -14,9 +13,13 @@
 
         <div class="coin-multiplier">
             <div class="text">
-                <span class="multiplier">
-                    <h1 style="padding-left: 10px;">{{ multiplier }}</h1>
-                    <mark>x</mark>
+                <span class="multiplier" :class="{ crashed: status == 'Crashed' }">
+                    <h1 v-if="(nextGameIn == 0) || ((status == 'Crashed') && (nextGameIn > 6000))">
+                        {{ multiplier }}<mark>x</mark>
+                    </h1>
+                    <h3 v-if="((nextGameIn <= 6000) && !(nextGameIn == 0)) && (status == 'Crashed')" style="color: #CACACA;">
+                        Next game in: {{ nextGameIn / 1000 }}s
+                    </h3>
                 </span>
             </div>
             <div class="bar" :style="{ height: multiplier + '%' }"></div>
@@ -25,7 +28,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import CrashCoinStatus from '@/model/CrashCoinStatus';
+import { PropType, defineComponent } from 'vue';
 
 export default defineComponent({
     name: 'CoinMultiplier',
@@ -34,6 +38,14 @@ export default defineComponent({
             type: String,
             required: true
         },
+        nextGameIn: {
+            type: Number,
+            required: true
+        },
+        status: {
+            type: String as PropType<CrashCoinStatus>,
+            required: true
+        }
     },
 })
 </script>
@@ -45,28 +57,31 @@ export default defineComponent({
 
         display: flex;
         flex-direction: column;
-    }
-    .header {
-        color: white;
-        font-family: dosis;
 
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        .header {
+            color: white;
+            font-family: dosis;
 
-        padding: 10px 10px 10px 10px;
-        border-bottom: 1px solid #cacaca;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
 
-        h3 {
-            margin: 0;
-        }
-    }
-    .info {
-        transition: all 500ms;
+            padding: 10px 10px 10px 10px;
+            border-bottom: 1px solid #CACACA;
 
-        &:hover {
-            transform: scale(1.2);
+            .info {
+                transition: all 500ms;
+                color: #CACACA;
+
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+
+            h3 {
+                margin: 0;
+            }
         }
     }
     .coin-multiplier {
@@ -104,6 +119,9 @@ export default defineComponent({
                 align-items: baseline;
                 gap: 10px;
 
+                &.crashed {
+                    color: #da2400;
+                }
                 h1 {
                     margin: 0;
                 }
@@ -111,7 +129,9 @@ export default defineComponent({
                     all: unset;
 
                     font-family: dosis;
-                    color: #cacaca;
+                    font-size: 3rem;
+                    font-weight: 400;
+                    color: #CACACA;
 
                     right: 0;
                 }
