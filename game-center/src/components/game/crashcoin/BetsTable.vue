@@ -7,7 +7,7 @@
         <p-column field="wager"
                   header="Wager"
         />
-        <p-column field="cashout"
+        <p-column field="cashedOutAt"
                   header="Cashout at"
         />
         <p-column field="profit"

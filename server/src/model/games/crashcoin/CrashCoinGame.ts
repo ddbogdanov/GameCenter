@@ -85,7 +85,7 @@ class CrashCoinGame extends Game {
             return false
         }
 
-        let profit = (bet.getWager() * parseFloat(this.currentMultiplier))
+        let profit = ((bet.getWager() * parseFloat(this.currentMultiplier)) - bet.getWager())
         bet.setProfit(profit)
         bet.setCashedOutAt(parseFloat(this.currentMultiplier))
         io.to(roomID).emit('recieveCashout', bet)
