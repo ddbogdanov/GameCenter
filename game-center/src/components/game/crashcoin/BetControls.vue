@@ -12,7 +12,7 @@
         </div>
 
         <div class="controls">
-            <form @submit.prevent="onWager()" class="wager-form">
+            <form @submit.prevent="onPlaceBet()" class="wager-form">
 
                 <div class="form-content">
                     <span class="p-inputgroup">
@@ -104,9 +104,8 @@ export default defineComponent({
         }
     },
     methods: {
-        onWager() {
-            console.log('wager', this.wager)
-            this.$emit('onBetPlaced')
+        onPlaceBet() {
+            this.$emit('onPlaceBet', { wager: this.wager, cashout: this.cashout })
         },
         onCashout() {
             this.$emit('onCashout')

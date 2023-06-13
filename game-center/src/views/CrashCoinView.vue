@@ -1,7 +1,6 @@
 <template>
     <div style="height: 100%;">
         <NavBar/>
-
         <div class="crash-coin">
             <div class="multiplier">
                 <CoinMultiplier :multiplier="multiplier"
@@ -14,13 +13,13 @@
                 <BetControls :nextGameIn="nextGameIn"
                              :status="status"
                              :betPlaced="betPlaced"
-                             @onBetPlaced="onBetPlaced"
+                             @onPlaceBet="onPlaceBet"
                              @onCashout="onCashout"
                 />
             </div>
 
-            <div class="wagers">
-                <p v-for="(crash, index) of crashHistory" :key="index" style="color: coral; margin: 2px;">Crash: {{ crash.crash }} Multiplier: {{ crash.shown }}</p>
+            <div class="bets">
+                <BetsTable :bets="bets"/>
             </div>
 
             <div class="chatgrid">
@@ -38,6 +37,8 @@ import NavBar from '@/components/navbar/NavBar.vue';
 import CoinMultiplier from '@/components/game/crashcoin/CoinMultiplier.vue';
 import UserChat from '@/components/UserChat.vue';
 import BetControls from '@/components/game/crashcoin/BetControls.vue';
+import CrashCoinBet from '@/model/CrashCoinBet';
+import BetsTable from '@/components/game/crashcoin/BetsTable.vue';
 
 export default defineComponent({
     name: 'CrashCoinView',
@@ -45,7 +46,8 @@ export default defineComponent({
         NavBar,
         CoinMultiplier,
         UserChat,
-        BetControls
+        BetControls,
+        BetsTable
     },
     data() {
         return {
@@ -55,6 +57,7 @@ export default defineComponent({
             nextGameIn: 0,
             status: CrashCoinStatus.PLAYING,
             state: state,
+            bets: [] as Array<CrashCoinBet>
         }
     },
     created() {
@@ -67,6 +70,7 @@ export default defineComponent({
         })
         socket.on('gameEnd', (data) => {
             this.status = CrashCoinStatus.CRASHED
+            this.bets = []
             this.betPlaced = false
             this.multiplier = data.multiplier
             this.crashHistory.push({ crash: data.multiplier, shown: this.multiplier })
@@ -75,14 +79,32 @@ export default defineComponent({
         socket.on('nextGameIn', (data) => {
             this.nextGameIn = data
         })
+        socket.on('newBet', (data) => {
+            this.bets.push(data)
+        })
+        socket.on('recieveCashout', (data) => {
+            let betIndex = this.bets.findIndex((bet) => bet.user.userID == data.user.userID)
+
+            this.bets[betIndex] = data
+        })
     },
     methods: {
-        onBetPlaced() {
+        onPlaceBet(bet: any) {
             this.betPlaced = true
+
+            bet.userID = state.session.user.userID
+            bet.roomID = state.room.roomID
+            socket.emit('placeBet', bet, (data: any) => {
+                console.log(data)
+            })
         },
         onCashout() {
-            console.log('cashed out')
             this.betPlaced = false
+
+            socket.emit('cashout', { userID: state.session.user.userID, roomID: state.room.roomID }, 
+            (data: any) => {
+                console.log(data)
+            })
         },
     }
 })
@@ -99,8 +121,8 @@ export default defineComponent({
 
         display: grid;
         grid:
-        "multiplier controls wagers" 1fr
-        "chatgrid chatgrid wagers" 1fr
+        "multiplier controls bets" 1fr
+        "chatgrid chatgrid bets" 1fr
         / 1fr 1fr 1fr;
         grid-gap: 10px;
     }
@@ -117,13 +139,11 @@ export default defineComponent({
         background-color: #454545;
         border-radius: 5px;
     }
-    .wagers { 
-        grid-area: wagers;
+    .bets { 
+        grid-area: bets;
 
         background-color: #454545;
         border-radius: 5px;
-
-        overflow-y: scroll;
     }
     .chatgrid { 
         grid-area: chatgrid;
