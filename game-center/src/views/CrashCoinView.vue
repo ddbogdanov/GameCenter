@@ -39,13 +39,13 @@
                         </button>
                     </div>
 
-                    <div class="panel" v-if="chatOpen">
+                    <div class="panel" v-show="chatOpen">
                         <UserChat :roomID="state.room.roomID"/>
                     </div>
-                    <div class="panel" v-if="leaderboardOpen">
+                    <div class="panel" v-show="leaderboardOpen">
                         <LeaderboardTable :leaderboard="leaderboard"/>
                     </div>
-                    <div class="panel" v-if="betsOpen">
+                    <div class="panel" v-show="betsOpen">
                         <BetsTable :bets="bets"/>
                     </div>
 
