@@ -2,6 +2,12 @@
     <div style="height: 100%;">
         <NavBar/>
         <div class="chess">
+            <div class="sidebar-controls">
+                <p-button severity="primary" icon="pi pi-bars" outlined 
+                          @click="onShowSidebar"
+                />
+            </div>
+
             <div class="board-container">
                 <ChessBoard :has-started="hasStarted"
                             @move-made="onMoveMade"
@@ -9,13 +15,13 @@
                             @checkmate="onCheckmate"
                             @stalemate="onStalemate"
                 />
-                <WaitingOverlay v-if="!hasStarted"
+                <!-- <WaitingOverlay v-if="!hasStarted"
                                 :waiting-text="waitingText"
                                 :show-start-button="readyToStartAndIsFirstTurn"
                                 @start="onStart"
-                />
+                /> -->
             </div>
-            <div class="sidebar-container">
+            <div class="sidebar-container" :class="{ visible: showSidebar}">
                 <GameSidebar :ready-to-start="readyToStart"
                              :moveHistory="moveHistory"
                 />
@@ -41,7 +47,7 @@ export default defineComponent({
         NavBar,
         ChessBoard,
         GameSidebar,
-        WaitingOverlay
+        //WaitingOverlay
     },
     computed: {
         readyToStart(): boolean {
@@ -63,7 +69,8 @@ export default defineComponent({
     data() {
         return {
             hasStarted: false,
-            moveHistory: [] as Array<{user: string | undefined, move: string}>
+            moveHistory: [] as Array<{user: string | undefined, move: string}>,
+            showSidebar: false
         }
     },
     mounted() {
@@ -110,6 +117,9 @@ export default defineComponent({
                     summary: 'Stalemate', detail: `No more legal moves`,
                     life: 3000 
             })
+        },
+        onShowSidebar() {
+            this.showSidebar = !this.showSidebar
         }
     }
 });
@@ -120,12 +130,39 @@ export default defineComponent({
         width: 100%;
         height: calc(100% - 60px);
 
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
 
-        background-color: #f57566;
+        background-color: #454545;
+
+        @media screen and (max-width: 1100px) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .sidebar-container {
+                display: none;
+
+                &.visible {
+                    display: block;
+
+                    position: absolute;
+                    right: 0;
+                    z-index: 2;
+
+                    width: 350px;
+                    height: calc(100% - 60px);
+                }
+            }
+            .sidebar-controls {
+                display: block;
+            }
+        }
+        @media screen and (min-width: 1101px) {
+            .sidebar-controls {
+                display: none;
+            }
+        }
     }
     .board-container {
         flex: 1;
@@ -137,8 +174,13 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
     }
-    .sidebar-container {
-        height: 100%;
-        width: 30vw;
+
+    .sidebar-controls {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        padding: 10px 0px 0px 10px;
     }
 </style>
