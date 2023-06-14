@@ -6,7 +6,7 @@
             </div>
             <div class="end">
                 <i class="pi pi-info-circle info"
-                    v-tooltip.left="'Controls to place bets'"
+                    v-tooltip.left="'You can place your bet in between rounds. Try to cash out before the multiplier crashes!'"
                 />
             </div>
         </div>

@@ -17,13 +17,15 @@ class SessionStore {
     public saveSession(session: Session): void {
         this.sessions.set(session.getSessionID(), session)
     }
-    public updateUserInSession(sessionID: string, avatarID: string, avatarBackgroundColor: string): boolean {
+    public updateUserInSession(sessionID: string, avatarID: string, avatarBackgroundColor: string, coins: number): boolean {
         let session = this.findSession(sessionID)
         if(!session) {
             return false
         }
 
-        session.getUser().setAvatarID(avatarID).setAvatarBackgroundColor(avatarBackgroundColor)
+        session.getUser().setAvatarID(avatarID)
+                         .setAvatarBackgroundColor(avatarBackgroundColor)
+                         .setCoins(coins)
         return true
     }
     public updateCoinsInSession(sessionID: string, dCoins: number) {

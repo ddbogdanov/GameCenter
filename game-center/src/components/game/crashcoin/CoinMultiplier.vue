@@ -6,7 +6,7 @@
             </div>
             <div class="end">
                 <i class="pi pi-info-circle info"
-                    v-tooltip.left="'Coin Multiplier. Bets will be multiplied against this value.'"
+                    v-tooltip.left="'Coin Multiplier. Your bet will be multiplied against this value - unless you dont cash out on time!'"
                 />
             </div>
         </div>

@@ -110,6 +110,7 @@ export default defineComponent({
             bet.sessionID = state.session.sessionID
             socket.emit('placeBet', bet, (data: any) => {
                 if(!data.status) {
+                    this.betPlaced = false
                     this.$toast.add({ 
                         severity: 'error',
                         summary: 'Error', detail: data.message,

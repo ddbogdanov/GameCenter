@@ -46,12 +46,13 @@ class GameCenterDataStore {
             (error) => { if(error) console.log(error) }
         )
     }
-    public updateUser(userID: string, avatarID: string, avatarBackgroundColor: string) {
+    public updateUser(userID: string, avatarID: string, avatarBackgroundColor: string, coins: string) {
         this.db.exec(
             `
             UPDATE users SET 
                 avatarID = '${avatarID}',
-                avatarBackgroundColor = '${avatarBackgroundColor}'
+                avatarBackgroundColor = '${avatarBackgroundColor}',
+                coins = ${coins}
             WHERE userID = '${userID}'
             `,
             (error) => { if(error) console.log(error) }

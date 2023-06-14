@@ -54,23 +54,7 @@ class CrashCoinGame extends Game {
 
         io.to(roomID).emit('gameEnd', { multiplier: this.targetMultiplier.toFixed(2), time: timeElapsedMs })
 
-        this.bets.forEach((bet => {
-            if(bet.getCashedOutAt()) {
-                return
-            }
-            let session = sessionStore.findSession(bet.getSessionID())
-            if(!session) {
-                return 
-            }
-            bet.setProfit(parseFloat(((-bet.getWager()).toFixed(4))))
-
-            io.to(bet.getSocketID()).emit('betLost', {
-                coins: session.getUser().getCoins(),
-                profit: (-bet.getWager()).toFixed(4)
-            })
-            io.to(roomID).emit('recieveBetLost', bet)
-        }))
-
+        await this.findLostBets(io, sessionStore, roomID)
         await this.acceptBets(io, roomID)
 
         this.game(io, roomID, sessionStore, db)
@@ -85,7 +69,9 @@ class CrashCoinGame extends Game {
         if(!session) {
             return false
         }
-
+        if(session.getUser().getCoins() < bet.getWager()) {
+            return false
+        }
         session.getUser().updateCoins(-bet.getWager())
         db.updateCoins(session?.getUser().getUserID(), -bet.getWager())
 
@@ -121,6 +107,24 @@ class CrashCoinGame extends Game {
         return profit
     }
 
+    private async findLostBets(io: socketio.Server, sessionStore: SessionStore, roomID: string) {
+        this.bets.forEach((bet => {
+            if(bet.getCashedOutAt()) {
+                return
+            }
+            let session = sessionStore.findSession(bet.getSessionID())
+            if(!session) {
+                return 
+            }
+            bet.setProfit(parseFloat(((-bet.getWager()).toFixed(4))))
+
+            io.to(bet.getSocketID()).emit('betLost', {
+                coins: session.getUser().getCoins(),
+                profit: (-bet.getWager()).toFixed(4)
+            })
+            io.to(roomID).emit('recieveBetLost', bet)
+        }))
+    }
     private async acceptBets(io: socketio.Server, roomID: string) {
         this.bets.clear()
         this.acceptingBets = true

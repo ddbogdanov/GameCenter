@@ -19,25 +19,48 @@
         <p-divider/>
 
         <div class="settings-content">
-            <p-fieldset legend="Avatar" :toggleable="true">
-                <form @submit.prevent="onSubmit()" class="profile-form" id="profile-form">
-                    <div class="form-item top-label">
-                        <label for="avatarID">Avatar ID</label>
-                        <p-input-text id="avatarID"
-                                    v-model="state.session.user.avatarID"
-                                    style="width: 100%;"
-                        />
-                    </div>
+            <form @submit.prevent="onSubmit()" class="profile-form" id="profile-form">
+                <p-fieldset legend="Avatar" 
+                            :toggleable="true"
+                            v-tooltip.left="'Change Avatar ID to get a different avatar.'"
+                >
+                
+                        <div class="form-item top-label">
+                            <label for="avatarID">Avatar ID</label>
+                            <p-input-text id="avatarID"
+                                        v-model="state.session.user.avatarID"
+                                        style="width: 100%;"
+                            />
+                        </div>
 
-                    <div class="form-item inline-label">
-                        <label for="avatarBackgroundColor">Background Color</label>
-                        <p-color-picker id="avatarBackgroundColor"
-                                        v-model="state.session.user.avatarBackgroundColor"
-                                        format="hex"
-                        />
+                        <div class="form-item inline-label">
+                            <label for="avatarBackgroundColor">Background Color</label>
+                            <p-color-picker id="avatarBackgroundColor"
+                                            v-model="state.session.user.avatarBackgroundColor"
+                                            format="hex"
+                            />
+                        </div>
+                    
+                </p-fieldset>
+                <p-fieldset legend="Coins" 
+                            :toggleable="true" 
+                            v-tooltip.left="'You can give yourself 10 coins, if your balance is below 10 coins. :)'"
+                >
+                    <div class="current-balance">
+                        <p>Current balance</p>
+                        <div class="coins">
+                            <i class="pi pi-bitcoin"/>
+                            <strong>{{ state.session.user.coins }}</strong>
+                        </div>
                     </div>
-                </form>
-            </p-fieldset>
+                    <p-button severity="primary"
+                              label="Add 10 Coins"
+                              outlined
+                              :disabled="state.session.user.coins >= 10"
+                              @click="onAddCoins"
+                    />
+                </p-fieldset>
+            </form>
         </div>
 
         <p-divider/>
@@ -75,12 +98,16 @@ export default defineComponent({
                 sessionID: state.session.sessionID,
                 userID: state.session.user.userID,
                 avatarID: state.session.user.avatarID,
-                avatarBackgroundColor: state.session.user.avatarBackgroundColor
+                avatarBackgroundColor: state.session.user.avatarBackgroundColor,
+                coins: state.session.user.coins
             });
             this.$emit("submit");
         },
         onCancel() {
             this.$emit("cancel");
+        },
+        onAddCoins() {
+            state.session.user.coins = parseFloat((state.session.user.coins + 10).toFixed(4))
         }
     },
 })
@@ -134,16 +161,37 @@ const { disconnectSocket } = disconnect()
         flex-direction: column;
         justify-content: flex-start;
         gap: 10px;
+    }
+    .form-item {
+        &.top-label {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        &.inline-label {
+            width: 100%;
+            
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+    ::v-deep(.p-fieldset-content) {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+    }
 
-        .form-item {
-            &.top-label {
-                display: flex;
-                flex-direction: column;
-            }
-            &.inline-label {
-                display: inline-flex;
-                justify-content: space-between;
-                align-items: center;
+    .current-balance {
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .coins {
+            i {
+                padding-right: 5px;
+                color: gold;
             }
         }
     }
