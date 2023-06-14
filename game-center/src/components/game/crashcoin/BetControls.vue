@@ -52,7 +52,7 @@
                         </span>
                     </div>
 
-                    <p-divider/>
+                    <p-divider class="information-divider"/>
 
                     <div class="immediate-history">
                         <div class="last-bet">
@@ -235,6 +235,7 @@ export default defineComponent({
                     }
                     .immediate-history {
                         width: 100%;
+                        flex: 1;
 
                         display: inline-flex;
                         justify-content: space-between;
@@ -242,15 +243,24 @@ export default defineComponent({
 
                         .last-bet {
                             width: 100%;
+                            height: 100%;
                             display: flex;
                             flex-direction: column;
+                            justify-content: space-around;
                             align-items: center;
                         }
                         .last-profit {
                             width: 100%;
+                            height: 100%;
                             display: flex;
                             flex-direction: column;
+                            justify-content: space-around;
                             align-items: center;
+                        }
+                        @media only screen and (max-width: 500px),
+                                    screen and (max-height: 800px) {
+                                        
+                            display: none;
                         }
                     }
                     .coins {
@@ -258,14 +268,12 @@ export default defineComponent({
                         align-items: center;
                         gap: 10px;
                     }
-
                     #coin-icon {
-                        font-size: 3rem;
+                        font-size: 2rem;
                         color: gold;
                     }
-
-                    @media only screen and (max-width: 500px) {
-                        display: none;
+                    h1 {
+                        margin: 0;
                     }
                 }
                 .form-footer {
@@ -276,6 +284,13 @@ export default defineComponent({
                     border-top-right-radius: 0px;
                     border-bottom-right-radius: 0px;
                 }
+            }
+        }
+
+        .information-divider {
+            @media only screen and (max-width: 500px),
+                screen and (max-height: 800px) {
+                display: none;
             }
         }
     }

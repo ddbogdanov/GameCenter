@@ -207,7 +207,7 @@ export default defineComponent({
         display: grid;
         grid:
         "multiplier controls bets" 1fr
-        "lower lower bets" 1fr
+        "lower lower bets" 2fr
         / 1fr 1fr 1fr;
         grid-gap: 10px;
 
