@@ -1,5 +1,7 @@
 <template>
     <p-table :value="bets"
+             scrollable
+             scrollHeight="flex"
     >
         <p-column field="user.username"
                   header="Username"
@@ -8,7 +10,7 @@
                   header="Wager"
         />
         <p-column field="cashedOutAt"
-                  header="Cashout at"
+                  header="@"
         />
         <p-column field="profit"
                   header="Profit"

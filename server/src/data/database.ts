@@ -61,7 +61,7 @@ class GameCenterDataStore {
         this.db.exec(
             `
             UPDATE users SET
-                coins = (coins + ${dCoins})
+                coins = round((coins + ${dCoins}), 4)
             WHERE userID = '${userID}'
             `,
             (error) => { if(error) console.log(error) }

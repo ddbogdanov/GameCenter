@@ -62,7 +62,7 @@ class User {
     }
 
     public updateCoins(dCoins: number) {
-        this.coins = this.coins + dCoins
+        this.coins = parseFloat((this.coins + dCoins).toFixed(4))
     }
 
     private generateRandomID(): string {

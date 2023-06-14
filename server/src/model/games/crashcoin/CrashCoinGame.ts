@@ -1,7 +1,9 @@
 import Game from "../Game"
 import socketio from 'socket.io'
-import CoinBet from "./CoinBet"
 import User from "../../User"
+import SessionStore from "../../SessionStore"
+import GameCenterDataStore from "../../../data/database"
+import CrashCoinBet from "./CrashCoinBet"
 
 class CrashCoinGame extends Game {
 
@@ -10,7 +12,7 @@ class CrashCoinGame extends Game {
     private nextGameInMs: number
     private acceptingBets: boolean
     private canCashOut: boolean
-    private bets: Map<String, CoinBet>
+    private bets: Map<String, CrashCoinBet>
 
     constructor(targetMultiplier: number) {
         super('CrashCoin', 1, 100)
@@ -26,11 +28,11 @@ class CrashCoinGame extends Game {
         return this.targetMultiplier
     }
 
-    public startGame(io: socketio.Server, roomID: string) {
-        this.game(io, roomID)
+    public async startGame(io: socketio.Server, roomID: string, sessionStore: SessionStore, db: GameCenterDataStore) {
+        this.game(io, roomID, sessionStore, db)
     }
 
-    private async game(io: socketio.Server, roomID: string) {
+    private async game(io: socketio.Server, roomID: string, sessionStore: SessionStore, db: GameCenterDataStore) {
         this.acceptingBets = false
         io.to(roomID).emit('gameStart')
 
@@ -52,6 +54,74 @@ class CrashCoinGame extends Game {
 
         io.to(roomID).emit('gameEnd', { multiplier: this.targetMultiplier.toFixed(2), time: timeElapsedMs })
 
+        this.bets.forEach((bet => {
+            if(bet.getCashedOutAt()) {
+                return
+            }
+            let session = sessionStore.findSession(bet.getSessionID())
+            if(!session) {
+                return 
+            }
+            bet.setProfit(parseFloat(((-bet.getWager()).toFixed(4))))
+
+            io.to(bet.getSocketID()).emit('betLost', {
+                coins: session.getUser().getCoins(),
+                profit: (-bet.getWager()).toFixed(4)
+            })
+            io.to(roomID).emit('recieveBetLost', bet)
+        }))
+
+        await this.acceptBets(io, roomID)
+
+        this.game(io, roomID, sessionStore, db)
+    }
+
+    public placeBet(bet: CrashCoinBet, sessionStore: SessionStore, db: GameCenterDataStore, io: socketio.Server): boolean {
+        if(!this.acceptingBets) {
+            return false
+        }
+
+        let session = sessionStore.findSession(bet.getSessionID())
+        if(!session) {
+            return false
+        }
+
+        session.getUser().updateCoins(-bet.getWager())
+        db.updateCoins(session?.getUser().getUserID(), -bet.getWager())
+
+        this.bets.set(bet.getUser().getUserID(), bet)
+        io.to(bet.getRoomID()).emit('newBet', bet)
+
+        return true
+    }
+    public cashOut(user: User, roomID: string, sessionStore: SessionStore, db: GameCenterDataStore, io: socketio.Server): number  {
+        if(!this.canCashOut) {
+            return 0
+        }
+        
+        let bet = this.bets.get(user.getUserID())
+        if(!bet) {
+            return 0
+        }
+
+        let session = sessionStore.findSession(bet.getSessionID())
+        if(!session) {
+            return 0
+        }
+
+        let profit = parseFloat(((bet.getWager() * parseFloat(this.currentMultiplier)) - bet.getWager()).toFixed(4))
+        bet.setProfit(profit)
+        bet.setCashedOutAt(parseFloat(this.currentMultiplier))
+
+        session.getUser().updateCoins(parseFloat((bet.getWager() + profit).toFixed(4)))
+        db.updateCoins(session.getUser().getUserID(), parseFloat((bet.getWager() + profit).toFixed(4)))
+        
+        io.to(roomID).emit('recieveCashout', bet)
+
+        return profit
+    }
+
+    private async acceptBets(io: socketio.Server, roomID: string) {
         this.bets.clear()
         this.acceptingBets = true
         this.nextGameInMs = 10000
@@ -61,36 +131,6 @@ class CrashCoinGame extends Game {
             this.nextGameInMs -= 1000
             io.to(roomID).emit('nextGameIn', this.nextGameInMs)
         }
-
-        this.game(io, roomID)
-    }
-
-    public placeBet(bet: CoinBet, io: socketio.Server): boolean {
-        if(!this.acceptingBets) {
-            return false
-        }
-
-        this.bets.set(bet.getUser().getUserID(), bet)
-        io.to(bet.getRoomID()).emit('newBet', bet)
-
-        return true
-    }
-    public cashOut(user: User, roomID: string, io: socketio.Server): boolean {
-        if(!this.canCashOut) {
-            return false
-        }
-        
-        let bet = this.bets.get(user.getUserID())
-        if(!bet) {
-            return false
-        }
-
-        let profit = ((bet.getWager() * parseFloat(this.currentMultiplier)) - bet.getWager())
-        bet.setProfit(profit)
-        bet.setCashedOutAt(parseFloat(this.currentMultiplier))
-        io.to(roomID).emit('recieveCashout', bet)
-
-        return true
     }
     private sleep(ms: number) {
         return new Promise((resolve) => setTimeout(resolve, ms))

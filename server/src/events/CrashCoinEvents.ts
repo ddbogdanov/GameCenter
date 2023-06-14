@@ -5,7 +5,7 @@ import SessionStore from '../model/SessionStore'
 import CrashCoinRoom from '../model/rooms/CrashCoinRoom'
 import CrashCoinGame from '../model/games/crashcoin/CrashCoinGame'
 import User from '../model/User'
-import CoinBet from '../model/games/crashcoin/CoinBet'
+import CrashCoinBet from '../model/games/crashcoin/CrashCoinBet'
 
 const crashCoinEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCenterDataStore, roomStore: RoomStore, sessionStore: SessionStore) => {
     socket.on('joinCrashCoinGame', (data, callback) => {
@@ -26,7 +26,7 @@ const crashCoinEvents = (io: socketio.Server, socket: socketio.Socket, db: GameC
             ))
 
             socket.join(room.getRoomID())
-            room.getGame().startGame(io, room.getRoomID())
+            room.getGame().startGame(io, room.getRoomID(), sessionStore, db)
             return callback(room)
         }
 
@@ -41,15 +41,26 @@ const crashCoinEvents = (io: socketio.Server, socket: socketio.Socket, db: GameC
         let user = room?.getUsers().find((user) => user.getUserID() == data.userID)
 
         if(!game || !user) {
-            return callback('Could not find game, or user is not in room')
+            return callback({ 
+                status: false, 
+                message: 'Could not find game, or user is not in room' 
+            })
         }
-        let bet = new CoinBet(user, data.wager, data.roomID, data.cashout)
-        let betPlaced = game.placeBet(bet, io)
+        
+        let bet = new CrashCoinBet(user, data.wager, data.roomID, data.sessionID, socket.id, data.cashout)
+        let betPlaced = game.placeBet(bet, sessionStore, db, io)
 
         if(betPlaced) {
-            return callback('Bet placed')
+            return callback({ 
+                status: true, 
+                coins: sessionStore.findSession(data.sessionID)?.getUser().getCoins(),
+                lastBet: bet.getWager().toFixed(2) 
+            })
         }
-        return callback('Bet could not be placed')
+        return callback({ 
+            status: false, 
+            message: 'Bet could not be placed' 
+        })
     })
 
     socket.on('cashout', (data, callback) => {
@@ -58,15 +69,25 @@ const crashCoinEvents = (io: socketio.Server, socket: socketio.Socket, db: GameC
         let user = room?.getUsers().find((user) => user.getUserID() == data.userID)
 
         if(!game || !user) {
-            return callback('Could not find game, or user is not in room')
+            return callback({ 
+                status: false, 
+                message: 'Could not find game, or user is not in room' 
+            })
         }
         
-        let cashedOut = game.cashOut(user, data.roomID, io)
+        let profit = game.cashOut(user, data.roomID, sessionStore, db, io)
 
-        if(cashedOut) {
-            return callback('Cashed out')
+        if(profit) {
+            return callback({ 
+                status: true, 
+                coins: sessionStore.findSession(data.sessionID)?.getUser().getCoins(),
+                profit: profit.toFixed(4) 
+            })
         }
-        return callback('Could not cashout')
+        return callback({ 
+            status: false, 
+            message: 'Could not cashout' 
+        })
     })
 }
 

@@ -28,8 +28,8 @@
                     </span>
 
                     <span class="p-inputgroup">
-                        <span class="p-inputgroup-addon">Cashout</span>
-                        <p-input-number v-model="cashout"
+                        <span class="p-inputgroup-addon">Payout</span>
+                        <p-input-number v-model="payout"
                                         :min="1"
                                         :max="100"
                                         :minFractionDigits="2"
@@ -37,8 +37,42 @@
                                         :step="0.01"
                                         suffix="x"
                                         showButtons
+
+                                        disabled
                         />
                     </span>
+                </div>
+
+                <div class="form-information">
+                    <div class="balance">
+                        <h1>Balance</h1>
+                        <span class="coins">
+                            <i id="coin-icon" class="pi pi-bitcoin"/>
+                            <h1>{{ state.session.user.coins }}</h1>
+                        </span>
+                    </div>
+
+                    <p-divider/>
+
+                    <div class="immediate-history">
+                        <div class="last-bet">
+                            <h1>Last Bet</h1>
+                            <span class="coins">
+                                <i id="coin-icon" class="pi pi-bitcoin"/>
+                                <h1>{{ lastBet }}</h1>
+                            </span>
+                        </div>
+
+                        <p-divider layout="vertical"/>
+
+                        <div class="last-profit">
+                            <h1>Last Profit</h1>
+                            <span class="coins">
+                                <i id="coin-icon" class="pi pi-bitcoin"/>
+                                <h1>{{ lastProfit }}</h1>
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-footer">
@@ -80,6 +114,7 @@
 <script lang="ts">
 import CrashCoinStatus from '@/model/CrashCoinStatus';
 import { PropType, defineComponent } from 'vue';
+import { state } from '@/socket'
 
 export default defineComponent({
     name: 'BetControls',
@@ -95,17 +130,26 @@ export default defineComponent({
         betPlaced: {
             type: Boolean,
             required: true
+        },
+        lastProfit: {
+            type: String,
+            required: true
+        },
+        lastBet: {
+            type: String,
+            required: true
         }
     },
     data() {
         return {
             wager: 0.01,
-            cashout: 1.00,
+            payout: 1.00,
+            state: state
         }
     },
     methods: {
         onPlaceBet() {
-            this.$emit('onPlaceBet', { wager: this.wager, cashout: this.cashout })
+            this.$emit('onPlaceBet', { wager: this.wager, payout: this.payout })
         },
         onCashout() {
             this.$emit('onCashout')
@@ -131,11 +175,11 @@ export default defineComponent({
             align-items: center;
 
             padding: 10px 10px 10px 10px;
-            border-bottom: 1px solid #cacaca;
+            border-bottom: 1px solid #CACACA;
 
             .info {
                 transition: all 500ms;
-                color: #cacaca;
+                color: #CACACA;
 
                 &:hover {
                     transform: scale(1.2);
@@ -164,6 +208,61 @@ export default defineComponent({
                     flex-direction: column;
                     justify-content: flex-start;
                     gap: 10px;
+                }
+
+                .form-information {
+                    height: 100%;
+
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+
+                    margin: 10px 0px 10px 0px;
+
+                    padding: 10px 10px 10px 10px;
+
+                    background-color: #4D4D4D;
+                    border-radius: 5px;
+                    font-family: dosis;
+
+                    .balance {
+                        width: 100%;
+
+                        display: inline-flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    .immediate-history {
+                        width: 100%;
+
+                        display: inline-flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+
+                        .last-bet {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                        .last-profit {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                    }
+                    .coins {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+
+                    #coin-icon {
+                        font-size: 3rem;
+                        color: gold;
+                    }
                 }
                 .form-footer {
                     width: 100%;

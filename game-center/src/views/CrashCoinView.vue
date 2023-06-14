@@ -13,6 +13,8 @@
                 <BetControls :nextGameIn="nextGameIn"
                              :status="status"
                              :betPlaced="betPlaced"
+                             :lastBet="lastBet"
+                             :lastProfit="lastProfit"
                              @onPlaceBet="onPlaceBet"
                              @onCashout="onCashout"
                 />
@@ -53,6 +55,8 @@ export default defineComponent({
         return {
             betPlaced: false,
             multiplier: "1.00",
+            lastBet: "0.00",
+            lastProfit: "0.0000",
             crashHistory: [] as Array<any>,
             nextGameIn: 0,
             status: CrashCoinStatus.PLAYING,
@@ -87,6 +91,15 @@ export default defineComponent({
 
             this.bets[betIndex] = data
         })
+        socket.on('recieveLostBet', (data) => {
+            let betIndex = this.bets.findIndex((bet) => bet.user.userID == data.user.userID)
+
+            this.bets[betIndex] = data
+        })
+        socket.on('betLost', (data) => {
+            state.session.user.coins = data.coins
+            this.lastProfit = data.profit
+        })
     },
     methods: {
         onPlaceBet(bet: any) {
@@ -94,16 +107,37 @@ export default defineComponent({
 
             bet.userID = state.session.user.userID
             bet.roomID = state.room.roomID
+            bet.sessionID = state.session.sessionID
             socket.emit('placeBet', bet, (data: any) => {
-                console.log(data)
+                if(!data.status) {
+                    this.$toast.add({ 
+                        severity: 'error',
+                        summary: 'Error', detail: data.message,
+                        life: 2000 
+                    })
+                }
+                else {
+                    this.lastBet = data.lastBet
+                    state.session.user.coins = data.coins
+                }
             })
         },
         onCashout() {
             this.betPlaced = false
 
-            socket.emit('cashout', { userID: state.session.user.userID, roomID: state.room.roomID }, 
+            socket.emit('cashout', { userID: state.session.user.userID, roomID: state.room.roomID, sessionID: state.session.sessionID }, 
             (data: any) => {
-                console.log(data)
+                if(!data.status) {
+                    this.$toast.add({ 
+                        severity: 'error',
+                        summary: 'Error', detail: data.message,
+                        life: 2000 
+                    })
+                }
+                else {
+                    this.lastProfit = data.profit
+                    state.session.user.coins = data.coins
+                }
             })
         },
     }
