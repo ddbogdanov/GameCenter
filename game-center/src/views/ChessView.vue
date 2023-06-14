@@ -15,11 +15,11 @@
                             @checkmate="onCheckmate"
                             @stalemate="onStalemate"
                 />
-                <!-- <WaitingOverlay v-if="!hasStarted"
+                <WaitingOverlay v-if="!hasStarted"
                                 :waiting-text="waitingText"
                                 :show-start-button="readyToStartAndIsFirstTurn"
                                 @start="onStart"
-                /> -->
+                />
             </div>
             <div class="sidebar-container" :class="{ visible: showSidebar}">
                 <GameSidebar :ready-to-start="readyToStart"
@@ -47,7 +47,7 @@ export default defineComponent({
         NavBar,
         ChessBoard,
         GameSidebar,
-        //WaitingOverlay
+        WaitingOverlay
     },
     computed: {
         readyToStart(): boolean {
@@ -148,7 +148,7 @@ export default defineComponent({
 
                     position: absolute;
                     right: 0;
-                    z-index: 2;
+                    z-index: 1002;
 
                     width: 350px;
                     height: calc(100% - 60px);
