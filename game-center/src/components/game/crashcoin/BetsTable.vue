@@ -104,6 +104,10 @@ export default defineComponent({
 
         .bets-table {
             padding: 10px 10px 10px 10px;
+
+            @media only screen and (max-width: 900px) {
+                padding: 0px;
+            }
         }
     }
 </style>
