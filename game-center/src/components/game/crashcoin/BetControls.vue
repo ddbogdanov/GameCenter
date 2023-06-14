@@ -263,6 +263,10 @@ export default defineComponent({
                         font-size: 3rem;
                         color: gold;
                     }
+
+                    @media only screen and (max-width: 500px) {
+                        display: none;
+                    }
                 }
                 .form-footer {
                     width: 100%;

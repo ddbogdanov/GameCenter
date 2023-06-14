@@ -24,8 +24,32 @@
                 <BetsTable :bets="bets"/>
             </div>
 
-            <div class="chatgrid">
-                <UserChat :roomID="state.room.roomID"/>
+            <div class="lower">
+                <div class="panel-view">
+
+                    <div class="panel-controls">
+                        <button class="control chat" :class="{ active: chatOpen}" @click="openChat">
+                            <p class="label">Chat</p>
+                        </button>
+                        <button class="control leaderboard" :class="{ active: leaderboardOpen}" @click="openLeaderboard">
+                            <p class="label">Leaderboard</p>
+                        </button>
+                        <button class="control bets" :class="{ active: betsOpen}" @click="openBets">
+                            <p class="label">Bets</p>
+                        </button>
+                    </div>
+
+                    <div class="panel" v-if="chatOpen">
+                        <UserChat :roomID="state.room.roomID"/>
+                    </div>
+                    <div class="panel" v-if="leaderboardOpen">
+                        <LeaderboardTable :leaderboard="leaderboard"/>
+                    </div>
+                    <div class="panel" v-if="betsOpen">
+                        <BetsTable :bets="bets"/>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -41,6 +65,7 @@ import UserChat from '@/components/UserChat.vue';
 import BetControls from '@/components/game/crashcoin/BetControls.vue';
 import CrashCoinBet from '@/model/CrashCoinBet';
 import BetsTable from '@/components/game/crashcoin/BetsTable.vue';
+import LeaderboardTable from '@/components/game/crashcoin/LeaderboardTable.vue';
 
 export default defineComponent({
     name: 'CrashCoinView',
@@ -49,7 +74,8 @@ export default defineComponent({
         CoinMultiplier,
         UserChat,
         BetControls,
-        BetsTable
+        BetsTable,
+        LeaderboardTable
     },
     data() {
         return {
@@ -61,7 +87,12 @@ export default defineComponent({
             nextGameIn: 0,
             status: CrashCoinStatus.PLAYING,
             state: state,
-            bets: [] as Array<CrashCoinBet>
+            bets: [] as Array<CrashCoinBet>,
+            leaderboard: [] as Array<CrashCoinBet>,
+
+            chatOpen: true,
+            leaderboardOpen: false,
+            betsOpen: false
         }
     },
     created() {
@@ -79,6 +110,9 @@ export default defineComponent({
             this.multiplier = data.multiplier
             this.crashHistory.push({ crash: data.multiplier, shown: this.multiplier })
             
+        })
+        socket.on('recieveLeaderboard', (data) => {
+            this.leaderboard = data
         })
         socket.on('nextGameIn', (data) => {
             this.nextGameIn = data
@@ -141,6 +175,22 @@ export default defineComponent({
                 }
             })
         },
+
+        openChat() {
+            this.chatOpen = true
+            this.leaderboardOpen = false,
+            this.betsOpen = false
+        },
+        openLeaderboard() {
+            this.chatOpen = false
+            this.leaderboardOpen = true,
+            this.betsOpen = false
+        },
+        openBets() {
+            this.chatOpen = false,
+            this.leaderboardOpen = false,
+            this.betsOpen = true
+        }
     }
 })
 </script>
@@ -157,9 +207,23 @@ export default defineComponent({
         display: grid;
         grid:
         "multiplier controls bets" 1fr
-        "chatgrid chatgrid bets" 1fr
+        "lower lower bets" 1fr
         / 1fr 1fr 1fr;
         grid-gap: 10px;
+
+        @media only screen and (max-width: 900px) {
+            grid:
+            "multiplier controls" 1fr
+            "lower lower" 1fr
+            / 1fr 1fr;
+        }
+        @media only screen and (max-width: 500px) {
+            grid:
+            "multiplier"
+            "controls"
+            "lower"
+            / 1fr;
+        }
     }
 
     .multiplier { 
@@ -179,12 +243,84 @@ export default defineComponent({
 
         background-color: #454545;
         border-radius: 5px;
+
+        @media only screen and (max-width: 900px) {
+            display: none;
+        }
     }
-    .chatgrid { 
-        grid-area: chatgrid;
+    .lower { 
+        grid-area: lower;
         min-height: 0;
 
         background-color: #454545;
         border-radius: 5px;
+    }
+
+
+    .panel-view {
+        height: 100%;
+        padding: 5px 5px 5px 5px;
+        display: flex;
+        .panel-controls {
+            width: 40px;
+            display: grid;
+
+            padding: 2px 0px 2px 0px;
+
+            grid-auto-rows: 1fr;
+            grid-gap: 5px;
+
+            border-radius: 5px 0px 0px 5px;
+            border-right: 1px solid #363636;
+            
+            overflow: hidden;
+
+            .control {
+                width: 40px;
+                height: 100%;
+
+                margin-left: 5px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                transition: all 500ms;
+
+                background-color: transparent;
+                border: 1px solid var(--primary-500);
+                border-radius: 5px 0px 0px 5px;
+
+                .label {
+                    color: white;
+                    font-weight: 600;
+      
+                    writing-mode: vertical-rl;
+                    transform: rotate(-180deg);
+                }
+
+                &.bets {
+                    @media only screen and (min-width: 900px) {
+                        display: none;
+                    }
+                }
+
+                &.active {
+                    background-color: var(--primary-500);
+                    margin-left: 0px;
+                }
+                &:hover {
+                    margin-left: 0px;
+                }
+            }
+            button { 
+                all: unset;
+                cursor: pointer;
+            }
+        }
+        .panel {
+            padding-left: 5px;
+            flex: 1;
+        }
     }
 </style>

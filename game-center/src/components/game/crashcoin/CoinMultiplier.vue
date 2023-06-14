@@ -136,6 +136,9 @@ export default defineComponent({
                     right: 0;
                 }
             }
+            @media only screen and (max-width: 500px) {
+                font-size: 2rem;
+            }
         }
         .bar {
             background-color: var(--primary-color);

@@ -13,6 +13,7 @@ class CrashCoinGame extends Game {
     private acceptingBets: boolean
     private canCashOut: boolean
     private bets: Map<String, CrashCoinBet>
+    private leaderboard: Array<CrashCoinBet>
 
     constructor(targetMultiplier: number) {
         super('CrashCoin', 1, 100)
@@ -22,6 +23,7 @@ class CrashCoinGame extends Game {
         this.acceptingBets = false
         this.canCashOut = false
         this.bets = new Map()
+        this.leaderboard = []
     }
 
     public getTargetMultiplier(): number {
@@ -53,6 +55,12 @@ class CrashCoinGame extends Game {
         this.canCashOut = false
 
         io.to(roomID).emit('gameEnd', { multiplier: this.targetMultiplier.toFixed(2), time: timeElapsedMs })
+
+        
+        this.leaderboard.push(...this.bets.values())
+        this.leaderboard.sort((a, b) => (a.getWager() > b.getWager()) ? 1 : -1)
+        this.leaderboard.splice(50)
+        io.to(roomID).emit('recieveLeaderboard', this.leaderboard)
 
         await this.findLostBets(io, sessionStore, roomID)
         await this.acceptBets(io, roomID)

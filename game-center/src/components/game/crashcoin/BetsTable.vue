@@ -96,6 +96,10 @@ export default defineComponent({
             h3 {
                 margin: 0;
             }
+            
+            @media only screen and (max-width: 900px) {
+                display: none;
+            }
         }
 
         .bets-table {
