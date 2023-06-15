@@ -174,7 +174,9 @@ export default defineComponent({
         justify-content: center;
         align-items: center;
     }
-
+    .sidebar-container {
+        min-height: 0;
+    }
     .sidebar-controls {
         width: 100%;
         display: flex;

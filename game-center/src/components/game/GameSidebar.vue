@@ -271,6 +271,7 @@ export default defineComponent({
         width: 100%;
         min-height: 0;
 
+        background-color: #454545;
         padding: 5px;
 
         flex: 1;

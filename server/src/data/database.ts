@@ -1,6 +1,5 @@
 import { Database } from 'sqlite3'
 import User from '../model/User';
-import fs from 'fs'
 
 class GameCenterDataStore {
     private db: Database
@@ -17,7 +16,14 @@ class GameCenterDataStore {
                 avatarID VARCHAR(200) NOT NULL,
                 avatarBackgroundColor VARCHAR(20) NOT NULL
             )
-            `
+            `,
+            (error) => {
+                if(error) {
+                    console.log(error)
+                    return false
+                }
+                return true
+            }
         );
     }
 
@@ -34,19 +40,31 @@ class GameCenterDataStore {
                     return callback(null)
                 }
                 callback(new User(data.username, data.userID, data.coins, data.avatarID, data.avatarBackgroundColor))
+                return true
             }
         )
     }
     public saveUser(user: User) {
+        this.db.exec("BEGIN")
         this.db.exec(
             `
             INSERT OR IGNORE INTO users (userID, username, coins, avatarID, avatarBackgroundColor)
             VALUES ('${user.getUserID()}', '${user.getUsername()}', ${user.getCoins()}, '${user.getAvatarID()}', '${user.getAvatarBackgroundColor()}')
             `,
-            (error) => { if(error) console.log(error) }
+            (error) => { 
+                if(error) {
+                    console.log(error) 
+                    this.db.exec("ROLLBACK")
+                    return false
+                }
+
+                this.db.exec("COMMIT")
+                return true
+            }
         )
     }
     public updateUser(userID: string, avatarID: string, avatarBackgroundColor: string, coins: string) {
+        this.db.exec("BEGIN")
         this.db.exec(
             `
             UPDATE users SET 
@@ -55,17 +73,34 @@ class GameCenterDataStore {
                 coins = ${coins}
             WHERE userID = '${userID}'
             `,
-            (error) => { if(error) console.log(error) }
+            (error) => { 
+                if(error) {
+                    console.log(error) 
+                    this.db.exec("ROLLBACK")
+                    return false
+                }
+                this.db.exec("COMMIT")
+                return true
+            }
         )
     }
     public updateCoins(userID: string, dCoins: number) {
+        this.db.exec("BEGIN")
         this.db.exec(
             `
             UPDATE users SET
                 coins = round((coins + ${dCoins}), 4)
             WHERE userID = '${userID}'
             `,
-            (error) => { if(error) console.log(error) }
+            (error) => { 
+                if(error) {
+                    console.log(error)
+                    this.db.exec("ROLLBACK") 
+                    return false
+                }
+                this.db.exec("COMMIT")
+                return true
+            }
         )
     }
 }
