@@ -6,7 +6,7 @@
             </div>
             <div class="end">
                 <i class="pi pi-info-circle info"
-                    v-tooltip.left="'You can place your bet in between rounds. Try to cash out before the multiplier crashes!'"
+                    v-tooltip.left="'You can place your bet in between rounds. Try to cash out before the multiplier crashes! Setting the payout to 1.00x means you will have to cashout manually, anything other, and it will cashout automatically.'"
                 />
             </div>
         </div>
@@ -37,8 +37,6 @@
                                         :step="0.01"
                                         suffix="x"
                                         showButtons
-
-                                        disabled
                         />
                     </span>
                 </div>

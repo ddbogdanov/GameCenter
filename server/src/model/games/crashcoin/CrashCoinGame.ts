@@ -46,6 +46,7 @@ class CrashCoinGame extends Game {
         this.canCashOut = true
         for(let multiplier = 1; multiplier <= this.targetMultiplier; multiplier += 0.01) {
             this.currentMultiplier = multiplier.toFixed(2)
+            await this.checkPayouts(roomID, io, sessionStore, db)
             io.to(roomID).emit('multiplierUpdate', { multiplier: multiplier.toFixed(2), time: timeElapsedMs })
             ++emits
             timing = this.getMultiplierEmitsTiming(emits)
@@ -115,6 +116,21 @@ class CrashCoinGame extends Game {
         return profit
     }
 
+    private checkPayouts(roomID: string, io: socketio.Server, sessionStore: SessionStore, db: GameCenterDataStore) {
+        this.bets.forEach((bet) => {
+            if(bet.getPayout() == 1) {
+                return
+            }
+
+            if((bet.getPayout() == parseFloat(this.currentMultiplier)) && !(bet.getCashedOutAt())) {
+                let profit = (this.cashOut(bet.getUser(), roomID, sessionStore, db, io)).toFixed(2)
+                io.to(bet.getSocketID()).emit('recieveAutomaticCashout', {
+                    coins: sessionStore.findSession(bet.getSessionID())?.getUser().getCoins(),
+                    profit: profit 
+                })
+            }
+        })
+    }
     private async findLostBets(io: socketio.Server, sessionStore: SessionStore, roomID: string) {
         this.bets.forEach((bet => {
             if(bet.getCashedOutAt()) {

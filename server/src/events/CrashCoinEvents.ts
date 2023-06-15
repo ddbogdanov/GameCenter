@@ -47,7 +47,7 @@ const crashCoinEvents = (io: socketio.Server, socket: socketio.Socket, db: GameC
             })
         }
         
-        let bet = new CrashCoinBet(user, data.wager, data.roomID, data.sessionID, socket.id, data.cashout)
+        let bet = new CrashCoinBet(user, data.wager, data.roomID, data.sessionID, socket.id, data.payout)
         let betPlaced = game.placeBet(bet, sessionStore, db, io)
 
         if(betPlaced) {

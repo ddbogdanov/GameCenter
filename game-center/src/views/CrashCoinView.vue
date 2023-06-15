@@ -125,6 +125,11 @@ export default defineComponent({
 
             this.bets[betIndex] = data
         })
+        socket.on('recieveAutomaticCashout', (data) => {
+            this.betPlaced = false,
+            state.session.user.coins = data.coins
+            this.lastProfit = data.profit
+        })
         socket.on('recieveLostBet', (data) => {
             let betIndex = this.bets.findIndex((bet) => bet.user.userID == data.user.userID)
 
