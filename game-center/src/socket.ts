@@ -6,7 +6,6 @@ import User from "./model/User";
 
 export const state = reactive(new State());
 
-// "undefined" means the URL will be computed from the `window.location` object
 // "https://game-center-server.onrender.com"
 const URL = "http://localhost:3000";
 

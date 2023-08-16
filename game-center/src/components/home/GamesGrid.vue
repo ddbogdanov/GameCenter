@@ -3,28 +3,28 @@
         <p-scroll-panel class="games-scroll">
             <div class="games-grid">
                 <GameCard game-name="Chess" 
-                          image-url="https://cdn.hswstatic.com/gif/chess-4.jpg"
+                          image-url="/chess.jpg"
 
                           :can-join-existing="false"
                           :can-start-new="true"
                           :can-view-all="true"
                 />
                 <GameCard game-name="CrashCoin"
-                          image-url="https://t4.ftcdn.net/jpg/05/62/27/09/360_F_562270957_OS3T9bvFuujUYyzd9JYHkVz6KgGo55No.jpg"
+                          image-url="/crashcoin.jpg"
 
                           :can-join-existing="true"
                           :can-start-new="false"
                           :can-view-all="false"
                 />
                 <GameCard game-name="Blackjack" 
-                          image-url="https://crescent.edu/uploads/editor/images/Blackjack.png"
+                          image-url="/blackjack.png"
 
                           :can-join-existing="false"
                           :can-start-new="true"
                           :can-view-all="true"
                 />
                 <GameCard game-name="Checkers" 
-                          image-url="https://cf.geekdo-images.com/S4IBcWYhlbn51_5f0EIR4g__opengraph/img/iI_-WErPq_25QRsBN4NEfbFnwu4=/fit-in/1200x630/filters:strip_icc()/pic113720.jpg"
+                          image-url="/checkers.jpg"
 
                           :can-join-existing="true"
                           :can-start-new="true"
