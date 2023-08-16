@@ -1,15 +1,12 @@
 class CardValue {
     private weight: number 
-    private isAce: boolean
-    private isTrump: boolean
+    private name: string
 
-    constructor(weight: number, isAce: boolean) {
+    constructor(weight: number, name: string) {
         this.weight = weight
         this.name = name
 
         //if is ace, then is low ace or high ace, and what are ace values for low and high
-
-        this.isTrump = false
     }
 
     public setWeight(weight: number) {
