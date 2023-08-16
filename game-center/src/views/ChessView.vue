@@ -8,7 +8,7 @@
                 />
             </div>
 
-            <div class="board-container">
+            <div class="board-container" :class="{ 'sidebar-shown': showSidebar }">
                 <ChessBoard :has-started="hasStarted"
                             @move-made="onMoveMade"
                             @move-recieved="onMoveRecieved"
@@ -150,7 +150,7 @@ export default defineComponent({
                     right: 0;
                     z-index: 1002;
 
-                    width: 350px;
+                    width: 75vw;
                     height: calc(100% - 60px);
                 }
             }
@@ -166,6 +166,7 @@ export default defineComponent({
     }
     .board-container {
         flex: 1;
+        width: 100%;
         height: 100%;
 
         position: relative;
@@ -173,6 +174,13 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &.sidebar-shown {
+            pointer-events: none;
+            touch-action: none;
+
+            filter: blur(2px);
+        }
     }
     .sidebar-container {
         min-height: 0;

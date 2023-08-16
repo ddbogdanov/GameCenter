@@ -126,6 +126,3 @@ export default defineComponent({
         z-index: -1;
     }
 </style>
-<style lang="scss">
-
-</style>

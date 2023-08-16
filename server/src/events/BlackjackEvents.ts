@@ -8,10 +8,7 @@ import User from '../model/User'
 
 const blackjackEvents = (io: socketio.Server, socket: socketio.Socket, db: GameCenterDataStore, roomStore: RoomStore) => {
     socket.on('newBlackjackGame', (data, callback) => {
-        // let room = roomStore.saveRoom(new Room(Game.BLACKJACK, [new User(data.username, data.userID, data.coins, data.avatarID, data.avatarBackgroundColor)]))
-        // socket.join(room.getRoomID())
-
-        return callback('Not implemented')
+        
     })
 }
 

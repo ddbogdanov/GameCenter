@@ -182,11 +182,8 @@ class CrashCoinGame extends Game {
         else if(emits < 200) {
             return 60
         }
-        else if(emits < 300) {
-            return 40
-        }
         else {
-            return 20
+            return 40
         }
     }
     private weightedRandom(min: number, max: number): number {

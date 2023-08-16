@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/crashcoin',
     name: 'crashcoin',
     component: () => import('../views/CrashCoinView.vue')
+  },
+  {
+    path: '/blackjack',
+    name: 'blackjack',
+    component: () => import('../views/BlackjackView.vue')
   }
 ]
 

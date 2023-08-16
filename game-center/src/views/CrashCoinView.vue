@@ -224,9 +224,9 @@ export default defineComponent({
         }
         @media only screen and (max-width: 500px) {
             grid:
-            "multiplier"
-            "controls"
-            "lower"
+            "multiplier" .5fr
+            "controls" 
+            "lower" 1fr
             / 1fr;
         }
     }

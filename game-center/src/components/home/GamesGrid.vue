@@ -16,17 +16,15 @@
                           :can-start-new="false"
                           :can-view-all="false"
                 />
-                <GameCard game-name="Checkers" 
-                          image-url="https://cf.geekdo-images.com/S4IBcWYhlbn51_5f0EIR4g__opengraph/img/iI_-WErPq_25QRsBN4NEfbFnwu4=/fit-in/1200x630/filters:strip_icc()/pic113720.jpg"
-
-                          :can-join-existing="true"
-                          :can-start-new="true"
-                          :can-view-all="true"
-
-                          class="disabled"
-                />
                 <GameCard game-name="Blackjack" 
                           image-url="https://crescent.edu/uploads/editor/images/Blackjack.png"
+
+                          :can-join-existing="false"
+                          :can-start-new="true"
+                          :can-view-all="true"
+                />
+                <GameCard game-name="Checkers" 
+                          image-url="https://cf.geekdo-images.com/S4IBcWYhlbn51_5f0EIR4g__opengraph/img/iI_-WErPq_25QRsBN4NEfbFnwu4=/fit-in/1200x630/filters:strip_icc()/pic113720.jpg"
 
                           :can-join-existing="true"
                           :can-start-new="true"
