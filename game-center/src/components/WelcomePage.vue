@@ -48,7 +48,7 @@ export default defineComponent({
       socket.auth = {
         username: this.username
       }
-      
+  
       socket.connect()
     },
   },
