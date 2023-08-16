@@ -6,7 +6,9 @@
             </div>
             <div class="end">
                 <i class="pi pi-info-circle info"
-                    v-tooltip.left="'Coin Multiplier. Your bet will be multiplied against this value - unless you dont cash out on time!'"
+                    v-tooltip.left.focus="'Coin Multiplier. Your bet will be multiplied against this value - unless you dont cash out on time!'"
+                    tabindex="1"
+                    style="cursor: pointer;"
                 />
             </div>
         </div>

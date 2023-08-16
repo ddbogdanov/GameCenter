@@ -50,7 +50,6 @@ export default defineComponent({
       }
       
       socket.connect()
-      this.isLoading = false
     },
   },
   data() {

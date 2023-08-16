@@ -6,7 +6,9 @@
             </div>
             <div class="end">
                 <i class="pi pi-info-circle info"
-                    v-tooltip.left="'Bets placed will be shown here'"
+                    v-tooltip.left.focus="'Bets placed will be shown here'"
+                    tabindex="3"
+                    style="cursor: pointer;"
                 />
             </div>
         </div>
