@@ -39,13 +39,15 @@ export default defineComponent({
     justify-content: flex-start;
     align-items: center;
 
-    background-color: #f77f71;
+    background-color: #454545;
   }
   .home-content {
     width: 60%;
     height: 100%;
 
-    background-color: #ff7060;
+    background-color: var(--primary-color);
+    box-shadow: 0px 3px 8px #303030cb;
+    box-shadow: 12px 0 15px -4px #303030cb, -12px 0 8px -4px #303030cb;
 
     @media only screen and (max-width: 1000px) {
       width: 100%;

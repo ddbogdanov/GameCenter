@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar">
         <div class="start">
-            <img src="@/assets/boardgamesicon_white.png" class="logo" @click="this.$router.push('home')"/>
+            <img src="@/assets/boardgamesicon_white.png" class="logo" @click="$router.go(0)"/>
         </div>
         <div class="end">
             <ProfilePopover/>
@@ -41,7 +41,6 @@ export default defineComponent({
         justify-content: space-between;
 
         background-color: #363636;
-
         box-shadow: 0px 3px 8px #303030cb;
     }
     .nav-bar .start {

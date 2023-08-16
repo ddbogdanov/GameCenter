@@ -20,6 +20,14 @@ export default defineComponent({
   components: {
     DebugFooter,
   },
+  mounted() {
+
+    // Quick fix to prevent a user "leaving" a room and being unable to join back in.
+    window.onpopstate = function () {
+      location.reload()
+    };
+
+  }
 })
 </script>
 

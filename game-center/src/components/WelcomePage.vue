@@ -19,6 +19,10 @@
         />
       </div>
 
+      <div class="loading" v-show="isLoading">
+        <p-progress-bar mode="indeterminate" style="height: 6px"/>
+        <p>Waiting for server to start... Try again if it doesn't work soon. It might take a while.</p>
+      </div>
     </form>
   </div>
 </template>
@@ -39,15 +43,20 @@ export default defineComponent({
         return
       }
 
+      this.isLoading = true;
+
       socket.auth = {
         username: this.username
       }
+      
       socket.connect()
+      this.isLoading = false
     },
   },
   data() {
     return {
-      username: ''
+      username: '',
+      isLoading: false,
     }
   },
   created() {
@@ -78,12 +87,23 @@ export default defineComponent({
   font-family: dosis;
 
   // background-color: #f77f71;
-  background-color: #f57566;
+  background-color: #363636;
   // background-color: var(--cyan-500);
 }
 .login-form {
   width: 350px;
 }
+
+.loading {
+  margin-top: 10px;
+
+  p {
+    margin: 5px 0px 5px 0px;
+    color: #84ffbd;
+    text-align: right;
+  }
+}
+
 #welcome-text {
   font-size: 6rem;
   font-weight: 500;

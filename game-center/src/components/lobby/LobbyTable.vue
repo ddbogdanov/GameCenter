@@ -77,9 +77,12 @@
         </p-column>
 
         <template #expansion="slotProps">
-            <div v-for="user of slotProps.data.users" :key="user.userID">
-                <span>Player: {{ user.username }}</span>
-            </div>
+            <p-table :value="slotProps.data.users"
+                     striped-rows
+                     class="p-datatable-sm"
+            >
+                <p-column header="Players" field="username"/>
+            </p-table>
         </template>
     
     </p-table>

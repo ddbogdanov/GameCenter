@@ -29,9 +29,9 @@
                               style="width: 100%"
                               @keyup.enter="onSend"
                 />
-                <span class="p-inputgroup-addon">
+                <!-- <span class="p-inputgroup-addon">
                     <i class="pi pi-thumbs-up" @click="emote"></i>
-                </span>
+                </span> -->
                 <span class="p-inputgroup-addon">
                     <i class="pi pi-send" @click="onSend"></i>
                 </span>
@@ -80,6 +80,11 @@ export default defineComponent({
     },
     methods: {
         onSend() {
+            if(!this.message.message) {
+                // TODO: user feedback
+                return
+            }
+
             this.messages.push({
                 user: this.message.user,
                 message: this.message.message,
@@ -88,9 +93,9 @@ export default defineComponent({
             socket.emit("sendMessage", { message: this.message, roomID: this.roomID });
             this.message.message = "";
         },
-        emote() {
-            socket.emit('sendEmote', { roomID: state.room.roomID }) 
-        }
+        // emote() {
+        //     socket.emit('sendEmote', { roomID: state.room.roomID }) 
+        // }
     },
 });
 </script>

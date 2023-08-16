@@ -32,6 +32,7 @@ import ColorPicker from 'primevue/colorpicker';
 import Fieldset from 'primevue/fieldset';
 import InputNumber from 'primevue/inputnumber';
 import Chart from 'primevue/chart';
+import ProgressBar from 'primevue/progressbar';
 
 const app = createApp(App)
 
@@ -67,7 +68,7 @@ app.component('p-color-picker', ColorPicker)
 app.component('p-fieldset', Fieldset)
 app.component('p-input-number', InputNumber)
 app.component('p-chart', Chart)
-
+app.component('p-progress-bar', ProgressBar)
 
 app.directive('tooltip', Tooltip)
 app.directive('ripple', Ripple)

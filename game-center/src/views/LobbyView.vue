@@ -5,7 +5,7 @@
             <div class="lobby-content">
                 <LobbyHeader/>
                 <div class="table">
-                    <LobbyTable :rooms="this.rooms" :loading="loading" @refresh="getAllRooms"/>
+                    <LobbyTable :rooms="rooms" :loading="loading" @refresh="getAllRooms"/>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         
-        background-color: #f77f71;
+        background-color: var(--primary-color);
     }   
     .lobby-content {
         width: 60%;
